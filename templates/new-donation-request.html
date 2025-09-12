@@ -1,0 +1,272 @@
+{% extends 'modern_base.html' %}
+{% load static %}
+
+{% block title %}New Donation Request - We Donate{% endblock %}
+
+{% block nav_links %}
+<a href="{% url 'donor-landing-page' %}" class="nav-link">
+    <i class="fas fa-home me-1"></i>
+    Home
+</a>
+<a href="{% url 'donor-home' %}" class="nav-link">
+    <i class="fas fa-history me-1"></i>
+    History
+</a>
+<a href="{% url 'book-appointment' %}" class="nav-link">
+    <i class="fas fa-calendar-plus me-1"></i>
+    Book Appointment
+</a>
+<a href="{% url 'new-donation-request' %}" class="nav-link">
+    <i class="fas fa-plus-circle me-1"></i>
+    New Donation
+</a>
+<div class="dropdown">
+    <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <i class="fas fa-user-cog me-1"></i>
+        Settings
+    </button>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{% url 'donor-profile-update' %}">User Profile</a></li>
+        <li><a class="dropdown-item" href="{% url 'donor-profile-update' %}">Change Password</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="{% url 'donor-logout' %}">Log Out</a></li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block hero %}
+<div class="hero-3d">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <i class="fas fa-hand-holding-heart me-3"></i>
+            New Donation Request
+        </h1>
+        <p class="hero-subtitle">Take the first step to save a life - Create your donation request</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="form-3d">
+            <div class="text-center mb-4">
+                <div class="mb-3">
+                    <i class="fas fa-heart-pulse fa-3x" style="color: var(--accent);"></i>
+                </div>
+                <h3 class="text-white fw-bold mb-2">Donation Request Form</h3>
+                <p class="text-white-50">Fill out the details below to create your donation request</p>
+            </div>
+            
+            <form method="POST" enctype="multipart/form-data" action="{% url 'new-donation-request' %}">
+                {% csrf_token %}
+                
+                <!-- Organ and Blood Type -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label for="organ_type" class="form-label text-white fw-medium">
+                            <i class="fas fa-lungs me-2"></i>
+                            Organ Type
+                        </label>
+                        <select name="organ_type" class="form-control form-control-3d" id="organ_type" required>
+                            <option value="">Select Organ Type</option>
+                            <option value="Heart">Heart</option>
+                            <option value="Kidney">Kidney</option>
+                            <option value="Liver">Liver</option>
+                            <option value="Lungs">Lungs</option>
+                            <option value="Pancreas">Pancreas</option>
+                            <option value="Cornea">Cornea</option>
+                            <option value="Bone Marrow">Bone Marrow</option>
+                            <option value="Skin">Skin</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="blood_type" class="form-label text-white fw-medium">
+                            <i class="fas fa-tint me-2"></i>
+                            Blood Type
+                        </label>
+                        <select name="blood_type" class="form-control form-control-3d" id="blood_type" required>
+                            <option value="">Select Blood Type</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Family Information -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label for="family_relation" class="form-label text-white fw-medium">
+                            <i class="fas fa-users me-2"></i>
+                            Family Relation
+                        </label>
+                        <select name="family_relation" class="form-control form-control-3d" id="family_relation" required>
+                            <option value="">Select Relation</option>
+                            <option value="Father">Father</option>
+                            <option value="Mother">Mother</option>
+                            <option value="Spouse">Spouse</option>
+                            <option value="Sibling">Sibling</option>
+                            <option value="Child">Child</option>
+                            <option value="Guardian">Guardian</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="family_relation_name" class="form-label text-white fw-medium">
+                            <i class="fas fa-user me-2"></i>
+                            Family Contact Name
+                        </label>
+                        <input type="text" name="family_relation_name" class="form-control form-control-3d" id="family_relation_name" placeholder="Enter contact person name" required>
+                    </div>
+                </div>
+                
+                <!-- Contact Number -->
+                <div class="mb-4">
+                    <label for="family_contact_number" class="form-label text-white fw-medium">
+                        <i class="fas fa-phone me-2"></i>
+                        Family Contact Number (+1)
+                    </label>
+                    <input type="tel" name="family_contact_number" class="form-control form-control-3d" id="family_contact_number" placeholder="Enter 10-digit phone number" maxlength="10" minlength="10" pattern="[0-9]{10}">
+                </div>
+                
+                <!-- Medical Report Upload -->
+                <div class="mb-4">
+                    <label for="medical_report" class="form-label text-white fw-medium">
+                        <i class="fas fa-file-medical me-2"></i>
+                        Medical Report
+                    </label>
+                    <div class="position-relative">
+                        <input type="file" name="file" class="form-control form-control-3d" id="medical_report" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                        <small class="text-white-50 mt-2 d-block">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Upload your medical report (PDF, DOC, or Image files)
+                        </small>
+                    </div>
+                </div>
+                
+                <!-- Radio Button Questions -->
+                <div class="mb-4">
+                    <label class="form-label text-white fw-medium mb-3">
+                        <i class="fas fa-question-circle me-2"></i>
+                        Has the donor donated before?
+                    </label>
+                    <div class="d-flex gap-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="donated_before" value="True" id="donated_yes" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3);">
+                            <label class="form-check-label text-white" for="donated_yes">
+                                <i class="fas fa-check-circle me-1" style="color: var(--success);"></i>
+                                Yes
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="donated_before" value="False" id="donated_no" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3);">
+                            <label class="form-check-label text-white" for="donated_no">
+                                <i class="fas fa-times-circle me-1" style="color: var(--danger);"></i>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label text-white fw-medium mb-3">
+                        <i class="fas fa-heart me-2"></i>
+                        Is your family okay with donating your organ?
+                    </label>
+                    <div class="d-flex gap-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="family_consent" value="True" id="consent_yes" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3);">
+                            <label class="form-check-label text-white" for="consent_yes">
+                                <i class="fas fa-check-circle me-1" style="color: var(--success);"></i>
+                                Yes
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="family_consent" value="False" id="consent_no" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3);">
+                            <label class="form-check-label text-white" for="consent_no">
+                                <i class="fas fa-times-circle me-1" style="color: var(--danger);"></i>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-3d btn-lg">
+                        <i class="fas fa-paper-plane me-2"></i>
+                        Create Donation Request
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Information Cards -->
+        <div class="row g-4 mt-4">
+            <div class="col-md-4">
+                <div class="glass-card text-center p-4">
+                    <i class="fas fa-shield-alt fa-3x mb-3" style="color: var(--success);"></i>
+                    <h5 class="text-white fw-bold">Secure Process</h5>
+                    <p class="text-white-50 mb-0">Your information is protected with advanced encryption</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card text-center p-4">
+                    <i class="fas fa-user-md fa-3x mb-3" style="color: var(--accent);"></i>
+                    <h5 class="text-white fw-bold">Medical Review</h5>
+                    <p class="text-white-50 mb-0">All requests are reviewed by qualified medical professionals</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card text-center p-4">
+                    <i class="fas fa-clock fa-3x mb-3" style="color: var(--warning);"></i>
+                    <h5 class="text-white fw-bold">Quick Response</h5>
+                    <p class="text-white-50 mb-0">Get updates on your donation request within 24-48 hours</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/new-donation-request.js' %}"></script>
+<script>
+    // Add form validation and enhancement
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const fileInput = document.getElementById('medical_report');
+        
+        // File upload feedback
+        fileInput.addEventListener('change', function() {
+            const fileName = this.files[0]?.name;
+            if (fileName) {
+                const feedback = document.createElement('small');
+                feedback.className = 'text-success mt-1 d-block';
+                feedback.innerHTML = `<i class="fas fa-check-circle me-1"></i>File selected: ${fileName}`;
+                
+                // Remove existing feedback
+                const existingFeedback = this.parentNode.querySelector('.text-success');
+                if (existingFeedback) {
+                    existingFeedback.remove();
+                }
+                
+                this.parentNode.appendChild(feedback);
+            }
+        });
+        
+        // Form submission enhancement
+        form.addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creating Request...';
+            submitBtn.disabled = true;
+        });
+    });
+</script>
+{% endblock %}

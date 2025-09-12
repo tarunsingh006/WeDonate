@@ -1,0 +1,613 @@
+{% extends 'modern_base.html' %}
+{% load static %}
+
+{% block title %}Hospital Dashboard - We Donate{% endblock %}
+
+{% block nav_links %}
+<a href="{% url 'home' %}" class="nav-link">
+    <i class="fas fa-home me-1"></i>
+    Home
+</a>
+<div class="dropdown">
+    <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <i class="fas fa-user-md me-1"></i>
+        Settings
+    </button>
+    <ul class="dropdown-menu" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2);">
+        <li><a class="dropdown-item text-white" href="#" onclick="showTab('update_profile')">Update Profile</a></li>
+        <li><hr class="dropdown-divider" style="border-color: rgba(255, 255, 255, 0.2);"></li>
+        <li><a class="dropdown-item text-white" href="{% url 'hospital-logout' %}">Log Out</a></li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block hero %}
+<div class="hero-3d">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <i class="fas fa-hospital me-3"></i>
+            Hospital Dashboard
+        </h1>
+        <p class="hero-subtitle">Manage donations, appointments, and save lives efficiently</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Tab Navigation -->
+<ul class="nav nav-tabs mb-4" role="tablist" style="background: rgba(255, 255, 255, 0.1); border-radius: 20px; border: none;">
+    <li class="nav-item" id="actionItemTab">
+        <a class="nav-link active text-white fw-medium" data-toggle="tab" href="#home" style="border: none; background: transparent;">
+            <i class="fas fa-tachometer-alt me-2"></i>Action Items
+        </a>
+    </li>
+    <li class="nav-item" id="appointmentTab">
+        <a class="nav-link text-white fw-medium" data-toggle="tab" href="#appointment_approvals" style="border: none; background: transparent;">
+            <i class="fas fa-calendar-check me-2"></i>Appointments
+        </a>
+    </li>
+    <li class="nav-item" id="donationTab">
+        <a class="nav-link text-white fw-medium" data-toggle="tab" href="#donation_approvals" style="border: none; background: transparent;">
+            <i class="fas fa-hand-holding-heart me-2"></i>Donations
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-white fw-medium" data-toggle="tab" href="#search_donation" style="border: none; background: transparent;">
+            <i class="fas fa-search me-2"></i>Search
+        </a>
+    </li>
+</ul>
+
+<div class="tab-content">
+<!-- Action Items Tab -->
+<div id="home" class="tab-pane active">
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card-3d h-100 cursor-pointer" onclick="showTab('appointment_approvals')" id="appointDiv">
+                <div class="card-body-3d text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-calendar-check fa-4x" style="color: var(--warning);"></i>
+                    </div>
+                    <h4 class="text-white fw-bold mb-2">Pending Appointments</h4>
+                    <h2 class="text-white fw-bold mb-3" id="appointmentCount">Loading...</h2>
+                    <p class="text-white-50 mb-0">Click to review and approve appointments</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card-3d h-100 cursor-pointer" onclick="showTab('donation_approvals')" id="donationsDiv">
+                <div class="card-body-3d text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-hand-holding-heart fa-4x" style="color: var(--success);"></i>
+                    </div>
+                    <h4 class="text-white fw-bold mb-2">Pending Donations</h4>
+                    <h2 class="text-white fw-bold mb-3" id="donationCount">Loading...</h2>
+                    <p class="text-white-50 mb-0">Click to review and approve donations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Stats -->
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="glass-card text-center p-4">
+                <i class="fas fa-check-circle fa-3x mb-3" style="color: var(--success);"></i>
+                <h4 class="text-white fw-bold">Approved</h4>
+                <p class="text-white-50 mb-0">This Month</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="glass-card text-center p-4">
+                <i class="fas fa-clock fa-3x mb-3" style="color: var(--warning);"></i>
+                <h4 class="text-white fw-bold">Pending</h4>
+                <p class="text-white-50 mb-0">Review Required</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="glass-card text-center p-4">
+                <i class="fas fa-heart fa-3x mb-3" style="color: var(--danger);"></i>
+                <h4 class="text-white fw-bold">Lives Saved</h4>
+                <p class="text-white-50 mb-0">Total Impact</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="glass-card text-center p-4">
+                <i class="fas fa-users fa-3x mb-3" style="color: var(--accent);"></i>
+                <h4 class="text-white fw-bold">Active Donors</h4>
+                <p class="text-white-50 mb-0">In Network</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Appointments Tab -->
+<div id="appointment_approvals" class="tab-pane fade">
+    <div class="card-3d">
+        <div class="card-header-3d">
+            <h4 class="mb-0">
+                <i class="fas fa-calendar-check me-2"></i>
+                Pending Appointments
+            </h4>
+        </div>
+        <div class="card-body-3d p-0">
+            <div class="table-responsive">
+                <table class="table table-3d mb-0" id="appointmentTable">
+                    <thead>
+                        <tr>
+                            <th><input type="radio" name="appointmentSelect" style="background: rgba(255, 255, 255, 0.1);"></th>
+                            <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                            <th><i class="fas fa-user me-2"></i>Donor</th>
+                            <th><i class="fas fa-lungs me-2"></i>Organ</th>
+                            <th><i class="fas fa-calendar me-2"></i>Date</th>
+                            <th><i class="fas fa-clock me-2"></i>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointmentsTableBody">
+                        <!-- Dynamic content will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-body-3d">
+            <div class="d-flex gap-3">
+                <button class="btn btn-3d" id="appointmentDtls">
+                    <i class="fas fa-info-circle me-2"></i>Details
+                </button>
+                <button class="btn btn-3d" id="appointmentApprv" style="background: linear-gradient(135deg, var(--success), var(--accent));">
+                    <i class="fas fa-check me-2"></i>Approve
+                </button>
+                <button class="btn btn-3d" id="appointmentDeny" style="background: linear-gradient(135deg, var(--danger), var(--warning));">
+                    <i class="fas fa-times me-2"></i>Deny
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Donations Tab -->
+<div id="donation_approvals" class="tab-pane fade">
+    <div class="card-3d">
+        <div class="card-header-3d">
+            <h4 class="mb-0">
+                <i class="fas fa-hand-holding-heart me-2"></i>
+                Pending Donations
+            </h4>
+        </div>
+        <div class="card-body-3d p-0">
+            <div class="table-responsive">
+                <table class="table table-3d mb-0" id="donationTable">
+                    <thead>
+                        <tr>
+                            <th><input type="radio" name="donationSelect" style="background: rgba(255, 255, 255, 0.1);"></th>
+                            <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                            <th><i class="fas fa-user me-2"></i>Donor</th>
+                            <th><i class="fas fa-lungs me-2"></i>Organ</th>
+                            <th><i class="fas fa-tint me-2"></i>Blood Group</th>
+                        </tr>
+                    </thead>
+                    <tbody id="donationTableBody">
+                        <!-- Dynamic content will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-body-3d">
+            <div class="d-flex gap-3">
+                <button class="btn btn-3d" id="donationDtls">
+                    <i class="fas fa-info-circle me-2"></i>Details
+                </button>
+                <button class="btn btn-3d" id="donationApprv" style="background: linear-gradient(135deg, var(--success), var(--accent));">
+                    <i class="fas fa-check me-2"></i>Approve
+                </button>
+                <button class="btn btn-3d" id="donationDeny" style="background: linear-gradient(135deg, var(--danger), var(--warning));">
+                    <i class="fas fa-times me-2"></i>Deny
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Tab -->
+<div id="search_donation" class="tab-pane fade">
+    <div class="card-3d mb-4">
+        <div class="card-body-3d">
+            <div class="row g-3">
+                <div class="col-md-9">
+                    <input type="text" class="form-control form-control-3d" id="searchInput" placeholder="Search by Organ, Donor name, Donation ID, or Blood Group">
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-3d w-100" id="search_btn">
+                        <i class="fas fa-search me-2"></i>Search
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-3d">
+        <div class="card-header-3d">
+            <h4 class="mb-0">
+                <i class="fas fa-search me-2"></i>
+                Search Results
+            </h4>
+        </div>
+        <div class="card-body-3d p-0">
+            <div class="table-responsive">
+                <table class="table table-3d mb-0" id="donationSearchTable">
+                    <thead>
+                        <tr>
+                            <th><input type="radio" name="searchSelect" style="background: rgba(255, 255, 255, 0.1);"></th>
+                            <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                            <th><i class="fas fa-user me-2"></i>Donor</th>
+                            <th><i class="fas fa-lungs me-2"></i>Organ</th>
+                            <th><i class="fas fa-tint me-2"></i>Blood Group</th>
+                        </tr>
+                    </thead>
+                    <tbody id="searchTableBody">
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <i class="fas fa-search fa-3x mb-3" style="color: var(--accent); opacity: 0.5;"></i>
+                                <p class="mb-0">Enter search criteria to find donations</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-body-3d">
+            <div class="d-flex gap-3">
+                <button class="btn btn-3d" id="searchDtls">
+                    <i class="fas fa-info-circle me-2"></i>Details
+                </button>
+                <button class="btn btn-3d" id="searchEmail" style="background: linear-gradient(135deg, var(--accent), var(--secondary));">
+                    <i class="fas fa-envelope me-2"></i>Email Donor
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Profile Tab -->
+<div id="update_profile" class="tab-pane fade">
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card-3d">
+                <div class="card-header-3d">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">User Profile</h4>
+                        <button class="btn btn-sm" style="background: var(--warning); color: white;" onclick="enableedituserprofile();">
+                            <i class="fas fa-edit me-1"></i>Edit
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body-3d">
+                    <form id="updateDetailsForm">
+                        <div class="mb-3">
+                            <label class="form-label text-white fw-medium">
+                                <i class="fas fa-hospital me-2"></i>Hospital Name
+                            </label>
+                            <input type="text" name="hospital_name" id="hospitalName" class="form-control form-control-3d" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-white fw-medium">
+                                <i class="fas fa-envelope me-2"></i>Email Address
+                            </label>
+                            <input type="email" name="email" id="emailHospital" class="form-control form-control-3d" disabled>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-white fw-medium">
+                                    <i class="fas fa-city me-2"></i>City
+                                </label>
+                                <input type="text" name="city" id="city" class="form-control form-control-3d" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-white fw-medium">
+                                    <i class="fas fa-map-marker-alt me-2"></i>State
+                                </label>
+                                <select name="province" id="input-province" class="form-control form-control-3d" disabled>
+                                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                    <option value="Assam">Assam</option>
+                                    <option value="Bihar">Bihar</option>
+                                    <option value="Chhattisgarh">Chhattisgarh</option>
+                                    <option value="Goa">Goa</option>
+                                    <option value="Gujarat">Gujarat</option>
+                                    <option value="Haryana">Haryana</option>
+                                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                    <option value="Jharkhand">Jharkhand</option>
+                                    <option value="Karnataka">Karnataka</option>
+                                    <option value="Kerala">Kerala</option>
+                                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                    <option value="Maharashtra">Maharashtra</option>
+                                    <option value="Manipur">Manipur</option>
+                                    <option value="Meghalaya">Meghalaya</option>
+                                    <option value="Mizoram">Mizoram</option>
+                                    <option value="Nagaland">Nagaland</option>
+                                    <option value="Odisha">Odisha</option>
+                                    <option value="Punjab">Punjab</option>
+                                    <option value="Rajasthan">Rajasthan</option>
+                                    <option value="Sikkim">Sikkim</option>
+                                    <option value="Tamil Nadu">Tamil Nadu</option>
+                                    <option value="Telangana">Telangana</option>
+                                    <option value="Tripura">Tripura</option>
+                                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                    <option value="Uttarakhand">Uttarakhand</option>
+                                    <option value="West Bengal">West Bengal</option>
+                                    <option value="Delhi">Delhi</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label text-white fw-medium">
+                                    <i class="fas fa-phone me-2"></i>Contact (+91)
+                                </label>
+                                <input type="text" name="contact" id="hospitalContact" class="form-control form-control-3d" maxlength="10" minlength="10" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-white fw-medium">
+                                    <i class="fas fa-flag me-2"></i>Country
+                                </label>
+                                <select name="country" id="input-country" class="form-control form-control-3d" disabled>
+                                    <option selected>India</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" id="submitUpdateProf" class="btn btn-3d w-100" disabled>
+                            <i class="fas fa-save me-2"></i>Update Profile
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card-3d">
+                <div class="card-header-3d">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Password Settings</h4>
+                        <button class="btn btn-sm" style="background: var(--warning); color: white;" onclick="enableeditpasswords();">
+                            <i class="fas fa-edit me-1"></i>Edit
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body-3d">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label text-white fw-medium">
+                                <i class="fas fa-lock me-2"></i>Old Password
+                            </label>
+                            <input type="password" id="password1" name="old_password" class="form-control form-control-3d" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-white fw-medium">
+                                <i class="fas fa-key me-2"></i>New Password
+                            </label>
+                            <input type="password" id="password2" name="new_password" class="form-control form-control-3d" minlength="6" pattern="(?=.*[a-z])(?=.*\d).{6,}" disabled>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-white fw-medium">
+                                <i class="fas fa-check-circle me-2"></i>Confirm Password
+                            </label>
+                            <input type="password" id="password3" class="form-control form-control-3d" oninput="checkpassword();" disabled>
+                            <div id="password-validation-msg" class="mt-2"></div>
+                        </div>
+                        <button type="submit" id="update-password" class="btn btn-3d w-100" disabled>
+                            <i class="fas fa-save me-2"></i>Update Password
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div> <!-- Close tab-content -->
+
+<!-- Chatbot Widget -->
+<div id="chatbot-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+    <div id="chatbot-toggle" style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: all 0.3s ease;">
+        <i class="fas fa-robot" style="color: white; font-size: 24px;"></i>
+    </div>
+    
+    <div id="chatbot-window" style="display: none; position: absolute; bottom: 70px; right: 0; width: 350px; height: 500px; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2);">
+        <div style="padding: 20px; border-bottom: 1px solid rgba(0,0,0,0.1); background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 20px 20px 0 0; color: white;">
+            <h5 style="margin: 0; display: flex; align-items: center; justify-content: space-between;">
+                <span><i class="fas fa-robot me-2"></i>Medical Assistant</span>
+                <button id="chatbot-close" style="background: none; border: none; color: white; font-size: 18px; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </h5>
+        </div>
+        
+        <div id="chatbot-messages" style="height: 350px; overflow-y: auto; padding: 15px; background: rgba(255,255,255,0.1);">
+            <div class="bot-message" style="margin-bottom: 15px; padding: 10px; background: rgba(78, 205, 196, 0.2); border-radius: 15px; border-left: 4px solid #4ecdc4;">
+                <strong>Medical Assistant:</strong><br>
+                Hello! I'm here to help with medical queries and organ donation information. How can I assist you today?
+            </div>
+        </div>
+        
+        <div style="padding: 15px; border-top: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.1); border-radius: 0 0 20px 20px;">
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="chatbot-input" placeholder="Ask about medical procedures, organ compatibility..." style="flex: 1; padding: 10px; border: 1px solid rgba(0,0,0,0.2); border-radius: 20px; background: rgba(255,255,255,0.8);">
+                <button id="chatbot-send" style="padding: 10px 15px; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border: none; border-radius: 20px; cursor: pointer;">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    // Load data on page load
+    $(document).ready(function() {
+        loadCounts();
+        loadAppointments();
+        loadDonations();
+    });
+    
+    function loadCounts() {
+        $.get('/hospitals/fetch-counts/', function(data) {
+            const counts = JSON.parse(data);
+            $('#appointmentCount').text(counts[0].appointment_count);
+            $('#donationCount').text(counts[0].donation_count);
+        });
+    }
+    
+    function loadAppointments() {
+        $.get('/hospitals/fetch-appointments/', function(data) {
+            const appointments = JSON.parse(data);
+            let html = '';
+            appointments.forEach(function(appointment) {
+                html += `<tr>
+                    <td><input type="radio" name="appointmentSelect" value="${appointment.appointment_id}"></td>
+                    <td>${appointment.appointment_id}</td>
+                    <td>${appointment.first_name} ${appointment.last_name}</td>
+                    <td>${appointment.organ}</td>
+                    <td>${appointment.date}</td>
+                    <td>${appointment.time}</td>
+                </tr>`;
+            });
+            $('#appointmentsTableBody').html(html);
+        });
+    }
+    
+    function loadDonations() {
+        $.get('/hospitals/fetch-donations/', function(data) {
+            const donations = JSON.parse(data);
+            let html = '';
+            donations.forEach(function(donation) {
+                html += `<tr>
+                    <td><input type="radio" name="donationSelect" value="${donation.donation_id}"></td>
+                    <td>${donation.donation_id}</td>
+                    <td>${donation.first_name} ${donation.last_name}</td>
+                    <td>${donation.organ}</td>
+                    <td>${donation.blood_group}</td>
+                </tr>`;
+            });
+            $('#donationTableBody').html(html);
+        });
+    }
+    
+    // Button handlers
+    $('#appointmentApprv').click(function() {
+        const selectedId = $('input[name="appointmentSelect"]:checked').val();
+        if (selectedId) {
+            $.post('/hospitals/appointments-approval/', {
+                ID: selectedId,
+                action: 'Approved'
+            }, function() {
+                loadCounts();
+                loadAppointments();
+                loadDonations();
+            });
+        }
+    });
+    
+    $('#appointmentDeny').click(function() {
+        const selectedId = $('input[name="appointmentSelect"]:checked').val();
+        if (selectedId) {
+            $.post('/hospitals/appointments-approval/', {
+                ID: selectedId,
+                action: 'Denied'
+            }, function() {
+                loadCounts();
+                loadAppointments();
+            });
+        }
+    });
+    
+    $('#donationApprv').click(function() {
+        const selectedId = $('input[name="donationSelect"]:checked').val();
+        if (selectedId) {
+            $.post('/hospitals/donations-approval/', {
+                ID: selectedId,
+                action: 'Approved'
+            }, function() {
+                loadCounts();
+                loadDonations();
+            });
+        }
+    });
+    
+    $('#donationDeny').click(function() {
+        const selectedId = $('input[name="donationSelect"]:checked').val();
+        if (selectedId) {
+            $.post('/hospitals/donations-approval/', {
+                ID: selectedId,
+                action: 'Denied'
+            }, function() {
+                loadCounts();
+                loadDonations();
+            });
+        }
+    });
+    
+    // Chatbot functionality
+    $('#chatbot-toggle').click(function() {
+        $('#chatbot-window').toggle();
+    });
+    
+    $('#chatbot-close').click(function() {
+        $('#chatbot-window').hide();
+    });
+    
+    $('#chatbot-send, #chatbot-input').on('click keypress', function(e) {
+        if (e.type === 'click' || e.which === 13) {
+            const message = $('#chatbot-input').val().trim();
+            if (message) {
+                // Add user message
+                $('#chatbot-messages').append(`
+                    <div style="margin-bottom: 15px; text-align: right;">
+                        <div style="display: inline-block; padding: 10px; background: rgba(69, 183, 209, 0.2); border-radius: 15px; border-right: 4px solid #45b7d1; max-width: 80%;">
+                            <strong>You:</strong><br>${message}
+                        </div>
+                    </div>
+                `);
+                
+                // Add bot response
+                setTimeout(function() {
+                    const response = getBotResponse(message);
+                    $('#chatbot-messages').append(`
+                        <div style="margin-bottom: 15px;">
+                            <div style="padding: 10px; background: rgba(78, 205, 196, 0.2); border-radius: 15px; border-left: 4px solid #4ecdc4;">
+                                <strong>Medical Assistant:</strong><br>${response}
+                            </div>
+                        </div>
+                    `);
+                    $('#chatbot-messages').scrollTop($('#chatbot-messages')[0].scrollHeight);
+                }, 1000);
+                
+                $('#chatbot-input').val('');
+                $('#chatbot-messages').scrollTop($('#chatbot-messages')[0].scrollHeight);
+            }
+        }
+    });
+    
+    function getBotResponse(message) {
+        const msg = message.toLowerCase();
+        
+        if (msg.includes('organ') && msg.includes('compatibility')) {
+            return 'Organ compatibility depends on blood type, tissue matching (HLA), and size compatibility. ABO blood group compatibility is crucial for most organs.';
+        } else if (msg.includes('blood') && msg.includes('type')) {
+            return 'Blood type compatibility: O- (universal donor), AB+ (universal recipient). For organs: Heart, liver, lungs require ABO compatibility. Kidneys can sometimes cross ABO barriers with special protocols.';
+        } else if (msg.includes('appointment') || msg.includes('schedule')) {
+            return 'You can approve appointments in the "Appointments" tab. Approved appointments will move to "Pending Donations" for final approval.';
+        } else if (msg.includes('donation') && msg.includes('process')) {
+            return 'Donation process: 1) Donor registers → 2) Books appointment → 3) Hospital approves appointment → 4) Medical evaluation → 5) Final donation approval.';
+        } else if (msg.includes('emergency') || msg.includes('urgent')) {
+            return 'For urgent cases: Check blood type compatibility first, contact organ procurement organization, and prioritize based on medical urgency and compatibility scores.';
+        } else if (msg.includes('help') || msg.includes('how')) {
+            return 'I can help with: organ compatibility, blood type matching, donation procedures, appointment management, and medical protocols. What specific information do you need?';
+        } else {
+            return 'I can assist with organ donation procedures, compatibility questions, and appointment management. Please ask about specific medical topics or donation processes.';
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'modern_base.html' %}
+{% load static %}
+
+{% block title %}We Donate - Modern Organ Donation Platform{% endblock %}
+
+{% block hero %}
+<div class="hero-3d">
+    <div class="hero-content">
+        <h1 class="hero-title">We Donate</h1>
+        <p class="hero-subtitle">The value of life is not in its duration, but in its donation. Join with us and be an organ donor for someone in need.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row g-4 mb-5">
+    <!-- Donor Module Card -->
+    <div class="col-lg-6">
+        <div class="card-3d h-100">
+            <div class="position-relative overflow-hidden" style="height: 250px;">
+                <img src="{% static 'images/donors.jpg' %}" class="w-100 h-100 object-fit-cover" alt="Donor Module">
+                <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));"></div>
+                <div class="position-absolute top-50 start-50 translate-middle text-center">
+                    <i class="fas fa-user-plus fa-3x text-white mb-3"></i>
+                    <h3 class="text-white fw-bold">Donor Module</h3>
+                </div>
+            </div>
+            <div class="card-body-3d">
+                <h5 class="fw-bold mb-3">Become a Life Saver</h5>
+                <p class="mb-4">Register as a donor, submit your donation requests and book an appointment for getting your donations approved.</p>
+                <div class="d-grid">
+                    <a href="{% url 'donor-login' %}" class="btn btn-3d">
+                        <i class="fas fa-heart me-2"></i>
+                        Join as Donor
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Hospital Module Card -->
+    <div class="col-lg-6">
+        <div class="card-3d h-100">
+            <div class="position-relative overflow-hidden" style="height: 250px;">
+                <img src="{% static 'images/hospital.jpg' %}" class="w-100 h-100 object-fit-cover" alt="Hospital Module">
+                <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(118, 75, 162, 0.8), rgba(102, 126, 234, 0.8));"></div>
+                <div class="position-absolute top-50 start-50 translate-middle text-center">
+                    <i class="fas fa-hospital fa-3x text-white mb-3"></i>
+                    <h3 class="text-white fw-bold">Hospital Module</h3>
+                </div>
+            </div>
+            <div class="card-body-3d">
+                <h5 class="fw-bold mb-3">Medical Partner</h5>
+                <p class="mb-4">Accept/deny appointments and donations. Access a centralized repository of approved donations.</p>
+                <div class="d-grid">
+                    <a href="{% url 'hospital-login' %}" class="btn btn-3d">
+                        <i class="fas fa-stethoscope me-2"></i>
+                        Hospital Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Section -->
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="glass-card text-center p-4">
+            <div class="mb-3">
+                <i class="fas fa-users fa-3x" style="color: var(--accent);"></i>
+            </div>
+            <h3 class="fw-bold text-white">10,000+</h3>
+            <p class="text-white-50 mb-0">Registered Donors</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="glass-card text-center p-4">
+            <div class="mb-3">
+                <i class="fas fa-heart fa-3x" style="color: var(--success);"></i>
+            </div>
+            <h3 class="fw-bold text-white">5,000+</h3>
+            <p class="text-white-50 mb-0">Lives Saved</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="glass-card text-center p-4">
+            <div class="mb-3">
+                <i class="fas fa-hospital fa-3x" style="color: var(--warning);"></i>
+            </div>
+            <h3 class="fw-bold text-white">500+</h3>
+            <p class="text-white-50 mb-0">Partner Hospitals</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/hospital_script.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}

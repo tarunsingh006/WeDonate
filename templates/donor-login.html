@@ -1,0 +1,119 @@
+{% extends 'modern_base.html' %}
+{% load static %}
+
+{% block title %}Donor Login - We Donate{% endblock %}
+
+{% block nav_links %}
+<a href="{% url 'wedonate' %}" class="nav-link">
+    <i class="fas fa-home me-1"></i>
+    Home
+</a>
+{% endblock %}
+
+{% block hero %}
+<div class="hero-3d">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <i class="fas fa-user-heart me-3"></i>
+            Donor Login
+        </h1>
+        <p class="hero-subtitle">Welcome back, hero! Sign in to continue saving lives.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-5 col-md-7">
+        <div class="form-3d">
+            <div class="text-center mb-4">
+                <div class="mb-3">
+                    <i class="fas fa-heart fa-3x" style="color: var(--accent);"></i>
+                </div>
+                <h3 class="text-white fw-bold mb-2">Donor Portal</h3>
+                <p class="text-white-50">Sign in to access your donation dashboard</p>
+            </div>
+            
+            <form method="POST" action="{% url 'donor-login' %}">
+                {% csrf_token %}
+                
+                {% if fail %}
+                <div class="alert alert-danger" style="background: rgba(255, 107, 107, 0.2); border: 1px solid rgba(255, 107, 107, 0.3); color: white;">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    {{ msg }}
+                </div>
+                {% endif %}
+                
+                <div class="mb-3">
+                    <label for="username" class="form-label text-white fw-medium">
+                        <i class="fas fa-user me-2"></i>
+                        Username
+                    </label>
+                    <input type="text" name="username" class="form-control form-control-3d" id="username" placeholder="Enter your username" required autofocus>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="pwd" class="form-label text-white fw-medium">
+                        <i class="fas fa-lock me-2"></i>
+                        Password
+                    </label>
+                    <input type="password" name="password" class="form-control form-control-3d" id="pwd" placeholder="Enter your password" required>
+                </div>
+                
+                {% if request.GET.next %}
+                <input type="hidden" name="next" value="{{ request.GET.next }}">
+                {% endif %}
+                
+                <div class="d-grid mb-4">
+                    <button type="submit" class="btn btn-3d btn-lg">
+                        <i class="fas fa-sign-in-alt me-2"></i>
+                        Sign In
+                    </button>
+                </div>
+                
+                <div class="text-center">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <a href="{% url 'donor-forgot-password' %}" class="text-decoration-none" style="color: var(--accent);">
+                                <i class="fas fa-key me-1"></i>
+                                Forgot Password?
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="{% url 'donor-register' %}" class="text-decoration-none" style="color: var(--accent);">
+                                <i class="fas fa-user-plus me-1"></i>
+                                New User?
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Quick Stats -->
+        <div class="row g-3 mt-4">
+            <div class="col-4">
+                <div class="glass-card text-center p-3">
+                    <i class="fas fa-users fa-2x mb-2" style="color: var(--success);"></i>
+                    <div class="fw-bold text-white">10K+</div>
+                    <small class="text-white-50">Donors</small>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="glass-card text-center p-3">
+                    <i class="fas fa-heart fa-2x mb-2" style="color: var(--danger);"></i>
+                    <div class="fw-bold text-white">5K+</div>
+                    <small class="text-white-50">Lives Saved</small>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="glass-card text-center p-3">
+                    <i class="fas fa-hospital fa-2x mb-2" style="color: var(--warning);"></i>
+                    <div class="fw-bold text-white">500+</div>
+                    <small class="text-white-50">Hospitals</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

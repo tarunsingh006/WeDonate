@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Book Appointment - We Donate{% endblock %}
+
+{% block extra_css %}
+<style>
+    .appointment-container {
+        margin-top: 120px;
+        margin-bottom: 50px;
+    }
+    
+    .appointment-card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px var(--shadow);
+        padding: 3rem;
+        border: none;
+        animation: slideUp 0.6s ease-out;
+    }
+    
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .appointment-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .appointment-icon {
+        font-size: 4rem;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+    }
+    
+    .appointment-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+    
+    .appointment-subtitle {
+        color: var(--text-secondary);
+        font-size: 1rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+    
+    .form-control {
+        border: 2px solid #e1e5e9;
+        border-radius: 12px;
+        padding: 15px 20px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+    }
+    
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        background: var(--card-bg);
+    }
+    
+    .btn-book {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border: none;
+        padding: 15px;
+        border-radius: 12px;
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+        width: 100%;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .btn-book:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+    
+    .info-card {
+        background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border-left: 4px solid #667eea;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 2rem;
+        color: var(--text-secondary);
+    }
+    
+    .empty-state i {
+        font-size: 3rem;
+        color: #ddd;
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block nav_links %}
+<a class="nav-link" href="{% url 'donor-landing-page' %}">
+    <i class="fas fa-home"></i> Home
+</a>
+<a class="nav-link" href="{% url 'donor-home' %}">
+    <i class="fas fa-history"></i> My Donations
+</a>
+<a class="nav-link" href="{% url 'new-donation-request' %}">
+    <i class="fas fa-plus-circle"></i> New Request
+</a>
+<a class="nav-link active" href="{% url 'book-appointment' %}">
+    <i class="fas fa-calendar-plus"></i> Book Appointment
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="container appointment-container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="appointment-card">
+                <div class="appointment-header">
+                    <div class="appointment-icon">
+                        <i class="fas fa-calendar-plus"></i>
+                    </div>
+                    <h1 class="appointment-title">Book Appointment</h1>
+                    <p class="appointment-subtitle">Schedule your appointment with a partner hospital</p>
+                </div>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                        <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% elif message.tags == 'success' %}check-circle{% else %}info-circle{% endif %}"></i> 
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                
+                {% if donors %}
+                <div class="info-card">
+                    <h6><i class="fas fa-info-circle"></i> Appointment Booking</h6>
+                    <p class="mb-0">Select your approved donation request and choose a convenient time slot at your preferred hospital.</p>
+                </div>
+                
+                <form method="POST" action="{% url 'book-appointment' %}">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="{{ form.donation_request.id_for_label }}" class="form-label">
+                            <i class="fas fa-heart"></i> Select Donation Request
+                        </label>
+                        {{ form.donation_request }}
+                        <small class="form-text text-muted">Only approved donation requests are available for booking</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.hospital.id_for_label }}" class="form-label">
+                            <i class="fas fa-hospital"></i> Select Hospital
+                        </label>
+                        {{ form.hospital }}
+                        <small class="form-text text-muted">Select from our network of partner hospitals</small>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.date.id_for_label }}" class="form-label">
+                                    <i class="fas fa-calendar"></i> Appointment Date
+                                </label>
+                                {{ form.date }}
+                                <small class="form-text text-muted">Select a date within the next 3 months</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.time.id_for_label }}" class="form-label">
+                                    <i class="fas fa-clock"></i> Preferred Time
+                                </label>
+                                {{ form.time }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.notes.id_for_label }}" class="form-label">
+                            <i class="fas fa-sticky-note"></i> Additional Notes (Optional)
+                        </label>
+                        {{ form.notes }}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-book">
+                        <i class="fas fa-calendar-check"></i> Book Appointment
+                    </button>
+                </form>
+                
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-calendar-times"></i>
+                    <h4>No Approved Donation Requests</h4>
+                    <p>You need to have approved donation requests to book appointments.</p>
+                    <a href="{% url 'new-donation-request' %}" class="btn btn-book">
+                        <i class="fas fa-plus-circle"></i> Create Donation Request
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    $('#{{ form.date.id_for_label }}').attr('min', today);
+    
+    // Set maximum date to 3 months from now
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 3);
+    $('#{{ form.date.id_for_label }}').attr('max', maxDate.toISOString().split('T')[0]);
+    
+    // Form submission with loading state
+    $('form').on('submit', function() {
+        $('.btn-book').html('<i class="fas fa-spinner fa-spin"></i> Booking...');
+        $('.btn-book').prop('disabled', true);
+    });
+});
+</script>
+{% endblock %}

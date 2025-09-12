@@ -1,0 +1,268 @@
+{% extends 'modern_base.html' %}
+{% load static %}
+
+{% block title %}Book Appointment - We Donate{% endblock %}
+
+{% block nav_links %}
+<a href="{% url 'donor-landing-page' %}" class="nav-link">
+    <i class="fas fa-home me-1"></i>
+    Home
+</a>
+<a href="{% url 'donor-home' %}" class="nav-link">
+    <i class="fas fa-history me-1"></i>
+    History
+</a>
+<a href="{% url 'book-appointment' %}" class="nav-link">
+    <i class="fas fa-calendar-plus me-1"></i>
+    Book Appointment
+</a>
+<a href="{% url 'new-donation-request' %}" class="nav-link">
+    <i class="fas fa-plus-circle me-1"></i>
+    New Donation
+</a>
+<div class="dropdown">
+    <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <i class="fas fa-user-cog me-1"></i>
+        Settings
+    </button>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{% url 'donor-profile-update' %}">User Profile</a></li>
+        <li><a class="dropdown-item" href="{% url 'donor-profile-update' %}">Change Password</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="{% url 'donor-logout' %}">Log Out</a></li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block hero %}
+<div class="hero-3d">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <i class="fas fa-calendar-check me-3"></i>
+            Book Appointment
+        </h1>
+        <p class="hero-subtitle">Schedule your appointment for donation evaluation and processing</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+        <div class="form-3d">
+            <div class="text-center mb-4">
+                <div class="mb-3">
+                    <i class="fas fa-calendar-alt fa-3x" style="color: var(--success);"></i>
+                </div>
+                <h3 class="text-white fw-bold mb-2">Schedule Your Appointment</h3>
+                <p class="text-white-50">Book a convenient time for your donation evaluation</p>
+            </div>
+            
+            <form method="POST" enctype="multipart/form-data" action="{% url 'book-appointment' %}">
+                {% csrf_token %}
+                
+                <!-- Donation ID Selection -->
+                <div class="mb-4">
+                    <label for="donation-id" class="form-label text-white fw-medium">
+                        <i class="fas fa-hashtag me-2"></i>
+                        Select Donation Request
+                    </label>
+                    <select name="dreq" class="form-control form-control-3d" id="donation-id" required>
+                        <option value="">Choose your donation request</option>
+                        {% for donor in donors %}
+                        <option value="{{donor.id}}">
+                            Donation #{{donor.id}} - {{donor.organ_type}} ({{donor.blood_type}})
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <small class="text-white-50 mt-2 d-block">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Select the donation request you want to schedule an appointment for
+                    </small>
+                </div>
+                
+                <!-- Hospital Selection -->
+                <div class="mb-4">
+                    <label for="hospital-name" class="form-label text-white fw-medium">
+                        <i class="fas fa-hospital me-2"></i>
+                        Preferred Hospital
+                    </label>
+                    <select name="hospital-name" class="form-control form-control-3d" id="hospital-name" required>
+                        <option value="">Select a hospital</option>
+                        {% for user in users %}
+                        <option value="{{user.hospital_name}}">
+                            {{user.hospital_name}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <small class="text-white-50 mt-2 d-block">
+                        <i class="fas fa-map-marker-alt me-1"></i>
+                        Choose your preferred hospital for the appointment
+                    </small>
+                </div>
+                
+                <!-- Appointment Date -->
+                <div class="mb-4">
+                    <label for="appointment-date" class="form-label text-white fw-medium">
+                        <i class="fas fa-calendar me-2"></i>
+                        Appointment Date
+                    </label>
+                    <input type="date" name="date" class="form-control form-control-3d" id="appointment-date" 
+                           min="{% now 'Y-m-d' %}" max="2025-12-31" required>
+                    <small class="text-white-50 mt-2 d-block">
+                        <i class="fas fa-clock me-1"></i>
+                        Select a date at least 24 hours in advance
+                    </small>
+                </div>
+                
+                <!-- Preferred Time -->
+                <div class="mb-4">
+                    <label for="time-slot" class="form-label text-white fw-medium">
+                        <i class="fas fa-clock me-2"></i>
+                        Preferred Time Slot
+                    </label>
+                    <select name="time" class="form-control form-control-3d" id="time-slot" required>
+                        <option value="">Select preferred time</option>
+                        <option value="8:00 to 9:00">8:00 AM - 9:00 AM</option>
+                        <option value="9:00 to 10:00">9:00 AM - 10:00 AM</option>
+                        <option value="10:00 to 11:00">10:00 AM - 11:00 AM</option>
+                        <option value="11:00 to 12:00">11:00 AM - 12:00 PM</option>
+                        <option value="12:00 to 13:00">12:00 PM - 1:00 PM</option>
+                        <option value="13:00 to 14:00">1:00 PM - 2:00 PM</option>
+                        <option value="14:00 to 15:00">2:00 PM - 3:00 PM</option>
+                        <option value="15:00 to 16:00">3:00 PM - 4:00 PM</option>
+                        <option value="16:00 to 17:00">4:00 PM - 5:00 PM</option>
+                        <option value="17:00 to 18:00">5:00 PM - 6:00 PM</option>
+                    </select>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-3d btn-lg">
+                        <i class="fas fa-calendar-check me-2"></i>
+                        Book Appointment
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Information Cards -->
+        <div class="row g-4 mt-4">
+            <div class="col-md-4">
+                <div class="glass-card text-center p-4">
+                    <i class="fas fa-user-md fa-3x mb-3" style="color: var(--success);"></i>
+                    <h5 class="text-white fw-bold">Medical Evaluation</h5>
+                    <p class="text-white-50 mb-0">Comprehensive health assessment</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card text-center p-4">
+                    <i class="fas fa-shield-alt fa-3x mb-3" style="color: var(--accent);"></i>
+                    <h5 class="text-white fw-bold">Safe Process</h5>
+                    <p class="text-white-50 mb-0">Following all safety protocols</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card text-center p-4">
+                    <i class="fas fa-clock fa-3x mb-3" style="color: var(--warning);"></i>
+                    <h5 class="text-white fw-bold">Quick Response</h5>
+                    <p class="text-white-50 mb-0">Confirmation within 24 hours</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Appointment Guidelines -->
+        <div class="card-3d mt-4">
+            <div class="card-header-3d">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Appointment Guidelines
+                </h5>
+            </div>
+            <div class="card-body-3d">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <h6 class="text-white fw-bold mb-3">
+                            <i class="fas fa-check-circle me-2" style="color: var(--success);"></i>
+                            What to Bring
+                        </h6>
+                        <ul class="text-white-50 mb-0">
+                            <li>Valid government ID</li>
+                            <li>Medical reports and test results</li>
+                            <li>List of current medications</li>
+                            <li>Emergency contact information</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-white fw-bold mb-3">
+                            <i class="fas fa-clock me-2" style="color: var(--warning);"></i>
+                            Before Your Visit
+                        </h6>
+                        <ul class="text-white-50 mb-0">
+                            <li>Get adequate rest (8+ hours)</li>
+                            <li>Stay hydrated</li>
+                            <li>Avoid alcohol 24 hours prior</li>
+                            <li>Arrive 15 minutes early</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/new-donation-request.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const dateInput = document.getElementById('appointment-date');
+        const submitBtn = document.querySelector('button[type="submit"]');
+        
+        // Set minimum date to tomorrow
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        dateInput.min = tomorrow.toISOString().split('T')[0];
+        
+        // Form validation
+        form.addEventListener('submit', function(e) {
+            const selectedDate = new Date(dateInput.value);
+            const today = new Date();
+            
+            if (selectedDate <= today) {
+                e.preventDefault();
+                alert('Please select a date at least 24 hours in advance.');
+                return;
+            }
+            
+            // Update button state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Booking Appointment...';
+            submitBtn.disabled = true;
+        });
+        
+        // Real-time validation feedback
+        const selects = document.querySelectorAll('select[required]');
+        selects.forEach(select => {
+            select.addEventListener('change', function() {
+                if (this.value) {
+                    this.style.borderColor = 'var(--success)';
+                } else {
+                    this.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                }
+            });
+        });
+        
+        dateInput.addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            const today = new Date();
+            
+            if (selectedDate > today) {
+                this.style.borderColor = 'var(--success)';
+            } else {
+                this.style.borderColor = 'var(--danger)';
+            }
+        });
+    });
+</script>
+{% endblock %}

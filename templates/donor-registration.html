@@ -1,0 +1,261 @@
+{% extends 'modern_base.html' %}
+{% load static %}
+
+{% block title %}Donor Registration - We Donate{% endblock %}
+
+{% block nav_links %}
+<a href="{% url 'wedonate' %}" class="nav-link">
+    <i class="fas fa-home me-1"></i>
+    Home
+</a>
+<a href="{% url 'donor-login' %}" class="nav-link">
+    <i class="fas fa-sign-in-alt me-1"></i>
+    Login
+</a>
+{% endblock %}
+
+{% block hero %}
+<div class="hero-3d">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <i class="fas fa-user-plus me-3"></i>
+            Join Our Heroes
+        </h1>
+        <p class="hero-subtitle">Register as a donor and start your journey to save lives</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+        <div class="form-3d">
+            <div class="text-center mb-4">
+                <div class="mb-3">
+                    <i class="fas fa-heart fa-3x" style="color: var(--accent);"></i>
+                </div>
+                <h3 class="text-white fw-bold mb-2">Donor Registration</h3>
+                <p class="text-white-50">Create your account to start making a difference</p>
+            </div>
+            
+            <form method="POST" action="{% url 'donor-register' %}">
+                {% csrf_token %}
+                
+                {% if error %}
+                <div class="alert alert-danger" style="background: rgba(255, 107, 107, 0.2); border: 1px solid rgba(255, 107, 107, 0.3); color: white;">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    {{ error }}
+                </div>
+                {% endif %}
+                
+                <!-- Personal Information -->
+                <div class="mb-3">
+                    <label for="donor_name" class="form-label text-white fw-medium">
+                        <i class="fas fa-user me-2"></i>
+                        Full Name
+                    </label>
+                    <input type="text" name="donor_name" class="form-control form-control-3d" id="donor_name" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="email" class="form-label text-white fw-medium">
+                        <i class="fas fa-envelope me-2"></i>
+                        Email Address
+                    </label>
+                    <input type="email" name="email" class="form-control form-control-3d" id="email" placeholder="Enter your email address" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="username" class="form-label text-white fw-medium">
+                        <i class="fas fa-at me-2"></i>
+                        Username
+                    </label>
+                    <input type="text" name="username" class="form-control form-control-3d" id="username" placeholder="Choose a unique username" required>
+                </div>
+                
+                <!-- Location Information -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label for="city" class="form-label text-white fw-medium">
+                            <i class="fas fa-city me-2"></i>
+                            City
+                        </label>
+                        <input type="text" name="city" class="form-control form-control-3d" id="city" placeholder="Enter your city">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="province" class="form-label text-white fw-medium">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            State
+                        </label>
+                        <select name="province" class="form-control form-control-3d" id="province">
+                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                            <option value="Assam">Assam</option>
+                            <option value="Bihar">Bihar</option>
+                            <option value="Chhattisgarh">Chhattisgarh</option>
+                            <option value="Goa">Goa</option>
+                            <option value="Gujarat">Gujarat</option>
+                            <option value="Haryana">Haryana</option>
+                            <option value="Himachal Pradesh">Himachal Pradesh</option>
+                            <option value="Jharkhand">Jharkhand</option>
+                            <option value="Karnataka">Karnataka</option>
+                            <option value="Kerala">Kerala</option>
+                            <option value="Madhya Pradesh">Madhya Pradesh</option>
+                            <option value="Maharashtra">Maharashtra</option>
+                            <option value="Manipur">Manipur</option>
+                            <option value="Meghalaya">Meghalaya</option>
+                            <option value="Mizoram">Mizoram</option>
+                            <option value="Nagaland">Nagaland</option>
+                            <option value="Odisha">Odisha</option>
+                            <option value="Punjab">Punjab</option>
+                            <option value="Rajasthan">Rajasthan</option>
+                            <option value="Sikkim">Sikkim</option>
+                            <option value="Tamil Nadu">Tamil Nadu</option>
+                            <option value="Telangana">Telangana</option>
+                            <option value="Tripura">Tripura</option>
+                            <option value="Uttar Pradesh">Uttar Pradesh</option>
+                            <option value="Uttarakhand">Uttarakhand</option>
+                            <option value="West Bengal">West Bengal</option>
+                            <option value="Delhi">Delhi</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label for="contact_number" class="form-label text-white fw-medium">
+                            <i class="fas fa-phone me-2"></i>
+                            Contact Number (+91)
+                        </label>
+                        <input type="tel" name="contact_number" class="form-control form-control-3d" id="contact_number" placeholder="10-digit phone number" maxlength="10" minlength="10" pattern="[0-9]{10}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="country" class="form-label text-white fw-medium">
+                            <i class="fas fa-flag me-2"></i>
+                            Country
+                        </label>
+                        <select name="country" class="form-control form-control-3d" id="country">
+                            <option value="India" selected>India</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Password Section -->
+                <div class="mb-3">
+                    <label for="password1" class="form-label text-white fw-medium">
+                        <i class="fas fa-lock me-2"></i>
+                        Create Password
+                    </label>
+                    <input type="password" name="password" class="form-control form-control-3d" id="password1" placeholder="Create a strong password" minlength="6" pattern="(?=.*[a-z])(?=.*\d).{6,}" title="Password must contain at least 1 lowercase letter and 1 digit" required>
+                    <small class="text-white-50 mt-1 d-block">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Password must be at least 6 characters with 1 lowercase letter and 1 digit
+                    </small>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="password2" class="form-label text-white fw-medium">
+                        <i class="fas fa-lock me-2"></i>
+                        Confirm Password
+                    </label>
+                    <input type="password" class="form-control form-control-3d" id="password2" placeholder="Confirm your password" required>
+                    <div id="password-validation-msg" class="mt-2"></div>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="d-grid mb-4">
+                    <button type="submit" id="submit" class="btn btn-3d btn-lg">
+                        <i class="fas fa-user-plus me-2"></i>
+                        Register as Donor
+                    </button>
+                </div>
+                
+                <!-- Login Link -->
+                <div class="text-center">
+                    <p class="text-white-50 mb-0">
+                        Already have an account? 
+                        <a href="{% url 'donor-login' %}" class="text-decoration-none" style="color: var(--accent);">
+                            <i class="fas fa-sign-in-alt me-1"></i>
+                            Sign In Here
+                        </a>
+                    </p>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Benefits Section -->
+        <div class="row g-4 mt-4">
+            <div class="col-md-4">
+                <div class="glass-card text-center p-4">
+                    <i class="fas fa-heart fa-3x mb-3" style="color: var(--danger);"></i>
+                    <h5 class="text-white fw-bold">Save Lives</h5>
+                    <p class="text-white-50 mb-0">One donor can save up to 8 lives</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card text-center p-4">
+                    <i class="fas fa-users fa-3x mb-3" style="color: var(--success);"></i>
+                    <h5 class="text-white fw-bold">Join Community</h5>
+                    <p class="text-white-50 mb-0">Be part of a life-saving community</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card text-center p-4">
+                    <i class="fas fa-medal fa-3x mb-3" style="color: var(--warning);"></i>
+                    <h5 class="text-white fw-bold">Be a Hero</h5>
+                    <p class="text-white-50 mb-0">Make a lasting impact on lives</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function checkpassword() {
+        const password1 = document.getElementById('password1').value;
+        const password2 = document.getElementById('password2').value;
+        const msgElement = document.getElementById('password-validation-msg');
+        
+        if (password2 === '') {
+            msgElement.innerHTML = '';
+            return;
+        }
+        
+        if (password1 === password2) {
+            msgElement.innerHTML = '<small class="text-success"><i class="fas fa-check-circle me-1"></i>Passwords match!</small>';
+            document.getElementById('submit').disabled = false;
+        } else {
+            msgElement.innerHTML = '<small class="text-danger"><i class="fas fa-times-circle me-1"></i>Passwords do not match!</small>';
+            document.getElementById('submit').disabled = true;
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const password2 = document.getElementById('password2');
+        const form = document.querySelector('form');
+        const submitBtn = document.getElementById('submit');
+        
+        password2.addEventListener('input', checkpassword);
+        
+        // Form submission enhancement
+        form.addEventListener('submit', function(e) {
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creating Account...';
+            submitBtn.disabled = true;
+        });
+        
+        // Real-time validation feedback
+        const inputs = document.querySelectorAll('input[required]');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value && this.checkValidity()) {
+                    this.style.borderColor = 'var(--success)';
+                } else if (this.value) {
+                    this.style.borderColor = 'var(--danger)';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

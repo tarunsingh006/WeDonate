@@ -1,0 +1,253 @@
+{% extends 'modern_base.html' %}
+{% load static %}
+
+{% block title %}Hospital Registration - We Donate{% endblock %}
+
+{% block nav_links %}
+<a href="{% url 'wedonate' %}" class="nav-link">
+    <i class="fas fa-home me-1"></i>
+    Home
+</a>
+<a href="{% url 'hospital-login' %}" class="nav-link">
+    <i class="fas fa-sign-in-alt me-1"></i>
+    Login
+</a>
+{% endblock %}
+
+{% block hero %}
+<div class="hero-3d">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <i class="fas fa-hospital me-3"></i>
+            Hospital Registration
+        </h1>
+        <p class="hero-subtitle">Join our network of healthcare partners and help save lives</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+        <div class="form-3d">
+            <div class="text-center mb-4">
+                <div class="mb-3">
+                    <i class="fas fa-stethoscope fa-3x" style="color: var(--success);"></i>
+                </div>
+                <h3 class="text-white fw-bold mb-2">Hospital Registration</h3>
+                <p class="text-white-50">Register your hospital to join our organ donation network</p>
+            </div>
+            
+            <form method="POST">
+                {% csrf_token %}
+                
+                <!-- Hospital Information -->
+                <div class="mb-3">
+                    <label for="hospital_name" class="form-label text-white fw-medium">
+                        <i class="fas fa-hospital me-2"></i>
+                        Hospital Name
+                    </label>
+                    <input type="text" name="hospital_name" class="form-control form-control-3d" id="hospital_name" placeholder="Enter hospital name" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="email" class="form-label text-white fw-medium">
+                        <i class="fas fa-envelope me-2"></i>
+                        Email Address
+                    </label>
+                    <input type="email" name="email" class="form-control form-control-3d" id="email" placeholder="Enter hospital email" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="username" class="form-label text-white fw-medium">
+                        <i class="fas fa-user-md me-2"></i>
+                        Username
+                    </label>
+                    <input type="text" name="username" class="form-control form-control-3d" id="username" placeholder="Choose a unique username" required>
+                </div>
+                
+                <!-- Location Information -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label for="city" class="form-label text-white fw-medium">
+                            <i class="fas fa-city me-2"></i>
+                            City
+                        </label>
+                        <input type="text" name="city" class="form-control form-control-3d" id="city" placeholder="Enter city">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="province" class="form-label text-white fw-medium">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            State
+                        </label>
+                        <select name="province" class="form-control form-control-3d" id="province">
+                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                            <option value="Assam">Assam</option>
+                            <option value="Bihar">Bihar</option>
+                            <option value="Chhattisgarh">Chhattisgarh</option>
+                            <option value="Goa">Goa</option>
+                            <option value="Gujarat">Gujarat</option>
+                            <option value="Haryana">Haryana</option>
+                            <option value="Himachal Pradesh">Himachal Pradesh</option>
+                            <option value="Jharkhand">Jharkhand</option>
+                            <option value="Karnataka">Karnataka</option>
+                            <option value="Kerala">Kerala</option>
+                            <option value="Madhya Pradesh">Madhya Pradesh</option>
+                            <option value="Maharashtra">Maharashtra</option>
+                            <option value="Manipur">Manipur</option>
+                            <option value="Meghalaya">Meghalaya</option>
+                            <option value="Mizoram">Mizoram</option>
+                            <option value="Nagaland">Nagaland</option>
+                            <option value="Odisha">Odisha</option>
+                            <option value="Punjab">Punjab</option>
+                            <option value="Rajasthan">Rajasthan</option>
+                            <option value="Sikkim">Sikkim</option>
+                            <option value="Tamil Nadu">Tamil Nadu</option>
+                            <option value="Telangana">Telangana</option>
+                            <option value="Tripura">Tripura</option>
+                            <option value="Uttar Pradesh">Uttar Pradesh</option>
+                            <option value="Uttarakhand">Uttarakhand</option>
+                            <option value="West Bengal">West Bengal</option>
+                            <option value="Delhi">Delhi</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label for="contact_number" class="form-label text-white fw-medium">
+                            <i class="fas fa-phone me-2"></i>
+                            Contact Number (+91)
+                        </label>
+                        <input type="tel" name="contact_number" class="form-control form-control-3d" id="contact_number" placeholder="10-digit phone number" maxlength="10" minlength="10" pattern="[0-9]{10}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="country" class="form-label text-white fw-medium">
+                            <i class="fas fa-flag me-2"></i>
+                            Country
+                        </label>
+                        <select name="country" class="form-control form-control-3d" id="country">
+                            <option value="India" selected>India</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Password Section -->
+                <div class="mb-3">
+                    <label for="password1" class="form-label text-white fw-medium">
+                        <i class="fas fa-lock me-2"></i>
+                        Create Password
+                    </label>
+                    <input type="password" name="password" class="form-control form-control-3d" id="password1" placeholder="Create a strong password" minlength="6" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}" title="Password must contain at least 1 uppercase letter, 1 lowercase letter and 1 digit" required>
+                    <small class="text-white-50 mt-1 d-block">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Password must be at least 6 characters with 1 uppercase, 1 lowercase letter and 1 digit
+                    </small>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="password2" class="form-label text-white fw-medium">
+                        <i class="fas fa-lock me-2"></i>
+                        Confirm Password
+                    </label>
+                    <input type="password" class="form-control form-control-3d" id="password2" placeholder="Confirm your password" oninput="checkpassword();" required>
+                    <div id="password-validation-msg" class="mt-2"></div>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="d-grid mb-4">
+                    <button type="submit" id="submit" class="btn btn-3d btn-lg" disabled>
+                        <i class="fas fa-hospital-user me-2"></i>
+                        Register Hospital
+                    </button>
+                </div>
+                
+                <!-- Login Link -->
+                <div class="text-center">
+                    <p class="text-white-50 mb-0">
+                        Already have an account? 
+                        <a href="{% url 'hospital-login' %}" class="text-decoration-none" style="color: var(--success);">
+                            <i class="fas fa-sign-in-alt me-1"></i>
+                            Sign In Here
+                        </a>
+                    </p>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Benefits Section -->
+        <div class="row g-4 mt-4">
+            <div class="col-md-4">
+                <div class="glass-card text-center p-4">
+                    <i class="fas fa-network-wired fa-3x mb-3" style="color: var(--success);"></i>
+                    <h5 class="text-white fw-bold">Network Access</h5>
+                    <p class="text-white-50 mb-0">Connect with organ donors nationwide</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card text-center p-4">
+                    <i class="fas fa-shield-alt fa-3x mb-3" style="color: var(--accent);"></i>
+                    <h5 class="text-white fw-bold">Secure Platform</h5>
+                    <p class="text-white-50 mb-0">HIPAA compliant and secure</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card text-center p-4">
+                    <i class="fas fa-chart-line fa-3x mb-3" style="color: var(--warning);"></i>
+                    <h5 class="text-white fw-bold">Analytics</h5>
+                    <p class="text-white-50 mb-0">Track and manage donations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function checkpassword() {
+        const password1 = document.getElementById('password1').value;
+        const password2 = document.getElementById('password2').value;
+        const msgElement = document.getElementById('password-validation-msg');
+        const submitBtn = document.getElementById('submit');
+        
+        if (password2 === '') {
+            msgElement.innerHTML = '';
+            submitBtn.disabled = true;
+            return;
+        }
+        
+        if (password1 === password2) {
+            msgElement.innerHTML = '<small class="text-success"><i class="fas fa-check-circle me-1"></i>Passwords match!</small>';
+            submitBtn.disabled = false;
+        } else {
+            msgElement.innerHTML = '<small class="text-danger"><i class="fas fa-times-circle me-1"></i>Passwords do not match!</small>';
+            submitBtn.disabled = true;
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const submitBtn = document.getElementById('submit');
+        
+        // Form submission enhancement
+        form.addEventListener('submit', function(e) {
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Registering Hospital...';
+            submitBtn.disabled = true;
+        });
+        
+        // Real-time validation feedback
+        const inputs = document.querySelectorAll('input[required]');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value && this.checkValidity()) {
+                    this.style.borderColor = 'var(--success)';
+                } else if (this.value) {
+                    this.style.borderColor = 'var(--danger)';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,331 @@
+{% extends 'modern_base.html' %}
+{% load static %}
+
+{% block title %}Donation History - We Donate{% endblock %}
+
+{% block nav_links %}
+<a href="{% url 'donor-landing-page' %}" class="nav-link">
+    <i class="fas fa-home me-1"></i>
+    Home
+</a>
+<a href="{% url 'donor-home' %}" class="nav-link">
+    <i class="fas fa-history me-1"></i>
+    History
+</a>
+<a href="{% url 'book-appointment' %}" class="nav-link">
+    <i class="fas fa-calendar-plus me-1"></i>
+    Book Appointment
+</a>
+<a href="{% url 'new-donation-request' %}" class="nav-link">
+    <i class="fas fa-plus-circle me-1"></i>
+    New Donation
+</a>
+<div class="dropdown">
+    <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <i class="fas fa-user-cog me-1"></i>
+        Settings
+    </button>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{% url 'donor-profile-update' %}">User Profile</a></li>
+        <li><a class="dropdown-item" href="{% url 'donor-profile-update' %}">Change Password</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="{% url 'donor-logout' %}">Log Out</a></li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block hero %}
+<div class="hero-3d">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <i class="fas fa-history me-3"></i>
+            Donation History
+        </h1>
+        <p class="hero-subtitle">Track your life-saving contributions and donation journey</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Donation History Table -->
+<div class="card-3d mb-4">
+    <div class="card-header-3d">
+        <h4 class="mb-0">
+            <i class="fas fa-list-alt me-2"></i>
+            Your Donation Records
+        </h4>
+    </div>
+    <div class="card-body-3d p-0">
+        <div class="table-responsive">
+            <table class="table table-3d mb-0">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                        <th><i class="fas fa-lungs me-2"></i>Organ</th>
+                        <th><i class="fas fa-tint me-2"></i>Blood Group</th>
+                        <th><i class="fas fa-heart-pulse me-2"></i>Donation Status</th>
+                        <th><i class="fas fa-calendar-check me-2"></i>Appointment Status</th>
+                        <th><i class="fas fa-clock me-2"></i>Request Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dreq in donationrequests %}
+                    <tr>
+                        <td class="fw-bold">#{{dreq.id}}</td>
+                        <td>
+                            <span class="badge" style="background: linear-gradient(45deg, var(--accent), var(--secondary)); padding: 8px 12px; border-radius: 20px;">
+                                {{dreq.organ_type}}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge" style="background: linear-gradient(45deg, var(--danger), var(--warning)); padding: 8px 12px; border-radius: 20px;">
+                                {{dreq.blood_type}}
+                            </span>
+                        </td>
+                        <td>
+                            {% if dreq.donation_status == 'Approved' %}
+                                <span class="badge bg-success" style="padding: 8px 12px; border-radius: 20px;">
+                                    <i class="fas fa-check-circle me-1"></i>{{dreq.donation_status}}
+                                </span>
+                            {% elif dreq.donation_status == 'Pending' %}
+                                <span class="badge bg-warning" style="padding: 8px 12px; border-radius: 20px;">
+                                    <i class="fas fa-clock me-1"></i>{{dreq.donation_status}}
+                                </span>
+                            {% else %}
+                                <span class="badge bg-danger" style="padding: 8px 12px; border-radius: 20px;">
+                                    <i class="fas fa-times-circle me-1"></i>{{dreq.donation_status}}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if dreq.appointment_status == 'Approved' %}
+                                <span class="badge bg-success" style="padding: 8px 12px; border-radius: 20px;">
+                                    <i class="fas fa-check-circle me-1"></i>{{dreq.appointment_status}}
+                                </span>
+                            {% elif dreq.appointment_status == 'Pending' %}
+                                <span class="badge bg-warning" style="padding: 8px 12px; border-radius: 20px;">
+                                    <i class="fas fa-clock me-1"></i>{{dreq.appointment_status}}
+                                </span>
+                            {% else %}
+                                <span class="badge bg-danger" style="padding: 8px 12px; border-radius: 20px;">
+                                    <i class="fas fa-times-circle me-1"></i>{{dreq.appointment_status}}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>{{dreq.datetime|date:"M d, Y"}}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-5">
+                            <i class="fas fa-heart fa-3x mb-3" style="color: var(--accent); opacity: 0.5;"></i>
+                            <p class="mb-0">No donation records found. Start your journey by making your first donation!</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Action Buttons -->
+<div class="text-center">
+    <a href="{% url 'new-donation-request' %}" class="btn btn-3d btn-lg me-3">
+        <i class="fas fa-plus-circle me-2"></i>
+        New Donation Request
+    </a>
+    <a href="{% url 'book-appointment' %}" class="btn btn-3d btn-lg" style="background: linear-gradient(135deg, var(--success), var(--accent));">
+        <i class="fas fa-calendar-plus me-2"></i>
+        Book Appointment
+    </a>
+</div>
+
+<!-- Quick Stats -->
+<div class="row g-4 mt-5">
+    <div class="col-md-3">
+        <div class="glass-card text-center p-4">
+            <i class="fas fa-hand-holding-heart fa-3x mb-3" style="color: var(--accent);"></i>
+            <h4 class="text-white fw-bold">{{ donationrequests|length }}</h4>
+            <p class="text-white-50 mb-0">Total Donations</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="glass-card text-center p-4">
+            <i class="fas fa-check-circle fa-3x mb-3" style="color: var(--success);"></i>
+            <h4 class="text-white fw-bold">{% for dreq in donationrequests %}{% if dreq.donation_status == 'Approved' %}{{ forloop.counter }}{% endif %}{% endfor %}</h4>
+            <p class="text-white-50 mb-0">Approved</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="glass-card text-center p-4">
+            <i class="fas fa-clock fa-3x mb-3" style="color: var(--warning);"></i>
+            <h4 class="text-white fw-bold">{% for dreq in donationrequests %}{% if dreq.donation_status == 'Pending' %}{{ forloop.counter }}{% endif %}{% endfor %}</h4>
+            <p class="text-white-50 mb-0">Pending</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="glass-card text-center p-4">
+            <i class="fas fa-heart fa-3x mb-3" style="color: var(--danger);"></i>
+            <h4 class="text-white fw-bold">Lives Saved</h4>
+            <p class="text-white-50 mb-0">Impact</p>
+        </div>
+    </div>
+</div>
+<!-- Chatbot Widget -->
+<div id="chatbot-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+    <div id="chatbot-toggle" style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: all 0.3s ease;">
+        <i class="fas fa-robot" style="color: white; font-size: 24px;"></i>
+    </div>
+    
+    <div id="chatbot-window" style="display: none; position: absolute; bottom: 70px; right: 0; width: 350px; height: 500px; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2);">
+        <div style="padding: 20px; border-bottom: 1px solid rgba(0,0,0,0.1); background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 20px 20px 0 0; color: white;">
+            <h5 style="margin: 0; display: flex; align-items: center; justify-content: space-between;">
+                <span><i class="fas fa-robot me-2"></i>Donation Assistant</span>
+                <button id="chatbot-close" style="background: none; border: none; color: white; font-size: 18px; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </h5>
+        </div>
+        
+        <div id="chatbot-messages" style="height: 350px; overflow-y: auto; padding: 15px; background: rgba(255,255,255,0.1);">
+            <div class="bot-message" style="margin-bottom: 15px; padding: 10px; background: rgba(78, 205, 196, 0.2); border-radius: 15px; border-left: 4px solid #4ecdc4;">
+                <strong>Donation Assistant:</strong><br>
+                Hello! I'm here to help with your organ donation journey. Ask me about donation processes, eligibility, or any concerns you have.
+            </div>
+        </div>
+        
+        <div style="padding: 15px; border-top: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.1); border-radius: 0 0 20px 20px;">
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="chatbot-input" placeholder="Ask about donation process, eligibility..." style="flex: 1; padding: 10px; border: 1px solid rgba(0,0,0,0.2); border-radius: 20px; background: rgba(255,255,255,0.8);">
+                <button id="chatbot-send" style="padding: 10px 15px; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border: none; border-radius: 20px; cursor: pointer;">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/user-profile-update.js' %}"></script>
+<script>
+    // Chatbot functionality
+    $('#chatbot-toggle').click(function() {
+        $('#chatbot-window').toggle();
+    });
+    
+    $('#chatbot-close').click(function() {
+        $('#chatbot-window').hide();
+    });
+    
+    $('#chatbot-send, #chatbot-input').on('click keypress', function(e) {
+        if (e.type === 'click' || e.which === 13) {
+            const message = $('#chatbot-input').val().trim();
+            if (message) {
+                // Add user message
+                $('#chatbot-messages').append(`
+                    <div style="margin-bottom: 15px; text-align: right;">
+                        <div style="display: inline-block; padding: 10px; background: rgba(69, 183, 209, 0.2); border-radius: 15px; border-right: 4px solid #45b7d1; max-width: 80%;">
+                            <strong>You:</strong><br>${message}
+                        </div>
+                    </div>
+                `);
+                
+                // Add bot response
+                setTimeout(function() {
+                    const response = getDonorBotResponse(message);
+                    $('#chatbot-messages').append(`
+                        <div style="margin-bottom: 15px;">
+                            <div style="padding: 10px; background: rgba(78, 205, 196, 0.2); border-radius: 15px; border-left: 4px solid #4ecdc4;">
+                                <strong>Donation Assistant:</strong><br>${response}
+                            </div>
+                        </div>
+                    `);
+                    $('#chatbot-messages').scrollTop($('#chatbot-messages')[0].scrollHeight);
+                }, 1000);
+                
+                $('#chatbot-input').val('');
+                $('#chatbot-messages').scrollTop($('#chatbot-messages')[0].scrollHeight);
+            }
+        }
+    });
+    
+    function getDonorBotResponse(message) {
+        const msg = message.toLowerCase();
+        
+        // Define response categories with extensive keywords
+        const responses = {
+            eligibility: {
+                keywords: ['eligible', 'qualify', 'can i', 'am i', 'allowed', 'able to', 'requirements', 'criteria', 'who can', 'age limit', 'health', 'medical condition', 'disease', 'diabetes', 'hypertension', 'cancer', 'hiv', 'hepatitis'],
+                response: 'Donation eligibility: Age 18-65, good health, no major diseases like cancer/HIV/hepatitis. Conditions like controlled diabetes or hypertension may be okay. Medical evaluation determines final eligibility.'
+            },
+            process: {
+                keywords: ['process', 'how does', 'steps', 'procedure', 'what happens', 'journey', 'timeline', 'flow', 'stages', 'phases', 'sequence', 'order', 'first step', 'next step', 'workflow'],
+                response: 'Donation process: 1) Register as donor → 2) Medical evaluation → 3) Book appointment → 4) Hospital approval → 5) Final donation. Each step ensures safety and compatibility.'
+            },
+            appointment: {
+                keywords: ['appointment', 'book', 'schedule', 'meeting', 'visit', 'consultation', 'date', 'time', 'calendar', 'reserve', 'slot', 'availability', 'when can', 'hospital visit'],
+                response: 'To book appointment: Go to "Book Appointment" page, select hospital, choose date/time, provide medical details. Hospital will review and approve within 24-48 hours.'
+            },
+            status: {
+                keywords: ['status', 'track', 'check', 'progress', 'update', 'where is', 'what happened', 'approved', 'pending', 'denied', 'rejected', 'accepted', 'current', 'latest'],
+                response: 'Track your donations on this page! Check donation status (Pending/Approved/Denied) and appointment status. Green badges mean approved, yellow means pending, red means denied.'
+            },
+            safety: {
+                keywords: ['safe', 'risk', 'danger', 'dangerous', 'harm', 'side effects', 'complications', 'problems', 'issues', 'worry', 'scared', 'afraid', 'nervous', 'anxiety', 'fear'],
+                response: 'Organ donation is very safe with modern medical procedures. Living donors can donate kidney, liver lobe, lung lobe. Thorough medical evaluation ensures donor safety. Complication rates are very low.'
+            },
+            blood: {
+                keywords: ['blood', 'type', 'compatibility', 'match', 'o positive', 'o negative', 'a positive', 'b positive', 'ab', 'universal', 'donor', 'recipient', 'compatible'],
+                response: 'Blood type is crucial for organ compatibility. O- donors can help most recipients (universal donor). AB+ can receive from most donors. Your blood type is shown in your donation records above.'
+            },
+            cancel: {
+                keywords: ['cancel', 'change', 'modify', 'update', 'edit', 'withdraw', 'remove', 'delete', 'stop', 'quit', 'back out', 'mind changed', 'different'],
+                response: 'You can update donation requests before hospital approval. Contact the hospital directly for approved appointments. Your safety and choice are always the priority - you can change your mind anytime.'
+            },
+            pain: {
+                keywords: ['pain', 'hurt', 'recovery', 'healing', 'surgery', 'operation', 'scar', 'wound', 'hospital stay', 'bed rest', 'time off', 'work', 'activities', 'exercise'],
+                response: 'Recovery varies by organ: Kidney donation: 2-4 weeks, Liver lobe: 6-8 weeks. Modern minimally invasive techniques reduce pain. You will receive full medical support and pain management throughout recovery.'
+            },
+            cost: {
+                keywords: ['cost', 'money', 'pay', 'payment', 'expensive', 'price', 'fee', 'charge', 'bill', 'insurance', 'coverage', 'financial', 'afford'],
+                response: 'Organ donation is completely FREE for donors. All medical costs, tests, surgery, and follow-up care are covered by the recipient or their insurance. You should never pay anything to donate organs.'
+            },
+            organs: {
+                keywords: ['kidney', 'liver', 'heart', 'lung', 'pancreas', 'intestine', 'cornea', 'tissue', 'bone', 'skin', 'which organ', 'what can', 'types of'],
+                response: 'Living donors can donate: kidney (most common), liver lobe, lung lobe, pancreas portion, small intestine segment. Deceased donors can donate heart, full liver, lungs, pancreas, kidneys, corneas, tissues.'
+            },
+            age: {
+                keywords: ['age', 'old', 'young', 'teenager', 'senior', 'elderly', 'minor', 'years old', 'too old', 'too young'],
+                response: 'Age requirements: Living donors 18-65 years old. Some organs accept donors up to 70. Deceased donation has broader age ranges. Age alone doesn\'t disqualify - overall health matters most.'
+            }
+        };
+        
+        // Score each category based on keyword matches
+        let bestMatch = null;
+        let bestScore = 0;
+        
+        for (const [category, data] of Object.entries(responses)) {
+            let score = 0;
+            for (const keyword of data.keywords) {
+                if (msg.includes(keyword)) {
+                    score += keyword.length; // Longer keywords get higher scores
+                }
+            }
+            if (score > bestScore) {
+                bestScore = score;
+                bestMatch = data.response;
+            }
+        }
+        
+        // Return best match or default response
+        if (bestMatch) {
+            return bestMatch;
+        }
+        
+        // Enhanced default response with suggestions
+        return 'I can help with many donation topics! Try asking about: eligibility requirements, donation process, booking appointments, safety concerns, recovery time, blood type compatibility, or specific organs like kidney or liver.';
+    }
+</script>
+{% endblock %}

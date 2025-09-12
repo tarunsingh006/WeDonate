@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced AI Chatbot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .user-message {
+            background-color: #e2e8f0;
+            color: #4a5568;
+            align-self: flex-end;
+            border-radius: 1rem 1rem 0.25rem 1rem;
+        }
+        .bot-message {
+            background-color: #bfdbfe;
+            color: #1e40af;
+            align-self: flex-start;
+            border-radius: 1rem 1rem 1rem 0.25rem;
+        }
+        .chat-log {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 1rem;
+            overflow-y: auto;
+            height: 18rem;
+            background-color: #f7fafc;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-xl p-6 transition-all duration-500 ease-in-out">
+        <!-- AI Chatbot -->
+        <div id="ai-chatbot" class="bg-white p-6 rounded-lg mb-6 shadow-md">
+            <h3 class="text-xl font-semibold text-blue-700 mb-4">Advanced AI Chatbot</h3>
+            <div class="flex justify-between items-center mb-4">
+                <label for="language-select" class="text-sm font-medium text-gray-700">Select Language:</label>
+                <select id="language-select" class="p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="English">English</option>
+                    <option value="Hindi">Hindi (हिंदी)</option>
+                    <option value="Spanish">Spanish (Español)</option>
+                    <option value="French">French (Français)</option>
+                    <option value="German">German (Deutsch)</option>
+                    <option value="Japanese">Japanese (日本語)</option>
+                </select>
+            </div>
+            <div id="chatbot-log" class="chat-log mb-4">
+                <div class="p-3 max-w-[80%] bot-message">
+                    Hello! I'm here to help you understand the organ donation process. Let's start with a few details to give you the most accurate information. What is your age?
+                </div>
+            </div>
+            <div class="flex gap-2 items-center">
+                <input type="text" id="chatbot-input" class="flex-grow p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Type your response here...">
+                <button onclick="sendChatbotMessage()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors">Send</button>
+                <button onclick="startNewChat()" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors">Start New Chat</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Gemini API Configuration - REPLACE WITH YOUR OWN API KEY
+        const API_KEY = "AIzaSyD4GYb8sEZV8gahIq76uoef8z_Z0y-zBlQ"; // Your Gemini API key
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + API_KEY;
+        
+        const chatbotLog = document.getElementById('chatbot-log');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const languageSelect = document.getElementById('language-select');
+        
+        let chatState = 0; // 0: Asking for age, 1: Asking for gender, 2: Asking for blood type, 3: General conversation
+        let donorDetails = {};
+
+        function addMessage(text, isUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `p-3 max-w-[80%] ${isUser ? 'user-message' : 'bot-message'}`;
+            messageDiv.innerText = text;
+            chatbotLog.appendChild(messageDiv);
+            chatbotLog.scrollTop = chatbotLog.scrollHeight;
+        }
+
+        async function sendChatbotMessage() {
+            const userQuery = chatbotInput.value.trim();
+            if (userQuery === '') return;
+
+            addMessage(userQuery, true);
+            chatbotInput.value = '';
+
+            let botResponseText = '';
+            const selectedLanguage = languageSelect.value;
+
+            // Handle data collection based on chat state
+            switch(chatState) {
+                case 0:
+                    donorDetails.age = userQuery;
+                    chatState = 1;
+                    botResponseText = "Thank you. What is your gender (Male, Female, or Prefer not to say)?";
+                    addMessage(botResponseText, false);
+                    break;
+                case 1:
+                    donorDetails.gender = userQuery;
+                    chatState = 2;
+                    botResponseText = "Got it. What is your blood type? (e.g., A+, O-, etc.)";
+                    addMessage(botResponseText, false);
+                    break;
+                case 2:
+                    donorDetails.bloodType = userQuery;
+                    chatState = 3;
+                    botResponseText = "Great! We have your details. How can I help you today? You can now ask any question about organ donation.";
+                    addMessage(botResponseText, false);
+                    break;
+                case 3:
+                    // This is the general conversation state
+                    let fullPrompt = `Based on the following donor profile: Age: ${donorDetails.age}, Gender: ${donorDetails.gender}, Blood Type: ${donorDetails.bloodType}. Please answer the user's question: ${userQuery}.`;
+                    
+                    const botTypingDiv = document.createElement('div');
+                    botTypingDiv.className = 'p-3 max-w-[80%] bot-message animate-pulse';
+                    botTypingDiv.innerHTML = `<span>...</span>`;
+                    chatbotLog.appendChild(botTypingDiv);
+
+                    try {
+                        const systemInstruction = `You are a professional and empathetic healthcare chatbot specializing in organ donation. Provide clear, concise, and accurate information based on the provided donor profile. Be brief and to the point, but maintain a helpful and reassuring tone. Respond in the following language: ${selectedLanguage}.`;
+                        const response = await fetch(API_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                contents: [{ parts: [{ text: fullPrompt }] }],
+                                systemInstruction: { parts: [{ text: systemInstruction }] }
+                            })
+                        });
+
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        const result = await response.json();
+                        botResponseText = result.candidates?.[0]?.content?.parts?.[0]?.text || "I'm sorry, I couldn't process your request. Please try again.";
+                        
+                        // Remove placeholder and add final response
+                        chatbotLog.removeChild(botTypingDiv);
+                        addMessage(botResponseText, false);
+
+                    } catch (error) {
+                        console.error("Error with chatbot API:", error);
+                        chatbotLog.removeChild(botTypingDiv);
+                        addMessage("I'm sorry, an error occurred. Please try again.", false);
+                    }
+                    break;
+                default:
+                    addMessage("Something went wrong. Please refresh the page to start over.", false);
+                    break;
+            }
+        }
+
+        function startNewChat() {
+            chatState = 0;
+            donorDetails = {};
+            chatbotLog.innerHTML = `<div class="p-3 max-w-[80%] bot-message">
+                Hello! I'm here to help you understand the organ donation process. Let's start with a few details to give you the most accurate information. What is your age?
+            </div>`;
+        }
+    </script>
+</body>
+</html>

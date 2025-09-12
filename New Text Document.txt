@@ -1,0 +1,50 @@
+@echo off
+echo Setting up Organ Donation Web App with updated dependencies...
+
+echo Creating virtual environment...
+python -m venv venv
+if errorlevel 1 (
+    echo Failed to create virtual environment
+    pause
+    exit /b 1
+)
+
+echo Activating virtual environment...
+call venv\Scripts\activate
+if errorlevel 1 (
+    echo Failed to activate virtual environment
+    pause
+    exit /b 1
+)
+
+echo Installing dependencies...
+pip install -r requirements.txt
+if errorlevel 1 (
+    echo Failed to install dependencies
+    pause
+    exit /b 1
+)
+
+echo Cleaning up old database...
+if exist db.sqlite3 del db.sqlite3
+if exist donors\migrations rmdir /s /q donors\migrations
+if exist hospitals\migrations rmdir /s /q hospitals\migrations
+mkdir donors\migrations
+mkdir hospitals\migrations
+echo. > donors\migrations\__init__.py
+echo. > hospitals\migrations\__init__.py
+
+echo Running migrations...
+python manage.py makemigrations hospitals donors
+if errorlevel 1 (
+    echo Failed to make migrations
+    pause
+    exit /b 1
+)
+
+python manage.py migrate
+if errorlevel 1 (
+    echo Failed to run migrations
+    pause
+    exit /b 1
+)

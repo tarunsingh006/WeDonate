@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hospital Dashboard Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Hospital Dashboard Test</h1>
+    
+    <div>
+        <h2>Counts:</h2>
+        <p>Appointments: <span id="appointmentCount">Loading...</span></p>
+        <p>Donations: <span id="donationCount">Loading...</span></p>
+    </div>
+    
+    <div>
+        <h2>Appointments:</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Donor</th>
+                    <th>Organ</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="appointmentsTableBody">
+                <tr><td colspan="5">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+        function fetchCounts() {
+            console.log('Fetching counts...');
+            $.get('/hospitals/fetch-counts/', function(data) {
+                console.log('Counts response:', data);
+                const counts = JSON.parse(data);
+                $('#appointmentCount').text(counts[0].appointment_count);
+                $('#donationCount').text(counts[0].donation_count);
+            }).fail(function(xhr, status, error) {
+                console.error('Error fetching counts:', error);
+                $('#appointmentCount').text('Error');
+                $('#donationCount').text('Error');
+            });
+        }
+        
+        function fetchAppointments() {
+            console.log('Fetching appointments...');
+            $.get('/hospitals/fetch-appointments/', function(data) {
+                console.log('Appointments response:', data);
+                const appointments = JSON.parse(data);
+                let html = '';
+                appointments.forEach(function(appointment) {
+                    html += `<tr>
+                        <td>${appointment.appointment_id}</td>
+                        <td>${appointment.first_name} ${appointment.last_name}</td>
+                        <td>${appointment.organ}</td>
+                        <td>${appointment.date}</td>
+                        <td>${appointment.time}</td>
+                    </tr>`;
+                });
+                $('#appointmentsTableBody').html(html);
+            }).fail(function(xhr, status, error) {
+                console.error('Error fetching appointments:', error);
+                $('#appointmentsTableBody').html('<tr><td colspan="5">Error loading appointments</td></tr>');
+            });
+        }
+        
+        $(document).ready(function() {
+            fetchCounts();
+            fetchAppointments();
+        });
+    </script>
+</body>
+</html>

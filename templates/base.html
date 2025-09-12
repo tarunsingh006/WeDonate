@@ -1,0 +1,372 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}We Donate - Save Lives Through Organ Donation{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --bg-primary: #f4f8fb;
+            --bg-secondary: #e9f0f7;
+            --text-primary: #22223b;
+            --text-secondary: #4a4e69;
+            --navbar-bg: #fff;
+            --footer-bg: #22223b;
+            --card-bg: #fff;
+            --accent: #38b6ff;
+            --accent2: #6c63ff;
+            --shadow: rgba(56,182,255,0.08);
+        }
+        
+        [data-theme="dark"] {
+            --bg-primary: #181a23;
+            --bg-secondary: #23263a;
+            --text-primary: #f4f8fb;
+            --text-secondary: #bfc9d1;
+            --navbar-bg: #23263a;
+            --footer-bg: #181a23;
+            --card-bg: #23263a;
+            --accent: #38b6ff;
+            --accent2: #6c63ff;
+            --shadow: rgba(56,182,255,0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-custom {
+            background: var(--navbar-bg) !important;
+            box-shadow: 0 2px 16px var(--shadow);
+            border-radius: 0 0 24px 24px;
+            padding: 1.2rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 2rem;
+            color: var(--accent2) !important;
+            letter-spacing: 1px;
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--text-secondary) !important;
+            font-weight: 500;
+            margin-right: 1.2rem;
+            border-radius: 18px;
+            padding: 0.5rem 1.2rem;
+            transition: background 0.2s;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            background: var(--accent);
+            color: #fff !important;
+        }
+        
+        .theme-toggle {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border: none;
+            border-radius: 25px;
+            width: 60px;
+            height: 32px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px;
+            z-index: 1000;
+        }
+        
+        .theme-toggle:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+        }
+        
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            z-index: 1;
+        }
+        
+        [data-theme="dark"] .theme-toggle::before {
+            transform: translateX(28px);
+        }
+        
+        .theme-icon {
+            position: relative;
+            font-size: 14px;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+        }
+        
+        .theme-icon.sun {
+            color: #ffd700;
+            margin-left: 2px;
+        }
+        
+        .theme-icon.moon {
+            color: #ffffff;
+            opacity: 0;
+            margin-right: 2px;
+        }
+        
+        [data-theme="dark"] .theme-icon.sun {
+            opacity: 0;
+        }
+        
+        [data-theme="dark"] .theme-icon.moon {
+            opacity: 1;
+        }
+        
+        .btn-custom {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 30px;
+            box-shadow: 0 4px 16px var(--shadow);
+            border: none;
+            padding: 12px 30px;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-custom:hover {
+            background: linear-gradient(135deg, var(--accent2), var(--accent));
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .footer-custom {
+            background: var(--footer-bg);
+            color: #fff;
+            border-radius: 24px 24px 0 0;
+            margin-top: 3rem;
+            padding: 2.5rem 0 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-custom a {
+            color: var(--accent);
+        }
+        
+        .footer-custom a:hover {
+            color: var(--accent2);
+        }
+        
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .content-wrapper {
+            flex: 1;
+            background: var(--bg-primary);
+            padding-top: 2.5rem;
+            padding-bottom: 2.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .hero-section {
+            background: linear-gradient(120deg, var(--accent) 0%, var(--accent2) 100%);
+            color: #fff;
+            border-radius: 32px;
+            box-shadow: 0 8px 32px var(--shadow);
+            padding: 3rem 2rem 2.5rem 2rem;
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+        
+        .hero-section h1 {
+            font-size: 2.7rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-section p {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+        
+        .floating-action {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 68px;
+            height: 68px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            box-shadow: 0 8px 32px var(--shadow);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            opacity: 0;
+            transform: scale(0.8);
+            border: none;
+        }
+        
+        .floating-action.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .floating-action:hover {
+            background: linear-gradient(135deg, var(--accent2), var(--accent));
+            transform: scale(1.1) !important;
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        {% block navbar %}
+        <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'wedonate' %}">
+                    <i class="fas fa-heart text-danger"></i> We Donate
+                </a>
+                <div class="navbar-nav ml-auto">
+                    <div class="d-flex align-items-center">
+                        {% block nav_links %}{% endblock %}
+                        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                            <i class="fas fa-sun theme-icon sun"></i>
+                            <i class="fas fa-moon theme-icon moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        {% endblock %}
+        
+        <!-- Main Content -->
+        <div class="content-wrapper">
+            <div class="container">
+                <div class="hero-section">
+                    <h1>Save Lives. Give Hope.</h1>
+                    <p>Join us in making a difference through organ donation. Every donor is a hero.</p>
+                    <a href="#" class="btn btn-custom btn-lg shadow">Become a Donor</a>
+                </div>
+            </div>
+            {% block content %}{% endblock %}
+        </div>
+        
+        <!-- Floating Action Button -->
+        <div class="floating-action" onclick="scrollToTop()" title="Back to Top">
+            <i class="fas fa-arrow-up"></i>
+        </div>
+        
+        <!-- Footer -->
+        {% block footer %}
+        <footer class="footer-custom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5 class="mb-3">
+                            <i class="fas fa-heart text-danger" style="animation: pulse 1.5s infinite;"></i> We Donate
+                        </h5>
+                        <p class="mb-3">Connecting hearts, saving lives through organ donation.</p>
+                        <hr class="my-3">
+                        <p class="mb-0">
+                            &copy; 2024 We Donate Inc. All rights reserved. | 
+                            <a href="#">Privacy Policy</a> | 
+                            <a href="#">Terms of Service</a> | 
+                            <a href="#">Contact Us</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        {% endblock %}
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            window.addEventListener('scroll', function() {
+                const fab = document.querySelector('.floating-action');
+                if (fab) {
+                    if (window.scrollY > 300) {
+                        fab.classList.add('show');
+                    } else {
+                        fab.classList.remove('show');
+                    }
+                }
+            });
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

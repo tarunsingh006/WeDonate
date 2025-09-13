@@ -808,6 +808,77 @@
         }
     });
     
+    $('#donationDtls').click(function() {
+        const selectedId = $('input[name="donationSelect"]:checked').val();
+        if (!selectedId) {
+            alert('Please select a donation to view details.');
+            return;
+        }
+        
+        $.get('/hospitals/donation-details/' + selectedId + '/', function(data) {
+            const donation = JSON.parse(data);
+            
+            Swal.fire({
+                title: 'Donation Details',
+                html: `
+                    <div class="text-left">
+                        <p><strong>Donation ID:</strong> ${donation.donation_id}</p>
+                        <p><strong>Donor Name:</strong> ${donation.first_name} ${donation.last_name}</p>
+                        <p><strong>Email:</strong> ${donation.email}</p>
+                        <p><strong>Contact:</strong> ${donation.contact}</p>
+                        <p><strong>Organ:</strong> ${donation.organ}</p>
+                        <p><strong>Blood Group:</strong> ${donation.blood_group}</p>
+                        <p><strong>Age:</strong> ${donation.age}</p>
+                        <p><strong>Weight:</strong> ${donation.weight} kg</p>
+                        <p><strong>City:</strong> ${donation.city}</p>
+                        <p><strong>State:</strong> ${donation.province}</p>
+                        <p><strong>Medical History:</strong> ${donation.medical_history || 'None provided'}</p>
+                        <p><strong>Status:</strong> ${donation.donation_status}</p>
+                    </div>
+                `,
+                width: 600,
+                confirmButtonText: 'Close',
+                confirmButtonColor: '#4ecdc4'
+            });
+        }).fail(function() {
+            alert('Error loading donation details. Please try again.');
+        });
+    });
+    
+    $('#appointmentDtls').click(function() {
+        const selectedId = $('input[name="appointmentSelect"]:checked').val();
+        if (!selectedId) {
+            alert('Please select an appointment to view details.');
+            return;
+        }
+        
+        $.get('/hospitals/appointment-details/' + selectedId + '/', function(data) {
+            const appointment = JSON.parse(data);
+            
+            Swal.fire({
+                title: 'Appointment Details',
+                html: `
+                    <div class="text-left">
+                        <p><strong>Appointment ID:</strong> ${appointment.appointment_id}</p>
+                        <p><strong>Donor Name:</strong> ${appointment.first_name} ${appointment.last_name}</p>
+                        <p><strong>Email:</strong> ${appointment.email}</p>
+                        <p><strong>Contact:</strong> ${appointment.contact}</p>
+                        <p><strong>Organ:</strong> ${appointment.organ}</p>
+                        <p><strong>Date:</strong> ${appointment.date}</p>
+                        <p><strong>Time:</strong> ${appointment.time}</p>
+                        <p><strong>Status:</strong> ${appointment.appointment_status}</p>
+                        <p><strong>Notes:</strong> ${appointment.notes || 'None provided'}</p>
+                    </div>
+                `,
+                width: 600,
+                confirmButtonText: 'Close',
+                confirmButtonColor: '#4ecdc4'
+            });
+        }).fail(function() {
+            alert('Error loading appointment details. Please try again.');
+        });
+    });
+    
     // Chatbot functionality
     $('#chatbot-toggle').click(function() {
         $('#chatbot-window').toggle();

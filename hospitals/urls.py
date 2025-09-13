@@ -28,6 +28,8 @@ urlpatterns = [
     re_path('get-requirements/', views.get_requirements, name='get-requirements'),
     re_path('delete-requirement/', views.delete_requirement, name='delete-requirement'),
     re_path('find-ml-matches/', views.find_ml_matches, name='find-ml-matches'),
+    re_path('donation-details/(?P<donation_id>\d+)/$', views.donation_details, name='donation-details'),
+    re_path('appointment-details/(?P<appointment_id>\d+)/$', views.appointment_details, name='appointment-details'),
     re_path('test/$', views.test_endpoint, name='test-endpoint'),
     re_path('test-dashboard/$', views.test_dashboard, name='test-dashboard'),
 ]

@@ -31,7 +31,7 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from io import StringIO, BytesIO
 from xhtml2pdf import pisa
-from PyPDF2 import PdfFileMerger, PdfFileReader
+from pypdf import PdfWriter, PdfReader
 
 
 # Create your views here.
@@ -727,3 +727,52 @@ def test_endpoint(request):
 @login_required
 def test_dashboard(request):
     return render(request, "hospital-test.html")
+
+@login_required
+def donation_details(request, donation_id):
+    """Get detailed information about a specific donation"""
+    try:
+        donation = DonationRequests.objects.get(id=donation_id)
+        
+        details = {
+            "donation_id": donation.id,
+            "first_name": donation.donor.first_name,
+            "last_name": donation.donor.last_name,
+            "email": donation.donor.email,
+            "contact": donation.donor.contact_number,
+            "organ": donation.organ_type,
+            "blood_group": donation.blood_type,
+            "age": getattr(donation.donor, 'age', 'N/A'),
+            "weight": getattr(donation.donor, 'weight', 'N/A'),
+            "city": donation.donor.city,
+            "province": donation.donor.province,
+            "medical_history": getattr(donation, 'medical_history', None),
+            "donation_status": donation.donation_status
+        }
+        
+        return HttpResponse(json.dumps(details))
+    except DonationRequests.DoesNotExist:
+        return HttpResponse(json.dumps({"error": "Donation not found"}), status=404)
+
+@login_required
+def appointment_details(request, appointment_id):
+    """Get detailed information about a specific appointment"""
+    try:
+        appointment = Appointments.objects.get(id=appointment_id)
+        
+        details = {
+            "appointment_id": appointment.id,
+            "first_name": appointment.donation_request.donor.first_name,
+            "last_name": appointment.donation_request.donor.last_name,
+            "email": appointment.donation_request.donor.email,
+            "contact": appointment.donation_request.donor.contact_number,
+            "organ": appointment.donation_request.organ_type,
+            "date": str(appointment.date),
+            "time": str(appointment.time),
+            "appointment_status": appointment.appointment_status,
+            "notes": getattr(appointment, 'notes', None)
+        }
+        
+        return HttpResponse(json.dumps(details))
+    except Appointments.DoesNotExist:
+        return HttpResponse(json.dumps({"error": "Appointment not found"}), status=404)

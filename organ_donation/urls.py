@@ -19,6 +19,7 @@ from donors import views as v
 urlpatterns = [
     re_path('^donors/', include('donors.urls')),
     re_path('^hospitals/', include('hospitals.urls')),
+    re_path('^ml-matching/', include('ml_matching.urls')),
     re_path('admin/', admin.site.urls),
     re_path('home/$', v.wedonate, name='wedonate'),
 ]

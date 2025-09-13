@@ -177,8 +177,14 @@ def new_donation_request(request):
         donation_request.donation_status = "Pending"
         donation_request.donor = request.user
         donation_request.upload_medical_doc = request.FILES.get("file", "")
-        donation_request.family_consent = request.POST.get("family_consent", "")
-        donation_request.donated_before = request.POST.get("donated_before", "")
+        
+        # Handle boolean fields properly
+        family_consent = request.POST.get("family_consent", "")
+        donation_request.family_consent = family_consent == "True" if family_consent else False
+        
+        donated_before = request.POST.get("donated_before", "")
+        donation_request.donated_before = donated_before == "True" if donated_before else False
+        
         donation_request.save()
         return redirect("donor-home")
 
@@ -207,3 +213,12 @@ def wedonate(request):
     if request.POST:
         pass
     return render(request, "index.html")
+
+@login_required
+def donor_notifications(request):
+    from ml_matching.models import HospitalOrganRequirement
+    
+    # Get all active hospital requirements
+    requirements = HospitalOrganRequirement.objects.filter(is_active=True).order_by('-created_at')
+    
+    return render(request, "donor-notifications.html", {"requirements": requirements})

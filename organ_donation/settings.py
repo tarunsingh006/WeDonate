@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 	'donors',
 	'hospitals',
+	'ml_matching',
 ]
 
 MIDDLEWARE = [

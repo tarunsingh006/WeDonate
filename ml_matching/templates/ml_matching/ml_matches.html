@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>ML-Based Organ Matches</h2>
+    
+    {% if matches %}
+    <div class="row">
+        {% for match in matches %}
+        <div class="col-md-6 mb-3">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white">
+                    <h5>{{ match.donation_request.organ_type }} Match - {{ match.urgency }}</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Donor Information:</h6>
+                    <p><strong>Name:</strong> {{ match.donor.first_name }} {{ match.donor.last_name }}</p>
+                    <p><strong>Blood Type:</strong> {{ match.donation_request.blood_type }}</p>
+                    <p><strong>Organ:</strong> {{ match.donation_request.organ_type }}</p>
+                    
+                    <h6>Compatibility:</h6>
+                    <div class="progress mb-2">
+                        <div class="progress-bar bg-success" style="width: {{ match.compatibility_score }}%">
+                            {{ match.compatibility_score }}%
+                        </div>
+                    </div>
+                    <p><strong>ML Probability:</strong> {{ match.ml_probability|floatformat:2 }}</p>
+                    
+                    <h6>Patient Requirements:</h6>
+                    <p><strong>Blood Type:</strong> {{ match.requirement.blood_type }}</p>
+                    <p><strong>Age:</strong> {{ match.requirement.patient_age }}</p>
+                    <p><strong>Weight:</strong> {{ match.requirement.patient_weight }} kg</p>
+                    
+                    <div class="mt-3">
+                        <button class="btn btn-primary btn-sm">Contact Donor</button>
+                        <button class="btn btn-info btn-sm">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <h4>No matches found</h4>
+        <p>There are currently no compatible organ matches for your hospital's requirements.</p>
+        <a href="{% url 'hospital_requirements' %}" class="btn btn-primary">Add Requirements</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

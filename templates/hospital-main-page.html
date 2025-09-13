@@ -56,6 +56,16 @@
             <i class="fas fa-search me-2"></i>Search
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link text-white fw-medium" data-toggle="tab" href="#requirements_tab" style="border: none; background: transparent;">
+            <i class="fas fa-clipboard-list me-2"></i>Requirements
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-white fw-medium" data-toggle="tab" href="#ml_matching_tab" style="border: none; background: transparent;">
+            <i class="fas fa-brain me-2"></i>ML Matching
+        </a>
+    </li>
 </ul>
 
 <div class="tab-content">
@@ -268,6 +278,207 @@
     </div>
 </div>
 
+<!-- Requirements Tab -->
+<div id="requirements_tab" class="tab-pane fade">
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card-3d">
+                <div class="card-header-3d">
+                    <h5 class="mb-0">
+                        <i class="fas fa-plus me-2"></i>Add New Requirement
+                    </h5>
+                </div>
+                <div class="card-body-3d">
+                    <form id="requirementForm">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-white fw-medium">Organ Type</label>
+                                <select name="organ_type" class="form-control form-control-3d" required>
+                                    <option value="">Select Organ</option>
+                                    <option value="Heart">Heart</option>
+                                    <option value="Kidney">Kidney</option>
+                                    <option value="Liver">Liver</option>
+                                    <option value="Lungs">Lungs</option>
+                                    <option value="Pancreas">Pancreas</option>
+                                    <option value="Cornea">Cornea</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-white fw-medium">Blood Type</label>
+                                <select name="blood_type" class="form-control form-control-3d" required>
+                                    <option value="">Select Blood Type</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label text-white fw-medium">Patient Age</label>
+                                <input type="number" name="patient_age" class="form-control form-control-3d" min="1" max="100" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-white fw-medium">Patient Weight (kg)</label>
+                                <input type="number" name="patient_weight" class="form-control form-control-3d" min="10" max="200" step="0.1" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label text-white fw-medium">Urgency Level</label>
+                                <select name="urgency_level" class="form-control form-control-3d" required>
+                                    <option value="">Select Urgency</option>
+                                    <option value="Critical">Critical</option>
+                                    <option value="Urgent">Urgent</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-white fw-medium">Additional Notes</label>
+                            <textarea name="additional_notes" class="form-control form-control-3d" rows="3" placeholder="Any specific requirements or notes..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-3d w-100">
+                            <i class="fas fa-save me-2"></i>Save Requirement
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card-3d">
+                <div class="card-header-3d">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list me-2"></i>Active Requirements
+                    </h5>
+                </div>
+                <div class="card-body-3d p-0">
+                    <div id="requirementsList" style="max-height: 400px; overflow-y: auto;">
+                        <p class="text-center py-4 text-white-50">Loading requirements...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ML Matching Tab -->
+<div id="ml_matching_tab" class="tab-pane fade">
+    <div class="card-3d">
+        <div class="card-header-3d">
+            <h4 class="mb-0">
+                <i class="fas fa-brain me-2"></i>
+                AI-Powered Donor Matching
+            </h4>
+        </div>
+        <div class="card-body-3d">
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label text-white fw-medium">Select Requirement</label>
+                    <select id="matchingRequirement" class="form-control form-control-3d">
+                        <option value="">Choose a requirement to find matches</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label text-white fw-medium">Organ Type</label>
+                    <select id="filterOrgan" class="form-control form-control-3d">
+                        <option value="">Any Organ</option>
+                        <option value="Heart">Heart</option>
+                        <option value="Kidney">Kidney</option>
+                        <option value="Liver">Liver</option>
+                        <option value="Lungs">Lungs</option>
+                        <option value="Pancreas">Pancreas</option>
+                        <option value="Cornea">Cornea</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label text-white fw-medium">Blood Type</label>
+                    <select id="filterBlood" class="form-control form-control-3d">
+                        <option value="">Any Blood</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label text-white fw-medium">Min Score</label>
+                    <select id="minScore" class="form-control form-control-3d">
+                        <option value="0">Any Score</option>
+                        <option value="50">50%+</option>
+                        <option value="70">70%+</option>
+                        <option value="80">80%+</option>
+                        <option value="90">90%+</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-3d w-100" onclick="findMatches()" style="margin-top: 32px;">
+                        <i class="fas fa-search me-2"></i>Find Matches
+                    </button>
+                </div>
+            </div>
+            <div id="matchingResults">
+                <div class="text-center py-5">
+                    <i class="fas fa-robot fa-4x mb-3" style="color: var(--accent); opacity: 0.5;"></i>
+                    <h5 class="text-white mb-2">AI Matching Ready</h5>
+                    <p class="text-white-50">Select a requirement above to find the best donor matches using our advanced ML algorithm</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Debug Tab -->
+<div id="debug_tab" class="tab-pane fade">
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card-3d">
+                <div class="card-header-3d">
+                    <h5 class="mb-0">
+                        <i class="fas fa-calendar me-2"></i>
+                        All Appointments (Debug)
+                    </h5>
+                </div>
+                <div class="card-body-3d">
+                    <button class="btn btn-3d mb-3" onclick="loadAllAppointments()">
+                        <i class="fas fa-refresh me-2"></i>Load All Appointments
+                    </button>
+                    <div id="debugAppointments" style="max-height: 400px; overflow-y: auto;">
+                        <p class="text-white-50">Click "Load All Appointments" to see debug info</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card-3d">
+                <div class="card-header-3d">
+                    <h5 class="mb-0">
+                        <i class="fas fa-heart me-2"></i>
+                        All Donations (Debug)
+                    </h5>
+                </div>
+                <div class="card-body-3d">
+                    <button class="btn btn-3d mb-3" onclick="loadAllDonations()">
+                        <i class="fas fa-refresh me-2"></i>Load All Donations
+                    </button>
+                    <div id="debugDonations" style="max-height: 400px; overflow-y: auto;">
+                        <p class="text-white-50">Click "Load All Donations" to see debug info</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Update Profile Tab -->
 <div id="update_profile" class="tab-pane fade">
     <div class="row g-4">
@@ -445,6 +656,33 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    // CSRF token setup for AJAX requests
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    const csrftoken = getCookie('csrftoken');
+    
+    // Setup CSRF token for all AJAX requests
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+    
     // Load data on page load
     $(document).ready(function() {
         loadCounts();
@@ -455,8 +693,17 @@
     function loadCounts() {
         $.get('/hospitals/fetch-counts/', function(data) {
             const counts = JSON.parse(data);
-            $('#appointmentCount').text(counts[0].appointment_count);
-            $('#donationCount').text(counts[0].donation_count);
+            const stats = counts[0];
+            
+            // Update main counters
+            $('#appointmentCount').text(stats.appointment_count);
+            $('#donationCount').text(stats.all_pending_donations);
+            
+            // Update stats cards with real data
+            $('.glass-card').eq(0).find('h4').text(stats.approved_appointments_month || 0);
+            $('.glass-card').eq(1).find('h4').text(stats.appointment_count || 0);
+            $('.glass-card').eq(2).find('h4').text(stats.lives_saved || 0);
+            $('.glass-card').eq(3).find('h4').text(stats.total_donors || 0);
         });
     }
     
@@ -479,18 +726,26 @@
     }
     
     function loadDonations() {
-        $.get('/hospitals/fetch-donations/', function(data) {
+        $.get('/hospitals/fetch-all-pending-donations/', function(data) {
             const donations = JSON.parse(data);
             let html = '';
-            donations.forEach(function(donation) {
-                html += `<tr>
-                    <td><input type="radio" name="donationSelect" value="${donation.donation_id}"></td>
-                    <td>${donation.donation_id}</td>
-                    <td>${donation.first_name} ${donation.last_name}</td>
-                    <td>${donation.organ}</td>
-                    <td>${donation.blood_group}</td>
-                </tr>`;
-            });
+            if (donations.length === 0) {
+                html = '<tr><td colspan="5" class="text-center py-4"><i class="fas fa-info-circle me-2"></i>No pending donations found</td></tr>';
+            } else {
+                donations.forEach(function(donation) {
+                    const appointmentBadge = donation.has_appointment ? 
+                        `<span class="badge" style="background: var(--success); font-size: 0.7em;">Has Appointment</span>` : 
+                        `<span class="badge" style="background: var(--warning); font-size: 0.7em;">No Appointment</span>`;
+                    
+                    html += `<tr>
+                        <td><input type="radio" name="donationSelect" value="${donation.donation_id}"></td>
+                        <td>${donation.donation_id}</td>
+                        <td>${donation.first_name} ${donation.last_name}<br><small class="text-muted">${appointmentBadge}</small></td>
+                        <td>${donation.organ}</td>
+                        <td>${donation.blood_group}</td>
+                    </tr>`;
+                });
+            }
             $('#donationTableBody').html(html);
         });
     }
@@ -501,7 +756,8 @@
         if (selectedId) {
             $.post('/hospitals/appointments-approval/', {
                 ID: selectedId,
-                action: 'Approved'
+                action: 'Approved',
+                csrfmiddlewaretoken: csrftoken
             }, function() {
                 loadCounts();
                 loadAppointments();
@@ -515,7 +771,8 @@
         if (selectedId) {
             $.post('/hospitals/appointments-approval/', {
                 ID: selectedId,
-                action: 'Denied'
+                action: 'Denied',
+                csrfmiddlewaretoken: csrftoken
             }, function() {
                 loadCounts();
                 loadAppointments();
@@ -528,7 +785,8 @@
         if (selectedId) {
             $.post('/hospitals/donations-approval/', {
                 ID: selectedId,
-                action: 'Approved'
+                action: 'Approved',
+                csrfmiddlewaretoken: csrftoken
             }, function() {
                 loadCounts();
                 loadDonations();
@@ -541,7 +799,8 @@
         if (selectedId) {
             $.post('/hospitals/donations-approval/', {
                 ID: selectedId,
-                action: 'Denied'
+                action: 'Denied',
+                csrfmiddlewaretoken: csrftoken
             }, function() {
                 loadCounts();
                 loadDonations();
@@ -608,6 +867,226 @@
         } else {
             return 'I can assist with organ donation procedures, compatibility questions, and appointment management. Please ask about specific medical topics or donation processes.';
         }
+    }
+    
+    // Debug functions
+    function loadAllAppointments() {
+        $.get('/hospitals/fetch-all-appointments/', function(data) {
+            const appointments = JSON.parse(data);
+            let html = '<h6 class="text-white mb-3">All Appointments for This Hospital:</h6>';
+            
+            if (appointments.length === 0) {
+                html += '<p class="text-warning">No appointments found for this hospital.</p>';
+            } else {
+                html += '<div class="table-responsive"><table class="table table-sm text-white">';
+                html += '<thead><tr><th>ID</th><th>Donor</th><th>Organ</th><th>Date</th><th>Status</th></tr></thead><tbody>';
+                
+                appointments.forEach(function(apt) {
+                    html += `<tr>
+                        <td>${apt.appointment_id}</td>
+                        <td>${apt.first_name} ${apt.last_name}</td>
+                        <td>${apt.organ}</td>
+                        <td>${apt.date}</td>
+                        <td><span class="badge ${apt.appointment_status === 'Pending' ? 'bg-warning' : apt.appointment_status === 'Approved' ? 'bg-success' : 'bg-danger'}">${apt.appointment_status}</span></td>
+                    </tr>`;
+                });
+                
+                html += '</tbody></table></div>';
+            }
+            
+            $('#debugAppointments').html(html);
+        }).fail(function() {
+            $('#debugAppointments').html('<p class="text-danger">Error loading appointments</p>');
+        });
+    }
+    
+    function loadAllDonations() {
+        $.get('/hospitals/fetch-all-pending-donations/', function(data) {
+            const donations = JSON.parse(data);
+            let html = '<h6 class="text-white mb-3">All Pending Donations:</h6>';
+            
+            if (donations.length === 0) {
+                html += '<p class="text-warning">No pending donations found.</p>';
+            } else {
+                html += '<div class="table-responsive"><table class="table table-sm text-white">';
+                html += '<thead><tr><th>ID</th><th>Donor</th><th>Organ</th><th>Blood</th><th>Appointment</th></tr></thead><tbody>';
+                
+                donations.forEach(function(donation) {
+                    const appointmentStatus = donation.has_appointment ? 
+                        `<span class="badge bg-success">Yes</span>` : 
+                        `<span class="badge bg-warning">No</span>`;
+                    
+                    html += `<tr>
+                        <td>${donation.donation_id}</td>
+                        <td>${donation.first_name} ${donation.last_name}</td>
+                        <td>${donation.organ}</td>
+                        <td>${donation.blood_group}</td>
+                        <td>${appointmentStatus}</td>
+                    </tr>`;
+                });
+                
+                html += '</tbody></table></div>';
+            }
+            
+            $('#debugDonations').html(html);
+        }).fail(function() {
+            $('#debugDonations').html('<p class="text-danger">Error loading donations</p>');
+        });
+    }
+    
+    // Tab switching function
+    function showTab(tabName) {
+        $('.tab-pane').removeClass('active show');
+        $('.nav-link').removeClass('active');
+        
+        $('#' + tabName).addClass('active show');
+        $('a[href="#' + tabName + '"]').addClass('active');
+        
+        if (tabName === 'requirements_tab') {
+            loadRequirements();
+        } else if (tabName === 'ml_matching_tab') {
+            loadRequirementsForMatching();
+        }
+    }
+    
+    // Requirements functions
+    $('#requirementForm').submit(function(e) {
+        e.preventDefault();
+        const formData = $(this).serialize();
+        
+        $.post('/hospitals/add-requirement/', formData + '&csrfmiddlewaretoken=' + csrftoken, function(response) {
+            if (response === 'success') {
+                $('#requirementForm')[0].reset();
+                loadRequirements();
+                loadRequirementsForMatching();
+            }
+        });
+    });
+    
+    function loadRequirements() {
+        $.get('/hospitals/get-requirements/', function(data) {
+            const requirements = JSON.parse(data);
+            let html = '';
+            
+            if (requirements.length === 0) {
+                html = '<p class="text-center py-4 text-white-50">No requirements added yet</p>';
+            } else {
+                requirements.forEach(function(req) {
+                    const urgencyColor = req.urgency_level === 'Critical' ? 'danger' : 
+                                       req.urgency_level === 'Urgent' ? 'warning' : 'info';
+                    
+                    html += `<div class="border-bottom border-secondary p-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="text-white mb-1">${req.organ_type} - ${req.blood_type}</h6>
+                                <p class="text-white-50 mb-1">Age: ${req.patient_age}, Weight: ${req.patient_weight}kg</p>
+                                <span class="badge bg-${urgencyColor}">${req.urgency_level}</span>
+                            </div>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteRequirement(${req.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        ${req.additional_notes ? `<p class="text-white-50 mt-2 mb-0 small">${req.additional_notes}</p>` : ''}
+                    </div>`;
+                });
+            }
+            
+            $('#requirementsList').html(html);
+        });
+    }
+    
+    function loadRequirementsForMatching() {
+        $.get('/hospitals/get-requirements/', function(data) {
+            const requirements = JSON.parse(data);
+            let options = '<option value="">Choose a requirement to find matches</option>';
+            
+            requirements.forEach(function(req) {
+                options += `<option value="${req.id}">${req.organ_type} - ${req.blood_type} (${req.urgency_level})</option>`;
+            });
+            
+            $('#matchingRequirement').html(options);
+        });
+    }
+    
+    function deleteRequirement(id) {
+        if (confirm('Are you sure you want to delete this requirement?')) {
+            $.post('/hospitals/delete-requirement/', {
+                id: id,
+                csrfmiddlewaretoken: csrftoken
+            }, function(response) {
+                if (response === 'success') {
+                    loadRequirements();
+                    loadRequirementsForMatching();
+                }
+            });
+        }
+    }
+    
+    function findMatches() {
+        const reqId = $('#matchingRequirement').val();
+        const filterOrgan = $('#filterOrgan').val();
+        const filterBlood = $('#filterBlood').val();
+        const minScore = $('#minScore').val() || '0';
+        
+        console.log('Finding matches with:', {
+            reqId: reqId,
+            filterOrgan: filterOrgan,
+            filterBlood: filterBlood,
+            minScore: minScore
+        });
+        
+        $('#matchingResults').html('<div class="text-center py-4"><i class="fas fa-spinner fa-spin fa-2x text-white"></i><p class="text-white mt-2">Finding best matches...</p></div>');
+        
+        const params = {
+            requirement_id: reqId || '',
+            organ_type: filterOrgan || '',
+            blood_type: filterBlood || '',
+            min_score: minScore
+        };
+        
+        console.log('Request params:', params);
+        
+        $.get('/hospitals/find-ml-matches/', params)
+        .done(function(data) {
+            console.log('Response received:', data);
+            const matches = JSON.parse(data);
+            let html = '';
+            
+            if (matches.length === 0) {
+                html = '<div class="text-center py-4"><i class="fas fa-exclamation-triangle fa-2x text-warning"></i><p class="text-white mt-2">No matches found with current criteria</p><p class="text-white-50">Try adjusting the filters or minimum score</p></div>';
+            } else {
+                html = `<h6 class="text-white mb-3">Best Matches (${matches.length} found, sorted by compatibility)</h6>`;
+                html += '<div class="table-responsive"><table class="table table-3d"><thead><tr><th>Rank</th><th>Donor</th><th>City</th><th>Organ</th><th>Blood</th><th>Compatibility</th><th>ML Score</th><th>Action</th></tr></thead><tbody>';
+                
+                matches.forEach(function(match, index) {
+                    const compatibilityColor = match.compatibility_score >= 80 ? 'success' : 
+                                             match.compatibility_score >= 60 ? 'warning' : 'danger';
+                    
+                    html += `<tr>
+                        <td><span class="badge bg-primary">#${index + 1}</span></td>
+                        <td>${match.donor_name}</td>
+                        <td>${match.donor_city || 'Unknown'}</td>
+                        <td>${match.organ_type}</td>
+                        <td>${match.blood_type}</td>
+                        <td><span class="badge bg-${compatibilityColor}">${match.compatibility_score}%</span></td>
+                        <td><span class="badge bg-info">${(match.ml_probability * 100).toFixed(1)}%</span></td>
+                        <td><button class="btn btn-sm btn-success" onclick="contactDonor(${match.donor_id})"><i class="fas fa-envelope"></i></button></td>
+                    </tr>`;
+                });
+                
+                html += '</tbody></table></div>';
+            }
+            
+            $('#matchingResults').html(html);
+        })
+        .fail(function(xhr, status, error) {
+            console.error('AJAX request failed:', status, error);
+            $('#matchingResults').html('<div class="text-center py-4"><i class="fas fa-exclamation-triangle fa-2x text-danger"></i><p class="text-white mt-2">Error occurred while finding matches</p><p class="text-white-50">Error: ' + error + '</p></div>');
+        });
+    }
+    
+    function contactDonor(donorId) {
+        alert('Contact feature will be implemented - Donor ID: ' + donorId);
     }
 </script>
 {% endblock %}

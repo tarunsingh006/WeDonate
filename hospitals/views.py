@@ -107,30 +107,29 @@ def search_donation_details(request):
 
 
 @login_required
-@csrf_exempt
 def fetch_appointments(request):
     if request.POST:
         pass
     else:
         # Fetching appointment details
         print(f"fetching appointments from db for hospital ID: {request.user.id}")
-        status = "Pending"
+        print(f"Hospital name: {request.user.hospital_name}")
         
         # Debug: Check all appointments first
         all_appointments = Appointments.objects.all()
         print(f"Total appointments in database: {all_appointments.count()}")
         for apt in all_appointments:
-            print(f"Appointment ID: {apt.id}, Hospital ID: {apt.hospital.id}, Status: {apt.appointment_status}")
+            print(f"Appointment ID: {apt.id}, Hospital: {apt.hospital.hospital_name} (ID: {apt.hospital.id}), Status: {apt.appointment_status}")
         
-        appointments = Appointments.objects.filter(hospital__id=request.user.id, appointment_status=status)
-        print(f"Filtered appointments count: {appointments.count()}")
-        print(f"Query: hospital_id={request.user.id}, status={status}")
-        
-        # Also try without exact match to see if there are any appointments for this hospital
+        # Get all appointments for this hospital (not just pending)
         all_hospital_appointments = Appointments.objects.filter(hospital__id=request.user.id)
         print(f"All appointments for this hospital: {all_hospital_appointments.count()}")
-        for apt in all_hospital_appointments:
-            print(f"Hospital appointment: ID={apt.id}, Status={apt.appointment_status}")
+        
+        # Get pending appointments for this hospital
+        status = "Pending"
+        appointments = Appointments.objects.filter(hospital__id=request.user.id, appointment_status=status)
+        print(f"Pending appointments count: {appointments.count()}")
+        print(f"Query: hospital_id={request.user.id}, status={status}")
         
         appointment_list = []
         for appointment in appointments:
@@ -153,7 +152,43 @@ def fetch_appointments(request):
 
 
 @login_required
-@csrf_exempt
+def fetch_all_appointments(request):
+    """Fetch all appointments for this hospital regardless of status"""
+    if request.POST:
+        pass
+    else:
+        print(f"Fetching all appointments for hospital ID: {request.user.id}")
+        
+        # Get all appointments for this hospital
+        appointments = Appointments.objects.filter(hospital__id=request.user.id)
+        print(f"Found {appointments.count()} appointments for this hospital")
+        
+        appointment_list = []
+        for appointment in appointments:
+            temp_dict = {}
+            temp_dict["first_name"] = appointment.donation_request.donor.first_name
+            temp_dict["last_name"] = appointment.donation_request.donor.last_name
+            temp_dict["email"] = appointment.donation_request.donor.email
+            temp_dict["contact_number"] = appointment.donation_request.donor.contact_number
+            # Donation details
+            temp_dict["organ"] = appointment.donation_request.organ_type
+            temp_dict["donation_id"] = appointment.donation_request.id
+            temp_dict["blood_group"] = appointment.donation_request.blood_type
+            temp_dict["donation_status"] = appointment.donation_request.donation_status
+            # Appointment details
+            temp_dict["appointment_id"] = appointment.id
+            temp_dict["date"] = appointment.date
+            temp_dict["time"] = appointment.time
+            temp_dict["appointment_status"] = appointment.appointment_status
+            temp_dict["hospital_name"] = appointment.hospital.hospital_name
+            appointment_list.append(temp_dict)
+        
+        appointment_details = json.dumps(appointment_list)
+        print(f"Returning all appointment data: {appointment_details}")
+        return HttpResponse(appointment_details)
+
+
+@login_required
 def fetch_donations(request):
     if request.POST:
         pass
@@ -179,6 +214,57 @@ def fetch_donations(request):
         appointment_details = json.dumps(appointment_list)
 
         return HttpResponse(appointment_details)
+
+
+@login_required
+def fetch_all_pending_donations(request):
+    """Fetch all pending donation requests, regardless of appointment status"""
+    if request.POST:
+        pass
+    else:
+        # Get all pending donation requests
+        donation_status = "Pending"
+        donations = DonationRequests.objects.filter(donation_status=donation_status)
+        
+        print(f"Found {donations.count()} pending donation requests")
+        
+        donation_list = []
+        for donation in donations:
+            temp_dict = {}
+            temp_dict["first_name"] = donation.donor.first_name
+            temp_dict["last_name"] = donation.donor.last_name
+            temp_dict["email"] = donation.donor.email
+            temp_dict["contact_number"] = donation.donor.contact_number
+            temp_dict["city"] = donation.donor.city
+            temp_dict["province"] = donation.donor.province
+            # Donation details
+            temp_dict["organ"] = donation.organ_type
+            temp_dict["donation_id"] = donation.id
+            temp_dict["blood_group"] = donation.blood_type
+            temp_dict["donation_status"] = donation.donation_status
+            temp_dict["family_member_name"] = donation.family_relation_name
+            temp_dict["family_member_relation"] = donation.family_relation
+            temp_dict["family_member_contact"] = donation.family_contact_number
+            temp_dict["donated_before"] = donation.donated_before
+            temp_dict["family_consent"] = donation.family_consent
+            temp_dict["request_date"] = donation.request_datetime.strftime("%Y-%m-%d %H:%M")
+            
+            # Check if appointment exists
+            try:
+                appointment = Appointments.objects.get(donation_request=donation)
+                temp_dict["has_appointment"] = True
+                temp_dict["appointment_status"] = appointment.appointment_status
+                temp_dict["appointment_date"] = appointment.date
+                temp_dict["appointment_time"] = appointment.time
+            except Appointments.DoesNotExist:
+                temp_dict["has_appointment"] = False
+                temp_dict["appointment_status"] = "No Appointment"
+            
+            donation_list.append(temp_dict)
+        
+        donation_details = json.dumps(donation_list)
+        print(f"Returning donation data: {donation_details}")
+        return HttpResponse(donation_details)
 
 
 def hospital_register(request):
@@ -319,7 +405,6 @@ def approve_donations(request):
 
 
 @login_required
-@csrf_exempt
 def fetch_counts(request):
     if request.POST:
         pass
@@ -333,20 +418,36 @@ def fetch_counts(request):
         for apt in all_appointments:
             print(f"Apt ID: {apt.id}, Hospital: {apt.hospital.hospital_name} (ID: {apt.hospital.id}), Status: {apt.appointment_status}")
         
+        from datetime import datetime
+        from django.utils import timezone
+        
+        # Get current month start
+        now = timezone.now()
+        month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        
         appointment_count = Appointments.objects.filter(hospital__id=request.user.id, appointment_status="Pending").count()
-        print("appointment count", appointment_count)
-        donation_status = "Pending"
-        appointment_status = "Approved"
-        donation_count = Appointments.objects.filter(hospital__id=request.user.id, appointment_status=appointment_status, donation_request__donation_status=donation_status).count()
-        print("donation count", donation_count)
-        dummy_list = []
-        temp_dict = {}
-        temp_dict["appointment_count"] = appointment_count
-        temp_dict["donation_count"] = donation_count
-        dummy_list.append(temp_dict)
-        count_json = json.dumps(dummy_list)
-        print(f"Returning counts: {count_json}")
-        return HttpResponse(count_json)
+        donation_count = Appointments.objects.filter(hospital__id=request.user.id, appointment_status="Approved", donation_request__donation_status="Pending").count()
+        all_pending_donations = DonationRequests.objects.filter(donation_status="Pending").count()
+        
+        # Monthly statistics
+        approved_appointments_month = Appointments.objects.filter(
+            hospital__id=request.user.id, 
+            appointment_status="Approved"
+        ).count()
+        
+        lives_saved = DonationRequests.objects.filter(donation_status="Approved").count()
+        total_donors = DonationRequests.objects.values('donor').distinct().count()
+        
+        temp_dict = {
+            "appointment_count": appointment_count,
+            "donation_count": donation_count,
+            "all_pending_donations": all_pending_donations,
+            "approved_appointments_month": approved_appointments_month,
+            "lives_saved": lives_saved,
+            "total_donors": total_donors
+        }
+        
+        return HttpResponse(json.dumps([temp_dict]))
 
 
 def send_mail(send_from, send_to, subject, body_of_msg, files=[],
@@ -474,6 +575,151 @@ def update_pwd_details(request):
 def hospital_logout(request):
     logout(request)
     return redirect("hospital-login")
+
+@csrf_exempt
+def add_requirement(request):
+    if request.POST:
+        from ml_matching.models import HospitalOrganRequirement
+        
+        req = HospitalOrganRequirement(
+            hospital=request.user,
+            organ_type=request.POST.get('organ_type'),
+            blood_type=request.POST.get('blood_type'),
+            patient_age=int(request.POST.get('patient_age')),
+            patient_weight=float(request.POST.get('patient_weight')),
+            urgency_level=request.POST.get('urgency_level'),
+            additional_notes=request.POST.get('additional_notes', '')
+        )
+        req.save()
+        return HttpResponse('success')
+    return HttpResponse('error')
+
+@login_required
+def get_requirements(request):
+    from ml_matching.models import HospitalOrganRequirement
+    
+    requirements = HospitalOrganRequirement.objects.filter(hospital=request.user, is_active=True)
+    req_list = []
+    
+    for req in requirements:
+        req_list.append({
+            'id': req.id,
+            'organ_type': req.organ_type,
+            'blood_type': req.blood_type,
+            'patient_age': req.patient_age,
+            'patient_weight': req.patient_weight,
+            'urgency_level': req.urgency_level,
+            'additional_notes': req.additional_notes
+        })
+    
+    return HttpResponse(json.dumps(req_list))
+
+@csrf_exempt
+def delete_requirement(request):
+    if request.POST:
+        from ml_matching.models import HospitalOrganRequirement
+        
+        req_id = request.POST.get('id')
+        try:
+            req = HospitalOrganRequirement.objects.get(id=req_id, hospital=request.user)
+            req.delete()
+            return HttpResponse('success')
+        except:
+            return HttpResponse('error')
+    return HttpResponse('error')
+
+@login_required
+def find_ml_matches(request):
+    from ml_matching.models import HospitalOrganRequirement
+    from ml_matching.matching_algorithm import OrganMatchingML
+    
+    try:
+        # Initialize ML matching
+        ml_matcher = OrganMatchingML()
+        
+        # Get search parameters
+        req_id = request.GET.get('requirement_id')
+        filter_organ = request.GET.get('organ_type')
+        filter_blood = request.GET.get('blood_type')
+        min_score = int(request.GET.get('min_score', 0))
+        
+        print(f"ML Matching request: req_id={req_id}, organ={filter_organ}, blood={filter_blood}, min_score={min_score}")
+        
+        # Build donation filter
+        donation_filter = {'donation_status': 'Pending'}
+        if filter_organ:
+            donation_filter['organ_type'] = filter_organ
+        if filter_blood:
+            donation_filter['blood_type'] = filter_blood
+        
+        donations = DonationRequests.objects.filter(**donation_filter)
+        print(f"Found {donations.count()} donations with filter: {donation_filter}")
+        
+        matches = []
+        
+        # Determine hospital requirement
+        hospital_req = None
+        if req_id:
+            try:
+                requirement = HospitalOrganRequirement.objects.get(id=req_id, hospital=request.user)
+                hospital_req = {
+                    'blood_type': requirement.blood_type,
+                    'organ_type': requirement.organ_type,
+                    'patient_age': requirement.patient_age,
+                    'patient_weight': requirement.patient_weight,
+                    'urgency_level': requirement.urgency_level
+                }
+                print(f"Using requirement: {hospital_req}")
+            except HospitalOrganRequirement.DoesNotExist:
+                print(f"Requirement {req_id} not found")
+        
+        # If no specific requirement, use filter values or defaults
+        if not hospital_req:
+            hospital_req = {
+                'blood_type': filter_blood or 'O+',
+                'organ_type': filter_organ or 'Kidney',
+                'patient_age': 35,
+                'patient_weight': 70,
+                'urgency_level': 'Medium'
+            }
+            print(f"Using default requirement: {hospital_req}")
+        
+        # Calculate matches for each donation
+        for donation in donations:
+            donor_data = {
+                'blood_type': donation.blood_type,
+                'organ_type': donation.organ_type,
+                'age': 30,
+                'weight': 70,
+                'smoking_status': False,
+                'alcohol_consumption': False
+            }
+            
+            compatibility_score = ml_matcher.calculate_compatibility_score(donor_data, hospital_req)
+            print(f"Donor {donation.donor.first_name}: {donor_data['organ_type']} {donor_data['blood_type']} -> Score: {compatibility_score}")
+            
+            if compatibility_score >= min_score:
+                matches.append({
+                    'donor_id': donation.donor.id,
+                    'donor_name': f"{donation.donor.first_name} {donation.donor.last_name}",
+                    'organ_type': donation.organ_type,
+                    'blood_type': donation.blood_type,
+                    'compatibility_score': int(compatibility_score),
+                    'ml_probability': min(compatibility_score / 100, 1.0),
+                    'donor_city': donation.donor.city or 'Unknown'
+                })
+        
+        # Sort by compatibility score
+        matches.sort(key=lambda x: x['compatibility_score'], reverse=True)
+        
+        print(f"Returning {len(matches)} matches")
+        return HttpResponse(json.dumps(matches[:10]))
+        
+    except Exception as e:
+        print(f"Error in ML matching: {e}")
+        import traceback
+        traceback.print_exc()
+        return HttpResponse(json.dumps([]))
 
 def test_endpoint(request):
     return HttpResponse("Hospital URLs are working!")

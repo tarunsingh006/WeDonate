@@ -126,16 +126,82 @@ dmypy.json
 ehthumbs.db
 Thumbs.db
 
-# Media files (optional - uncomment if you don't want to track uploaded files)
-# media/
+# Media files
+media/
+*.pdf
+*.doc
+*.docx
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+*.svg
+*.webp
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.flv
+*.webm
 
-# Static files (uncomment if you don't want to track collected static files)
-# staticfiles/
+# Static files
+staticfiles/
+static_root/
 
 # Database
 *.sqlite3
 *.db
+*.sql
+*.dump
+
+# ML Models and Data
+*.joblib
+*.pkl
+*.pickle
+*.h5
+*.model
+*.csv
+*.json
+*.xlsx
+*.xls
+training_data/
+models/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
 
 # Secret keys and sensitive data
 .env
+.env.local
+.env.production
 secrets.json
+config.ini
+
+# Node modules (if using frontend tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Windows specific
+*.exe
+*.msi
+*.dll
+wkhtmltopdf/
+
+# Project specific
+New Text Document.txt
+*.bat
+requirements_*.txt
+setup_*.bat
+install_*.bat
+update_*.bat

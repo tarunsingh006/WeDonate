@@ -1,0 +1,683 @@
+{% extends 'professional_base.html' %}
+{% load static %}
+
+{% block title %}Hospital Dashboard - WeDonate Medical Platform{% endblock %}
+
+{% block extra_nav %}
+<a class="nav-link text-dark" href="{% url 'wedonate' %}">
+    <i class="fas fa-home me-1"></i>
+    Home
+</a>
+<div class="dropdown">
+    <a class="nav-link text-dark dropdown-toggle" href="#" id="settingsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-user-md me-1"></i>
+        Settings
+    </a>
+    <ul class="dropdown-menu professional-dropdown" aria-labelledby="settingsDropdown">
+        <li><a class="dropdown-item" href="#" onclick="showTab('update_profile')">
+            <i class="fas fa-user-edit me-2"></i>Update Profile
+        </a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item text-danger" href="{% url 'hospital-logout' %}">
+            <i class="fas fa-sign-out-alt me-2"></i>Log Out
+        </a></li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Professional Dashboard Header -->
+<section class="professional-hero-small">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="text-dark mb-3">
+                    <i class="fas fa-hospital me-3"></i>
+                    Hospital Dashboard
+                </h1>
+                <p class="text-dark fs-5" style="opacity: 0.8;">Manage donations, appointments, and save lives efficiently</p>
+            </div>
+            <div class="col-lg-4 text-end">
+                <div class="professional-badge">
+                    <i class="fas fa-heartbeat me-2"></i>
+                    Medical Platform
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Professional Dashboard Navigation -->
+<section class="py-3 bg-light">
+    <div class="container">
+        <nav class="professional-nav-tabs" role="tablist">
+            <button class="professional-nav-tab active" id="actionItemTab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab">
+                <i class="fas fa-tachometer-alt me-2"></i>Action Items
+            </button>
+            <button class="professional-nav-tab" id="appointmentTab" data-bs-toggle="tab" data-bs-target="#appointment_approvals" type="button" role="tab">
+                <i class="fas fa-calendar-check me-2"></i>Appointments
+            </button>
+            <button class="professional-nav-tab" id="donationTab" data-bs-toggle="tab" data-bs-target="#donation_approvals" type="button" role="tab">
+                <i class="fas fa-hand-holding-heart me-2"></i>Donations
+            </button>
+            <button class="professional-nav-tab" data-bs-toggle="tab" data-bs-target="#search_donation" type="button" role="tab">
+                <i class="fas fa-search me-2"></i>Search
+            </button>
+        </nav>
+    </div>
+</section>
+
+<!-- Professional Dashboard Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="tab-content">
+            <!-- Action Items Tab -->
+            <div id="home" class="tab-pane fade show active" role="tabpanel">
+                <div class="row g-4 mb-5">
+                    <div class="col-md-6">
+                        <div class="professional-card professional-action-card" onclick="showTab('appointment_approvals')" id="appointDiv">
+                            <div class="text-center">
+                                <div class="professional-icon-xl mb-3">
+                                    <i class="fas fa-calendar-check" style="color: var(--warning);"></i>
+                                </div>
+                                <h4 class="text-primary mb-2">Pending Appointments</h4>
+                                <h2 class="professional-count mb-3" id="appointmentCount">Loading...</h2>
+                                <p class="text-muted">Click to review and approve appointments</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="professional-card professional-action-card" onclick="showTab('donation_approvals')" id="donationsDiv">
+                            <div class="text-center">
+                                <div class="professional-icon-xl mb-3">
+                                    <i class="fas fa-hand-holding-heart" style="color: var(--success);"></i>
+                                </div>
+                                <h4 class="text-primary mb-2">Pending Donations</h4>
+                                <h2 class="professional-count mb-3" id="donationCount">Loading...</h2>
+                                <p class="text-muted">Click to review and approve donations</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Professional Statistics Grid -->
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <div class="professional-stat-card">
+                            <div class="professional-stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="professional-stat-content">
+                                <h4 class="professional-stat-number">245</h4>
+                                <p class="professional-stat-label">Approved This Month</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="professional-stat-card">
+                            <div class="professional-stat-icon professional-stat-icon-warning">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="professional-stat-content">
+                                <h4 class="professional-stat-number" id="totalPending">12</h4>
+                                <p class="professional-stat-label">Pending Review</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="professional-stat-card">
+                            <div class="professional-stat-icon professional-stat-icon-danger">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="professional-stat-content">
+                                <h4 class="professional-stat-number">1,247</h4>
+                                <p class="professional-stat-label">Lives Saved</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="professional-stat-card">
+                            <div class="professional-stat-icon professional-stat-icon-teal">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="professional-stat-content">
+                                <h4 class="professional-stat-number">8,456</h4>
+                                <p class="professional-stat-label">Active Donors</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appointments Tab -->
+            <div id="appointment_approvals" class="tab-pane fade" role="tabpanel">
+                <div class="professional-card">
+                    <div class="professional-card-header">
+                        <h4 class="mb-0">
+                            <i class="fas fa-calendar-check me-2"></i>
+                            Pending Appointments
+                        </h4>
+                        <div class="professional-card-actions">
+                            <button class="professional-btn-sm professional-btn-outline" onclick="loadAppointments()">
+                                <i class="fas fa-refresh me-1"></i>Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <div class="professional-table-container">
+                        <table class="professional-table" id="appointmentTable">
+                            <thead>
+                                <tr>
+                                    <th width="50"><input type="radio" name="appointmentSelect" class="professional-radio"></th>
+                                    <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                    <th><i class="fas fa-user me-2"></i>Donor</th>
+                                    <th><i class="fas fa-lungs me-2"></i>Organ</th>
+                                    <th><i class="fas fa-calendar me-2"></i>Date</th>
+                                    <th><i class="fas fa-clock me-2"></i>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointmentsTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center py-5">
+                                        <div class="professional-loading">
+                                            <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+                                            <p>Loading appointments...</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="professional-card-footer">
+                        <div class="professional-button-group">
+                            <button class="professional-btn professional-btn-outline" id="appointmentDtls">
+                                <i class="fas fa-info-circle me-2"></i>Details
+                            </button>
+                            <button class="professional-btn professional-btn-success" id="appointmentApprv">
+                                <i class="fas fa-check me-2"></i>Approve
+                            </button>
+                            <button class="professional-btn professional-btn-danger" id="appointmentDeny">
+                                <i class="fas fa-times me-2"></i>Deny
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donations Tab -->
+            <div id="donation_approvals" class="tab-pane fade" role="tabpanel">
+                <div class="professional-card">
+                    <div class="professional-card-header">
+                        <h4 class="mb-0">
+                            <i class="fas fa-hand-holding-heart me-2"></i>
+                            Pending Donations
+                        </h4>
+                        <div class="professional-card-actions">
+                            <button class="professional-btn-sm professional-btn-outline" onclick="loadDonations()">
+                                <i class="fas fa-refresh me-1"></i>Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <div class="professional-table-container">
+                        <table class="professional-table" id="donationTable">
+                            <thead>
+                                <tr>
+                                    <th width="50"><input type="radio" name="donationSelect" class="professional-radio"></th>
+                                    <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                    <th><i class="fas fa-user me-2"></i>Donor</th>
+                                    <th><i class="fas fa-lungs me-2"></i>Organ</th>
+                                    <th><i class="fas fa-tint me-2"></i>Blood Group</th>
+                                </tr>
+                            </thead>
+                            <tbody id="donationTableBody">
+                                <tr>
+                                    <td colspan="5" class="text-center py-5">
+                                        <div class="professional-loading">
+                                            <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+                                            <p>Loading donations...</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="professional-card-footer">
+                        <div class="professional-button-group">
+                            <button class="professional-btn professional-btn-outline" id="donationDtls">
+                                <i class="fas fa-info-circle me-2"></i>Details
+                            </button>
+                            <button class="professional-btn professional-btn-success" id="donationApprv">
+                                <i class="fas fa-check me-2"></i>Approve
+                            </button>
+                            <button class="professional-btn professional-btn-danger" id="donationDeny">
+                                <i class="fas fa-times me-2"></i>Deny
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Tab -->
+            <div id="search_donation" class="tab-pane fade" role="tabpanel">
+                <div class="professional-card mb-4">
+                    <div class="professional-card-body">
+                        <div class="row g-3">
+                            <div class="col-md-9">
+                                <input type="text" class="professional-input" id="searchInput" placeholder="Search by Organ, Donor name, Donation ID, or Blood Group">
+                            </div>
+                            <div class="col-md-3">
+                                <button class="professional-btn professional-btn-primary w-100" id="search_btn">
+                                    <i class="fas fa-search me-2"></i>Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="professional-card">
+                    <div class="professional-card-header">
+                        <h4 class="mb-0">
+                            <i class="fas fa-search me-2"></i>
+                            Search Results
+                        </h4>
+                    </div>
+                    <div class="professional-table-container">
+                        <table class="professional-table" id="donationSearchTable">
+                            <thead>
+                                <tr>
+                                    <th width="50"><input type="radio" name="searchSelect" class="professional-radio"></th>
+                                    <th><i class="fas fa-hashtag me-2"></i>ID</th>
+                                    <th><i class="fas fa-user me-2"></i>Donor</th>
+                                    <th><i class="fas fa-lungs me-2"></i>Organ</th>
+                                    <th><i class="fas fa-tint me-2"></i>Blood Group</th>
+                                </tr>
+                            </thead>
+                            <tbody id="searchTableBody">
+                                <tr>
+                                    <td colspan="5" class="text-center py-5">
+                                        <i class="fas fa-search fa-3x mb-3 text-muted"></i>
+                                        <p class="text-muted mb-0">Enter search criteria to find donations</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="professional-card-footer">
+                        <div class="professional-button-group">
+                            <button class="professional-btn professional-btn-outline" id="searchDtls">
+                                <i class="fas fa-info-circle me-2"></i>Details
+                            </button>
+                            <button class="professional-btn professional-btn-secondary" id="searchEmail">
+                                <i class="fas fa-envelope me-2"></i>Email Donor
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Update Profile Tab -->
+            <div id="update_profile" class="tab-pane fade" role="tabpanel">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="professional-card">
+                            <div class="professional-card-header">
+                                <h4 class="mb-0">Hospital Profile</h4>
+                                <button class="professional-btn-sm professional-btn-outline" onclick="enableEditUserProfile();">
+                                    <i class="fas fa-edit me-1"></i>Edit
+                                </button>
+                            </div>
+                            <div class="professional-card-body">
+                                <form id="updateDetailsForm" class="professional-form">
+                                    <div class="professional-form-group">
+                                        <label class="professional-label">
+                                            <i class="fas fa-hospital me-2"></i>Hospital Name
+                                        </label>
+                                        <input type="text" name="hospital_name" id="hospitalName" class="professional-input" disabled>
+                                    </div>
+                                    <div class="professional-form-group">
+                                        <label class="professional-label">
+                                            <i class="fas fa-envelope me-2"></i>Email Address
+                                        </label>
+                                        <input type="email" name="email" id="emailHospital" class="professional-input" disabled>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="professional-form-group">
+                                                <label class="professional-label">
+                                                    <i class="fas fa-city me-2"></i>City
+                                                </label>
+                                                <input type="text" name="city" id="city" class="professional-input" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="professional-form-group">
+                                                <label class="professional-label">
+                                                    <i class="fas fa-map-marker-alt me-2"></i>State
+                                                </label>
+                                                <select name="province" id="input-province" class="professional-select" disabled>
+                                                    <option value="Maharashtra">Maharashtra</option>
+                                                    <option value="Karnataka">Karnataka</option>
+                                                    <option value="Tamil Nadu">Tamil Nadu</option>
+                                                    <option value="Delhi">Delhi</option>
+                                                    <!-- Add more states as needed -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="professional-form-group">
+                                                <label class="professional-label">
+                                                    <i class="fas fa-phone me-2"></i>Contact (+91)
+                                                </label>
+                                                <input type="text" name="contact" id="hospitalContact" class="professional-input" maxlength="10" minlength="10" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="professional-form-group">
+                                                <label class="professional-label">
+                                                    <i class="fas fa-flag me-2"></i>Country
+                                                </label>
+                                                <select name="country" id="input-country" class="professional-select" disabled>
+                                                    <option selected>India</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" id="submitUpdateProf" class="professional-btn professional-btn-primary w-100" disabled>
+                                        <i class="fas fa-save me-2"></i>Update Profile
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="professional-card">
+                            <div class="professional-card-header">
+                                <h4 class="mb-0">Password Settings</h4>
+                                <button class="professional-btn-sm professional-btn-outline" onclick="enableEditPasswords();">
+                                    <i class="fas fa-edit me-1"></i>Edit
+                                </button>
+                            </div>
+                            <div class="professional-card-body">
+                                <form class="professional-form">
+                                    <div class="professional-form-group">
+                                        <label class="professional-label">
+                                            <i class="fas fa-lock me-2"></i>Old Password
+                                        </label>
+                                        <input type="password" id="password1" name="old_password" class="professional-input" disabled>
+                                    </div>
+                                    <div class="professional-form-group">
+                                        <label class="professional-label">
+                                            <i class="fas fa-key me-2"></i>New Password
+                                        </label>
+                                        <input type="password" id="password2" name="new_password" class="professional-input" minlength="6" pattern="(?=.*[a-z])(?=.*\d).{6,}" disabled>
+                                    </div>
+                                    <div class="professional-form-group">
+                                        <label class="professional-label">
+                                            <i class="fas fa-check-circle me-2"></i>Confirm Password
+                                        </label>
+                                        <input type="password" id="password3" class="professional-input" oninput="checkPassword();" disabled>
+                                        <div id="password-validation-msg" class="mt-2"></div>
+                                    </div>
+                                    <button type="submit" id="update-password" class="professional-btn professional-btn-primary w-100" disabled>
+                                        <i class="fas fa-save me-2"></i>Update Password
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Professional Dashboard JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize dashboard
+        loadCounts();
+        loadAppointments();
+        loadDonations();
+        
+        // Tab switching
+        window.showTab = function(tabId) {
+            const tab = document.querySelector(`[data-bs-target="#${tabId}"]`);
+            if (tab) {
+                const tabInstance = new bootstrap.Tab(tab);
+                tabInstance.show();
+            }
+        };
+    });
+    
+    // Load dashboard counts
+    function loadCounts() {
+        fetch('/hospitals/fetch-counts/')
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    document.getElementById('appointmentCount').textContent = data[0].appointment_count;
+                    document.getElementById('donationCount').textContent = data[0].donation_count;
+                    document.getElementById('totalPending').textContent = data[0].appointment_count + data[0].donation_count;
+                }
+            })
+            .catch(error => {
+                console.error('Error loading counts:', error);
+                document.getElementById('appointmentCount').textContent = '0';
+                document.getElementById('donationCount').textContent = '0';
+            });
+    }
+    
+    // Load appointments
+    function loadAppointments() {
+        fetch('/hospitals/fetch-appointments/')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('appointmentsTableBody');
+                if (data && data.length > 0) {
+                    let html = '';
+                    data.forEach(appointment => {
+                        html += `<tr>
+                            <td><input type="radio" name="appointmentSelect" value="${appointment.appointment_id}" class="professional-radio"></td>
+                            <td><span class="professional-badge professional-badge-outline">${appointment.appointment_id}</span></td>
+                            <td>${appointment.first_name} ${appointment.last_name}</td>
+                            <td><span class="professional-badge professional-badge-teal">${appointment.organ}</span></td>
+                            <td>${appointment.date}</td>
+                            <td>${appointment.time}</td>
+                        </tr>`;
+                    });
+                    tbody.innerHTML = html;
+                } else {
+                    tbody.innerHTML = `<tr>
+                        <td colspan="6" class="text-center py-5">
+                            <i class="fas fa-calendar-check fa-3x mb-3 text-muted"></i>
+                            <p class="text-muted">No pending appointments</p>
+                        </td>
+                    </tr>`;
+                }
+            })
+            .catch(error => {
+                console.error('Error loading appointments:', error);
+                document.getElementById('appointmentsTableBody').innerHTML = `<tr>
+                    <td colspan="6" class="text-center py-5 text-danger">
+                        <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                        <p>Error loading appointments</p>
+                    </td>
+                </tr>`;
+            });
+    }
+    
+    // Load donations
+    function loadDonations() {
+        fetch('/hospitals/fetch-donations/')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('donationTableBody');
+                if (data && data.length > 0) {
+                    let html = '';
+                    data.forEach(donation => {
+                        html += `<tr>
+                            <td><input type="radio" name="donationSelect" value="${donation.donation_id}" class="professional-radio"></td>
+                            <td><span class="professional-badge professional-badge-outline">${donation.donation_id}</span></td>
+                            <td>${donation.first_name} ${donation.last_name}</td>
+                            <td><span class="professional-badge professional-badge-teal">${donation.organ}</span></td>
+                            <td><span class="professional-badge professional-badge-danger">${donation.blood_group}</span></td>
+                        </tr>`;
+                    });
+                    tbody.innerHTML = html;
+                } else {
+                    tbody.innerHTML = `<tr>
+                        <td colspan="5" class="text-center py-5">
+                            <i class="fas fa-hand-holding-heart fa-3x mb-3 text-muted"></i>
+                            <p class="text-muted">No pending donations</p>
+                        </td>
+                    </tr>`;
+                }
+            })
+            .catch(error => {
+                console.error('Error loading donations:', error);
+                document.getElementById('donationTableBody').innerHTML = `<tr>
+                    <td colspan="5" class="text-center py-5 text-danger">
+                        <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                        <p>Error loading donations</p>
+                    </td>
+                </tr>`;
+            });
+    }
+    
+    // Button event handlers
+    document.getElementById('appointmentApprv').addEventListener('click', function() {
+        const selectedId = document.querySelector('input[name="appointmentSelect"]:checked')?.value;
+        if (selectedId) {
+            processAppointment(selectedId, 'Approved');
+        } else {
+            showAlert('Please select an appointment first', 'warning');
+        }
+    });
+    
+    document.getElementById('appointmentDeny').addEventListener('click', function() {
+        const selectedId = document.querySelector('input[name="appointmentSelect"]:checked')?.value;
+        if (selectedId) {
+            processAppointment(selectedId, 'Denied');
+        } else {
+            showAlert('Please select an appointment first', 'warning');
+        }
+    });
+    
+    document.getElementById('donationApprv').addEventListener('click', function() {
+        const selectedId = document.querySelector('input[name="donationSelect"]:checked')?.value;
+        if (selectedId) {
+            processDonation(selectedId, 'Approved');
+        } else {
+            showAlert('Please select a donation first', 'warning');
+        }
+    });
+    
+    document.getElementById('donationDeny').addEventListener('click', function() {
+        const selectedId = document.querySelector('input[name="donationSelect"]:checked')?.value;
+        if (selectedId) {
+            processDonation(selectedId, 'Denied');
+        } else {
+            showAlert('Please select a donation first', 'warning');
+        }
+    });
+    
+    // Process appointment approval/denial
+    function processAppointment(id, action) {
+        const formData = new FormData();
+        formData.append('ID', id);
+        formData.append('action', action);
+        formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]')?.value || '');
+        
+        fetch('/hospitals/appointments-approval/', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            showAlert(`Appointment ${action.toLowerCase()} successfully`, action === 'Approved' ? 'success' : 'info');
+            loadCounts();
+            loadAppointments();
+            loadDonations();
+        })
+        .catch(error => {
+            console.error('Error processing appointment:', error);
+            showAlert('Error processing appointment', 'danger');
+        });
+    }
+    
+    // Process donation approval/denial
+    function processDonation(id, action) {
+        const formData = new FormData();
+        formData.append('ID', id);
+        formData.append('action', action);
+        formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]')?.value || '');
+        
+        fetch('/hospitals/donations-approval/', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            showAlert(`Donation ${action.toLowerCase()} successfully`, action === 'Approved' ? 'success' : 'info');
+            loadCounts();
+            loadDonations();
+        })
+        .catch(error => {
+            console.error('Error processing donation:', error);
+            showAlert('Error processing donation', 'danger');
+        });
+    }
+    
+    // Professional alert system
+    function showAlert(message, type = 'info') {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} professional-alert fixed-top mx-auto`;
+        alertDiv.style.cssText = 'max-width: 500px; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999;';
+        alertDiv.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'danger' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
+            ${message}
+        `;
+        
+        document.body.appendChild(alertDiv);
+        
+        setTimeout(() => {
+            alertDiv.remove();
+        }, 4000);
+    }
+    
+    // Profile editing functions
+    function enableEditUserProfile() {
+        const inputs = document.querySelectorAll('#updateDetailsForm input, #updateDetailsForm select');
+        inputs.forEach(input => input.disabled = false);
+        document.getElementById('submitUpdateProf').disabled = false;
+    }
+    
+    function enableEditPasswords() {
+        const inputs = document.querySelectorAll('#password1, #password2, #password3');
+        inputs.forEach(input => input.disabled = false);
+        document.getElementById('update-password').disabled = false;
+    }
+    
+    // Password validation
+    function checkPassword() {
+        const password2 = document.getElementById('password2').value;
+        const password3 = document.getElementById('password3').value;
+        const msgElement = document.getElementById('password-validation-msg');
+        
+        if (password3 === '') {
+            msgElement.innerHTML = '';
+            return;
+        }
+        
+        if (password2 === password3) {
+            msgElement.innerHTML = '<small class="text-success"><i class="fas fa-check-circle me-1"></i>Passwords match!</small>';
+        } else {
+            msgElement.innerHTML = '<small class="text-danger"><i class="fas fa-times-circle me-1"></i>Passwords do not match!</small>';
+        }
+    }
+</script>
+{% endblock %}

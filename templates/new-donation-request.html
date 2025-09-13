@@ -54,8 +54,8 @@
                 <div class="mb-3">
                     <i class="fas fa-heart-pulse fa-3x" style="color: var(--accent);"></i>
                 </div>
-                <h3 class="text-white fw-bold mb-2">Donation Request Form</h3>
-                <p class="text-white-50">Fill out the details below to create your donation request</p>
+                <h3 class="fw-bold mb-2" style="color: #1e293b;">Donation Request Form</h3>
+                <p style="color: #64748b;">Fill out the details below to create your donation request</p>
             </div>
             
             <form method="POST" enctype="multipart/form-data" action="{% url 'new-donation-request' %}">
@@ -64,7 +64,7 @@
                 <!-- Organ and Blood Type -->
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
-                        <label for="organ_type" class="form-label text-white fw-medium">
+                        <label for="organ_type" class="form-label fw-medium" style="color: #1e293b;">
                             <i class="fas fa-lungs me-2"></i>
                             Organ Type
                         </label>
@@ -81,7 +81,7 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label for="blood_type" class="form-label text-white fw-medium">
+                        <label for="blood_type" class="form-label fw-medium" style="color: #1e293b;">
                             <i class="fas fa-tint me-2"></i>
                             Blood Type
                         </label>
@@ -102,7 +102,7 @@
                 <!-- Family Information -->
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
-                        <label for="family_relation" class="form-label text-white fw-medium">
+                        <label for="family_relation" class="form-label fw-medium" style="color: #1e293b;">
                             <i class="fas fa-users me-2"></i>
                             Family Relation
                         </label>
@@ -118,7 +118,7 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label for="family_relation_name" class="form-label text-white fw-medium">
+                        <label for="family_relation_name" class="form-label fw-medium" style="color: #1e293b;">
                             <i class="fas fa-user me-2"></i>
                             Family Contact Name
                         </label>
@@ -128,7 +128,7 @@
                 
                 <!-- Contact Number -->
                 <div class="mb-4">
-                    <label for="family_contact_number" class="form-label text-white fw-medium">
+                    <label for="family_contact_number" class="form-label fw-medium" style="color: #1e293b;">
                         <i class="fas fa-phone me-2"></i>
                         Family Contact Number (+1)
                     </label>
@@ -137,13 +137,13 @@
                 
                 <!-- Medical Report Upload -->
                 <div class="mb-4">
-                    <label for="medical_report" class="form-label text-white fw-medium">
+                    <label for="medical_report" class="form-label fw-medium" style="color: #1e293b;">
                         <i class="fas fa-file-medical me-2"></i>
                         Medical Report
                     </label>
                     <div class="position-relative">
                         <input type="file" name="file" class="form-control form-control-3d" id="medical_report" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                        <small class="text-white-50 mt-2 d-block">
+                        <small class="mt-2 d-block" style="color: #64748b;">
                             <i class="fas fa-info-circle me-1"></i>
                             Upload your medical report (PDF, DOC, or Image files)
                         </small>
@@ -152,21 +152,21 @@
                 
                 <!-- Radio Button Questions -->
                 <div class="mb-4">
-                    <label class="form-label text-white fw-medium mb-3">
+                    <label class="form-label fw-medium mb-3" style="color: #1e293b;">
                         <i class="fas fa-question-circle me-2"></i>
                         Has the donor donated before?
                     </label>
                     <div class="d-flex gap-4">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="donated_before" value="True" id="donated_yes" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3);">
-                            <label class="form-check-label text-white" for="donated_yes">
+                            <label class="form-check-label" for="donated_yes" style="color: #1e293b;">
                                 <i class="fas fa-check-circle me-1" style="color: var(--success);"></i>
                                 Yes
                             </label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="donated_before" value="False" id="donated_no" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3);">
-                            <label class="form-check-label text-white" for="donated_no">
+                            <label class="form-check-label" for="donated_no" style="color: #1e293b;">
                                 <i class="fas fa-times-circle me-1" style="color: var(--danger);"></i>
                                 No
                             </label>
@@ -175,21 +175,21 @@
                 </div>
                 
                 <div class="mb-4">
-                    <label class="form-label text-white fw-medium mb-3">
+                    <label class="form-label fw-medium mb-3" style="color: #1e293b;">
                         <i class="fas fa-heart me-2"></i>
                         Is your family okay with donating your organ?
                     </label>
                     <div class="d-flex gap-4">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="family_consent" value="True" id="consent_yes" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3);">
-                            <label class="form-check-label text-white" for="consent_yes">
+                            <label class="form-check-label" for="consent_yes" style="color: #1e293b;">
                                 <i class="fas fa-check-circle me-1" style="color: var(--success);"></i>
                                 Yes
                             </label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="family_consent" value="False" id="consent_no" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3);">
-                            <label class="form-check-label text-white" for="consent_no">
+                            <label class="form-check-label" for="consent_no" style="color: #1e293b;">
                                 <i class="fas fa-times-circle me-1" style="color: var(--danger);"></i>
                                 No
                             </label>
@@ -198,11 +198,47 @@
                 </div>
                 
                 <!-- Submit Button -->
-                <div class="d-grid">
+                <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-3d btn-lg">
                         <i class="fas fa-paper-plane me-2"></i>
                         Create Donation Request
                     </button>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'donor-home' %}" class="btn btn-outline-light btn-sm flex-fill">
+                            <i class="fas fa-history me-1"></i>
+                            View History
+                        </a>
+                        <a href="{% url 'book-appointment' %}" class="btn btn-outline-light btn-sm flex-fill">
+                            <i class="fas fa-calendar-plus me-1"></i>
+                            Book Appointment
+                        </a>
+                        <button type="button" class="btn btn-outline-light btn-sm" onclick="showDonationTips()">
+                            <i class="fas fa-lightbulb me-1"></i>
+                            Tips
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Quick Stats -->
+                <div class="row g-2 mt-3">
+                    <div class="col-4">
+                        <div class="text-center p-2 rounded" style="background: rgba(255,255,255,0.1);">
+                            <div class="fw-bold" style="color: #1e293b;">113K+</div>
+                            <small style="color: #64748b;">Waiting</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="text-center p-2 rounded" style="background: rgba(255,255,255,0.1);">
+                            <div class="fw-bold" style="color: #1e293b;">8 Lives</div>
+                            <small style="color: #64748b;">You Save</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="text-center p-2 rounded" style="background: rgba(255,255,255,0.1);">
+                            <div class="fw-bold" style="color: #1e293b;">24/7</div>
+                            <small style="color: #64748b;">Support</small>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
@@ -212,22 +248,22 @@
             <div class="col-md-4">
                 <div class="glass-card text-center p-4">
                     <i class="fas fa-shield-alt fa-3x mb-3" style="color: var(--success);"></i>
-                    <h5 class="text-white fw-bold">Secure Process</h5>
-                    <p class="text-white-50 mb-0">Your information is protected with advanced encryption</p>
+                    <h5 class="fw-bold" style="color: #1e293b;">Secure Process</h5>
+                    <p class="mb-0" style="color: #64748b;">Your information is protected with advanced encryption</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="glass-card text-center p-4">
                     <i class="fas fa-user-md fa-3x mb-3" style="color: var(--accent);"></i>
-                    <h5 class="text-white fw-bold">Medical Review</h5>
-                    <p class="text-white-50 mb-0">All requests are reviewed by qualified medical professionals</p>
+                    <h5 class="fw-bold" style="color: #1e293b;">Medical Review</h5>
+                    <p class="mb-0" style="color: #64748b;">All requests are reviewed by qualified medical professionals</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="glass-card text-center p-4">
                     <i class="fas fa-clock fa-3x mb-3" style="color: var(--warning);"></i>
-                    <h5 class="text-white fw-bold">Quick Response</h5>
-                    <p class="text-white-50 mb-0">Get updates on your donation request within 24-48 hours</p>
+                    <h5 class="fw-bold" style="color: #1e293b;">Quick Response</h5>
+                    <p class="mb-0" style="color: #64748b;">Get updates on your donation request within 24-48 hours</p>
                 </div>
             </div>
         </div>
@@ -267,6 +303,98 @@
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creating Request...';
             submitBtn.disabled = true;
         });
+        
+        // Add form progress indicator
+        const requiredFields = form.querySelectorAll('[required]');
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress mb-3';
+        progressBar.innerHTML = '<div class="progress-bar" role="progressbar" style="width: 0%"></div>';
+        form.insertBefore(progressBar, form.firstChild);
+        
+        function updateProgress() {
+            const filledFields = Array.from(requiredFields).filter(field => field.value.trim() !== '');
+            const progress = (filledFields.length / requiredFields.length) * 100;
+            const progressBarElement = progressBar.querySelector('.progress-bar');
+            progressBarElement.style.width = progress + '%';
+            progressBarElement.textContent = Math.round(progress) + '% Complete';
+            
+            if (progress < 50) {
+                progressBarElement.className = 'progress-bar bg-danger';
+            } else if (progress < 80) {
+                progressBarElement.className = 'progress-bar bg-warning';
+            } else {
+                progressBarElement.className = 'progress-bar bg-success';
+            }
+        }
+        
+        requiredFields.forEach(field => {
+            field.addEventListener('input', updateProgress);
+            field.addEventListener('change', updateProgress);
+        });
+        
+        updateProgress();
+    });
+    
+    // Show donation tips modal
+    function showDonationTips() {
+        const modal = document.createElement('div');
+        modal.className = 'modal fade';
+        modal.innerHTML = `
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="fas fa-lightbulb me-2"></i>Donation Tips & Guidelines</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-success"><i class="fas fa-check-circle me-2"></i>Before Donation</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-dot-circle me-2 text-primary"></i>Get adequate sleep (8+ hours)</li>
+                                            <li><i class="fas fa-dot-circle me-2 text-primary"></i>Stay well hydrated</li>
+                                            <li><i class="fas fa-dot-circle me-2 text-primary"></i>Eat a healthy meal</li>
+                                            <li><i class="fas fa-dot-circle me-2 text-primary"></i>Avoid alcohol 24 hours prior</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-info"><i class="fas fa-info-circle me-2"></i>What to Bring</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-dot-circle me-2 text-primary"></i>Valid government ID</li>
+                                            <li><i class="fas fa-dot-circle me-2 text-primary"></i>Medical reports</li>
+                                            <li><i class="fas fa-dot-circle me-2 text-primary"></i>Emergency contact info</li>
+                                            <li><i class="fas fa-dot-circle me-2 text-primary"></i>Insurance information</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert alert-primary mt-4">
+                            <i class="fas fa-heart me-2"></i>
+                            <strong>Remember:</strong> Your donation can save up to 8 lives and improve the quality of life for many more people.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a href="tel:+18006332273" class="btn btn-primary"><i class="fas fa-phone me-2"></i>Call Support</a>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        const modalInstance = new bootstrap.Modal(modal);
+        modalInstance.show();
+        modal.addEventListener('hidden.bs.modal', () => modal.remove());
+    }
+    
+    // Make function globally available
+    window.showDonationTips = showDonationTips;
     });
 </script>
 {% endblock %}

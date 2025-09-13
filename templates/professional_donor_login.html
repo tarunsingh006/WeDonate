@@ -17,13 +17,13 @@
 {% endblock %}
 
 {% block hero_section %}
-<section class="hero-section" style="min-height: 70vh; padding-top: 120px;">
+<section class="hero-section" style="min-height: 60vh; padding-top: 120px; padding-bottom: 3rem;">
     <div class="container">
         <div class="row justify-content-center align-items-center">
             <div class="col-lg-10">
                 <div class="text-center text-white mb-5">
-                    <h1 class="hero-title mb-3">Secure Medical Donor Portal</h1>
-                    <p class="hero-description">Professional healthcare platform for registered medical donors. Manage your donation journey, access medical records, and connect with healthcare providers.</p>
+                    <h1 class="hero-title mb-3">Medical Donor Portal Access</h1>
+                    <p class="hero-description">Secure login for registered medical donors. Access your donation history, medical records, and manage appointments.</p>
                 </div>
             </div>
         </div>
@@ -32,62 +32,60 @@
 {% endblock %}
 
 {% block content %}
-<div class="container" style="margin-top: -100px; position: relative; z-index: 10;">
+<div class="container" style="margin-top: 2rem; position: relative;">
     <div class="row justify-content-center">
         <div class="col-lg-5 col-md-7">
-            <div class="professional-form">
+            <div class="form-3d">
                 <div class="text-center mb-4">
                     <div class="mb-3">
-                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto" 
-                             style="width: 80px; height: 80px;">
-                            <i class="fas fa-user-md" style="font-size: 2rem;"></i>
+                        <div class="professional-icon-large">
+                            <i class="fas fa-user-md"></i>
                         </div>
                     </div>
-                    <h2 class="mb-3">Donor Portal Login</h2>
-                    <p class="text-muted mb-4">Enter your credentials to access your secure medical donor dashboard</p>
+                    <h2 class="gradient-text">Medical Donor Login</h2>
+                    <p class="text-muted">Access your secure medical donor account</p>
                 </div>
 
-                <form method="POST" action="{% url 'donor-login' %}" novalidate aria-labelledby="login-heading">
+                <form method="POST" action="{% url 'donor-login' %}" novalidate>
                     {% csrf_token %}
                     
                     {% if fail %}
-                    <div class="alert alert-danger" role="alert" aria-live="polite">
-                        <i class="fas fa-exclamation-triangle me-2" aria-hidden="true"></i>
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
                         {{ msg }}
                     </div>
                     {% endif %}
                     
-                    <div class="form-group">
-                        <label for="username" class="form-label">
-                            <i class="fas fa-user me-2" aria-hidden="true"></i>Medical ID / Username
+                    <div class="professional-form-group">
+                        <label for="username" class="professional-label">
+                            <i class="fas fa-user me-2"></i>Medical ID / Username
                         </label>
                         <input type="text" 
                                name="username" 
-                               class="form-control" 
+                               class="form-control-3d" 
                                id="username" 
                                placeholder="Enter your medical ID or username"
                                required 
                                autofocus
-                               autocomplete="username"
-                               aria-describedby="username-help"
-                               aria-invalid="false">
-                        <div id="username-help" class="form-text sr-only">Enter your registered medical ID or username</div>
+                               autocomplete="username">
                     </div>
                     
-                    <div class="form-group">
-                        <label for="password" class="form-label">
-                            <i class="fas fa-lock me-2" aria-hidden="true"></i>Secure Password
+                    <div class="professional-form-group">
+                        <label for="password" class="professional-label">
+                            <i class="fas fa-lock me-2"></i>Secure Password
                         </label>
-                        <input type="password" 
-                               name="password" 
-                               class="form-control" 
-                               id="password" 
-                               placeholder="Enter your secure password"
-                               required
-                               autocomplete="current-password"
-                               aria-describedby="password-help"
-                               aria-invalid="false">
-                        <div id="password-help" class="form-text sr-only">Enter your account password</div>
+                        <div class="professional-input-group">
+                            <input type="password" 
+                                   name="password" 
+                                   class="form-control-3d" 
+                                   id="password" 
+                                   placeholder="Enter your secure password"
+                                   required
+                                   autocomplete="current-password">
+                            <button type="button" class="professional-toggle-password" onclick="togglePassword('password')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     
                     {% if request.GET.next %}
@@ -97,32 +95,30 @@
                     <div class="form-group">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="remember" aria-describedby="remember-help">
+                                <input type="checkbox" class="form-check-input" id="remember">
                                 <label class="form-check-label" for="remember">
                                     Remember me
                                 </label>
-                                <div id="remember-help" class="form-text sr-only">Keep me logged in on this device</div>
                             </div>
-                            <a href="{% url 'donor-forgot-password' %}" class="text-primary text-decoration-none" aria-label="Reset your password">
-                                <i class="fas fa-key me-1" aria-hidden="true"></i>Forgot password?
+                            <a href="{% url 'donor-forgot-password' %}" class="text-primary text-decoration-none">
+                                <i class="fas fa-key me-1"></i>Forgot password?
                             </a>
                         </div>
                     </div>
                     
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-primary btn-lg" aria-describedby="submit-help">
-                            <i class="fas fa-sign-in-alt me-2" aria-hidden="true"></i>Access Donor Portal
+                        <button type="submit" class="btn-3d btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Access Medical Portal
                         </button>
-                        <div id="submit-help" class="form-text sr-only">Submit form to log into your medical donor account</div>
                     </div>
                 </form>
                 
                 <hr class="my-4">
                 
                 <div class="text-center">
-                    <p class="mb-3">New to our platform?</p>
-                    <a href="{% url 'donor-register' %}" class="btn btn-outline-primary" role="button" aria-label="Create a new medical donor account">
-                        <i class="fas fa-user-plus me-2" aria-hidden="true"></i>Register as Donor
+                    <p class="mb-3">New to our medical platform?</p>
+                    <a href="{% url 'donor-register' %}" class="morphic-button">
+                        <i class="fas fa-user-plus me-2"></i>Register as Medical Donor
                     </a>
                 </div>
             </div>
@@ -136,13 +132,13 @@
                     <div class="col-12">
                         <div class="d-flex align-items-start p-3 bg-light rounded">
                             <div class="me-3 mt-1">
-                                <div class="bg-primary text-white rounded p-2" aria-hidden="true">
+                                <div class="bg-primary text-white rounded p-2">
                                     <i class="fas fa-clipboard-list"></i>
                                 </div>
                             </div>
                             <div>
-                                <h4 class="mb-1">Medical History Management</h4>
-                                <p class="text-muted mb-0">Comprehensive tracking of your donation history and medical records</p>
+                                <h6 class="mb-1">Medical History Management</h6>
+                                <small class="text-muted">Comprehensive tracking of your donation history and medical records</small>
                             </div>
                         </div>
                     </div>
@@ -150,13 +146,13 @@
                     <div class="col-12">
                         <div class="d-flex align-items-start p-3 bg-light rounded">
                             <div class="me-3 mt-1">
-                                <div class="bg-success text-white rounded p-2" aria-hidden="true">
+                                <div class="bg-success text-white rounded p-2">
                                     <i class="fas fa-calendar-check"></i>
                                 </div>
                             </div>
                             <div>
-                                <h4 class="mb-1">Appointment Scheduling</h4>
-                                <p class="text-muted mb-0">Book and manage medical appointments with healthcare providers</p>
+                                <h6 class="mb-1">Appointment Scheduling</h6>
+                                <small class="text-muted">Book and manage medical appointments with healthcare providers</small>
                             </div>
                         </div>
                     </div>
@@ -164,13 +160,13 @@
                     <div class="col-12">
                         <div class="d-flex align-items-start p-3 bg-light rounded">
                             <div class="me-3 mt-1">
-                                <div class="bg-info text-white rounded p-2" aria-hidden="true">
+                                <div class="bg-info text-white rounded p-2">
                                     <i class="fas fa-heartbeat"></i>
                                 </div>
                             </div>
                             <div>
-                                <h4 class="mb-1">Health Monitoring</h4>
-                                <p class="text-muted mb-0">Real-time health status updates and medical compatibility tracking</p>
+                                <h6 class="mb-1">Health Monitoring</h6>
+                                <small class="text-muted">Real-time health status updates and medical compatibility tracking</small>
                             </div>
                         </div>
                     </div>
@@ -178,13 +174,13 @@
                     <div class="col-12">
                         <div class="d-flex align-items-start p-3 bg-light rounded">
                             <div class="me-3 mt-1">
-                                <div class="bg-warning text-white rounded p-2" aria-hidden="true">
+                                <div class="bg-warning text-white rounded p-2">
                                     <i class="fas fa-shield-alt"></i>
                                 </div>
                             </div>
                             <div>
-                                <h4 class="mb-1">Secure Medical Data</h4>
-                                <p class="text-muted mb-0">HIPAA-compliant security for all your medical information</p>
+                                <h6 class="mb-1">Secure Medical Data</h6>
+                                <small class="text-muted">HIPAA-compliant security for all your medical information</small>
                             </div>
                         </div>
                     </div>
@@ -248,4 +244,92 @@
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Password toggle functionality
+    function togglePassword(fieldId) {
+        const field = document.getElementById(fieldId);
+        const button = field.nextElementSibling;
+        const icon = button.querySelector('i');
+        
+        if (field.type === 'password') {
+            field.type = 'text';
+            icon.className = 'fas fa-eye-slash';
+        } else {
+            field.type = 'password';
+            icon.className = 'fas fa-eye';
+        }
+    }
+    
+    // Enhanced form validation and UX
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const inputs = form.querySelectorAll('input[required]');
+        
+        // Add input validation styling
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.classList.add('is-valid');
+                    this.classList.remove('is-invalid');
+                } else {
+                    this.classList.remove('is-valid');
+                }
+            });
+            
+            input.addEventListener('blur', function() {
+                if (!this.value.trim() && this.hasAttribute('required')) {
+                    this.classList.add('is-invalid');
+                }
+            });
+        });
+        
+        // Form submission enhancement
+        form.addEventListener('submit', function(e) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Add loading state
+            submitBtn.innerHTML = '<div class="loading-spinner"></div>Authenticating...';
+            submitBtn.disabled = true;
+            
+            // Reset after timeout (in case of error)
+            setTimeout(() => {
+                if (submitBtn) {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            }, 5000);
+        });
+        
+        // Password visibility toggle
+        const passwordField = document.getElementById('password');
+        const toggleButton = document.createElement('button');
+        toggleButton.type = 'button';
+        toggleButton.className = 'btn btn-outline-secondary position-absolute';
+        toggleButton.style.cssText = 'right: 10px; top: 50%; transform: translateY(-50%); z-index: 5; border: none; background: none;';
+        toggleButton.innerHTML = '<i class="fas fa-eye"></i>';
+        
+        passwordField.parentNode.style.position = 'relative';
+        passwordField.parentNode.appendChild(toggleButton);
+        
+        toggleButton.addEventListener('click', function() {
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                passwordField.type = 'password';
+                this.innerHTML = '<i class="fas fa-eye"></i>';
+            }
+        });
+        
+        // Auto-focus on page load
+        const firstInput = form.querySelector('input');
+        if (firstInput && !firstInput.value) {
+            setTimeout(() => firstInput.focus(), 100);
+        }
+    });
+</script>
 {% endblock %}

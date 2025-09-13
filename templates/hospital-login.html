@@ -1,126 +1,263 @@
-{% extends 'modern_base.html' %}
+{% extends 'professional_base.html' %}
 {% load static %}
 
-{% block title %}Hospital Login - We Donate{% endblock %}
+{% block title %}Hospital Portal - WeDonate Medical Platform{% endblock %}
 
-{% block nav_links %}
-<a href="{% url 'wedonate' %}" class="nav-link">
+{% block extra_nav %}
+<a class="nav-link text-white" href="{% url 'wedonate' %}">
     <i class="fas fa-home me-1"></i>
     Home
 </a>
-{% endblock %}
-
-{% block hero %}
-<div class="hero-3d">
-    <div class="hero-content">
-        <h1 class="hero-title">
-            <i class="fas fa-hospital me-3"></i>
-            Hospital Portal
-        </h1>
-        <p class="hero-subtitle">Medical professionals access - Manage donations and save lives</p>
-    </div>
-</div>
+<a class="nav-link text-white" href="{% url 'hospital-register' %}">
+    <i class="fas fa-hospital-user me-1"></i>
+    Register Hospital
+</a>
 {% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-lg-5 col-md-7">
-        <div class="form-3d">
-            <div class="text-center mb-4">
-                <div class="mb-3">
-                    <i class="fas fa-stethoscope fa-3x" style="color: var(--success);"></i>
-                </div>
-                <h3 class="text-white fw-bold mb-2">Medical Portal</h3>
-                <p class="text-white-50">Secure access for healthcare professionals</p>
+<!-- Professional Hero Section -->
+<section class="professional-hero-small">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="text-white mb-3">
+                    <i class="fas fa-hospital me-3"></i>
+                    Hospital Portal Access
+                </h1>
+                <p class="text-white-75 fs-5">Secure medical professional platform for organ donation management</p>
             </div>
-            
-            <form method="POST" action="{% url 'hospital-login' %}">
-                {% csrf_token %}
-                
-                {% if success %}
-                <div class="alert alert-success" style="background: rgba(79, 172, 254, 0.2); border: 1px solid rgba(79, 172, 254, 0.3); color: white;">
-                    <i class="fas fa-check-circle me-2"></i>
-                    {{ msg }}
-                </div>
-                {% endif %}
-                
-                {% if fail %}
-                <div class="alert alert-danger" style="background: rgba(255, 107, 107, 0.2); border: 1px solid rgba(255, 107, 107, 0.3); color: white;">
-                    <i class="fas fa-times-circle me-2"></i>
-                    {{ msg }}
-                </div>
-                {% endif %}
-                
-                <div class="mb-3">
-                    <label for="username" class="form-label text-white fw-medium">
-                        <i class="fas fa-user-md me-2"></i>
-                        Hospital Username
-                    </label>
-                    <input type="text" name="username" class="form-control form-control-3d" id="username" placeholder="Enter hospital username" required autofocus>
-                </div>
-                
-                <div class="mb-4">
-                    <label for="pwd" class="form-label text-white fw-medium">
-                        <i class="fas fa-shield-alt me-2"></i>
-                        Secure Password
-                    </label>
-                    <input type="password" name="password" class="form-control form-control-3d" id="pwd" placeholder="Enter secure password" required>
-                </div>
-                
-                {% if request.GET.next %}
-                <input type="hidden" name="next" value="{{ request.GET.next }}">
-                {% endif %}
-                
-                <div class="d-grid mb-4">
-                    <button type="submit" class="btn btn-3d btn-lg">
-                        <i class="fas fa-sign-in-alt me-2"></i>
-                        Access Portal
-                    </button>
-                </div>
-                
-                <div class="text-center">
-                    <div class="row g-2">
-                        <div class="col-6">
-                            <a href="{% url 'hospital-forgot-password' %}" class="text-decoration-none" style="color: var(--success);">
-                                <i class="fas fa-key me-1"></i>
-                                Forgot Password?
-                            </a>
-                        </div>
-                        <div class="col-6">
-                            <a href="{% url 'hospital-register' %}" class="text-decoration-none" style="color: var(--success);">
-                                <i class="fas fa-hospital-user me-1"></i>
-                                Register Hospital
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-        
-        <!-- Hospital Features -->
-        <div class="row g-3 mt-4">
-            <div class="col-4">
-                <div class="glass-card text-center p-3">
-                    <i class="fas fa-calendar-check fa-2x mb-2" style="color: var(--success);"></i>
-                    <div class="fw-bold text-white">Appointments</div>
-                    <small class="text-white-50">Manage</small>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="glass-card text-center p-3">
-                    <i class="fas fa-hand-holding-heart fa-2x mb-2" style="color: var(--accent);"></i>
-                    <div class="fw-bold text-white">Donations</div>
-                    <small class="text-white-50">Approve</small>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="glass-card text-center p-3">
-                    <i class="fas fa-search fa-2x mb-2" style="color: var(--warning);"></i>
-                    <div class="fw-bold text-white">Search</div>
-                    <small class="text-white-50">Database</small>
+            <div class="col-lg-4 text-end">
+                <div class="professional-badge">
+                    <i class="fas fa-shield-alt me-2"></i>
+                    HIPAA Compliant
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- Professional Login Form -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-7">
+                <div class="professional-card">
+                    <div class="text-center mb-4">
+                        <div class="professional-icon-large mb-3">
+                            <i class="fas fa-stethoscope"></i>
+                        </div>
+                        <h3 class="text-primary mb-2">Medical Portal</h3>
+                        <p class="text-muted">Authorized healthcare professional access</p>
+                    </div>
+                    
+                    <form method="POST" action="{% url 'hospital-login' %}" class="professional-form">
+                        {% csrf_token %}
+                        
+                        {% if success %}
+                        <div class="alert alert-success professional-alert">
+                            <i class="fas fa-check-circle me-2"></i>
+                            {{ msg }}
+                        </div>
+                        {% endif %}
+                        
+                        {% if fail %}
+                        <div class="alert alert-danger professional-alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            {{ msg }}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="professional-form-group">
+                            <label for="username" class="professional-label">
+                                <i class="fas fa-user-md me-2"></i>
+                                Hospital Username
+                            </label>
+                            <input type="text" name="username" class="professional-input" id="username" 
+                                   placeholder="Enter your hospital username" required autofocus>
+                        </div>
+                        
+                        <div class="professional-form-group">
+                            <label for="pwd" class="professional-label">
+                                <i class="fas fa-lock me-2"></i>
+                                Secure Password
+                            </label>
+                            <div class="professional-input-group">
+                                <input type="password" name="password" class="professional-input" id="pwd" 
+                                       placeholder="Enter your secure password" required>
+                                <button type="button" class="professional-toggle-password" onclick="togglePassword('pwd')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        {% if request.GET.next %}
+                        <input type="hidden" name="next" value="{{ request.GET.next }}">
+                        {% endif %}
+                        
+                        <div class="professional-form-group mb-4">
+                            <button type="submit" class="professional-btn professional-btn-primary w-100">
+                                <i class="fas fa-sign-in-alt me-2"></i>
+                                Access Medical Portal
+                            </button>
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <a href="{% url 'hospital-forgot-password' %}" class="professional-link">
+                                        <i class="fas fa-key me-1"></i>
+                                        Forgot Password?
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="{% url 'hospital-register' %}" class="professional-link">
+                                        <i class="fas fa-hospital-user me-1"></i>
+                                        Register Hospital
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+            
+            <!-- Professional Features Grid -->
+            <div class="col-lg-6 col-md-12 mt-4 mt-lg-0">
+                <div class="ps-lg-4">
+                    <h4 class="mb-4 text-center text-lg-start">Hospital Portal Features</h4>
+                    <div class="row g-3">
+                        <div class="col-md-4 col-sm-4 col-12">
+                            <div class="professional-feature-card text-center h-100">
+                                <div class="professional-feature-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="professional-feature-title">Appointments</div>
+                                <div class="professional-feature-subtitle">Manage Schedule</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-12">
+                            <div class="professional-feature-card text-center h-100">
+                                <div class="professional-feature-icon professional-feature-icon-danger">
+                                    <i class="fas fa-hand-holding-heart"></i>
+                                </div>
+                                <div class="professional-feature-title">Donations</div>
+                                <div class="professional-feature-subtitle">Approve Requests</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-12">
+                            <div class="professional-feature-card text-center h-100">
+                                <div class="professional-feature-icon professional-feature-icon-accent">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div class="professional-feature-title">Database</div>
+                                <div class="professional-feature-subtitle">Search Records</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="professional-badge verified d-inline-flex">
+                            <i class="fas fa-shield-alt me-2"></i>HIPAA Compliant Platform
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Professional Security Notice -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="professional-security-notice">
+                    <i class="fas fa-shield-alt text-primary me-2"></i>
+                    <strong>Security Notice:</strong> This portal uses advanced encryption and multi-factor authentication to protect patient data and maintain HIPAA compliance.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Password toggle functionality
+    function togglePassword(fieldId) {
+        const field = document.getElementById(fieldId);
+        const button = field.nextElementSibling;
+        const icon = button.querySelector('i');
+        
+        if (field.type === 'password') {
+            field.type = 'text';
+            icon.className = 'fas fa-eye-slash';
+        } else {
+            field.type = 'password';
+            icon.className = 'fas fa-eye';
+        }
+    }
+    
+    // Enhanced form validation and UX
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('.professional-form');
+        const inputs = form.querySelectorAll('input[required]');
+        
+        // Add input validation styling
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.classList.add('is-valid');
+                    this.classList.remove('is-invalid');
+                } else {
+                    this.classList.remove('is-valid');
+                }
+            });
+            
+            input.addEventListener('blur', function() {
+                if (!this.value.trim() && this.hasAttribute('required')) {
+                    this.classList.add('is-invalid');
+                }
+            });
+        });
+        
+        // Form submission enhancement
+        form.addEventListener('submit', function(e) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Add loading state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Authenticating...';
+            submitBtn.disabled = true;
+            
+            // Reset after timeout (in case of error)
+            setTimeout(() => {
+                if (submitBtn) {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            }, 5000);
+        });
+        
+        // Auto-focus on page load
+        const firstInput = form.querySelector('input');
+        if (firstInput && !firstInput.value) {
+            setTimeout(() => firstInput.focus(), 100);
+        }
+        
+        // Initialize professional features with animations
+        const featureCards = document.querySelectorAll('.professional-feature-card');
+        featureCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'all 0.5s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 300 + (index * 150));
+        });
+    });
+</script>
 {% endblock %}

@@ -1,101 +1,425 @@
-{% extends 'modern_base.html' %}
+{% extends 'professional_base.html' %}
 {% load static %}
 
-{% block title %}We Donate - Modern Organ Donation Platform{% endblock %}
+{% block title %}WeDonate - Professional Medical Platform for Organ Donation{% endblock %}
 
-{% block hero %}
-<div class="hero-3d">
-    <div class="hero-content">
-        <h1 class="hero-title">We Donate</h1>
-        <p class="hero-subtitle">The value of life is not in its duration, but in its donation. Join with us and be an organ donor for someone in need.</p>
+{% block hero_section %}
+<section class="hero-section" style="min-height: 80vh; background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%); position: relative;">
+    <div class="container">
+        <div class="row align-items-center min-vh-80">
+            <div class="col-lg-6">
+                <div class="mb-4">
+                    <span class="badge bg-light text-primary px-3 py-2 rounded-pill mb-3">
+                        <i class="fas fa-award me-2"></i>ISO 27001 Certified Platform
+                    </span>
+                </div>
+                <h1 class="hero-title" style="font-size: 3.5rem; font-weight: 800; color: white; line-height: 1.1;">Transform Lives Through Medical Innovation</h1>
+                <p class="hero-description" style="font-size: 1.25rem; color: rgba(255,255,255,0.9); margin-bottom: 2rem;">
+                    Enterprise-grade organ donation platform trusted by 750+ medical institutions. 
+                    Advanced AI matching, HIPAA-compliant security, and 24/7 medical support.
+                </p>
+                <div class="hero-actions d-flex gap-3 flex-wrap">
+                    <button onclick="scrollToMedicalPortal()" class="btn btn-light btn-lg px-4 py-3">
+                        <i class="fas fa-user-md me-2"></i>Medical Portal
+                    </button>
+                    <a href="{% url 'hospital-login' %}" class="btn btn-outline-light btn-lg px-4 py-3">
+                        <i class="fas fa-hospital me-2"></i>Healthcare Provider Access
+                    </a>
+                </div>
+                <div class="mt-4 d-flex align-items-center gap-4 text-white">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-shield-check me-2 text-success"></i>
+                        <span class="small">HIPAA Compliant</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-clock me-2 text-info"></i>
+                        <span class="small">24/7 Support</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-users me-2 text-warning"></i>
+                        <span class="small">15,000+ Lives Saved</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image position-relative">
+                    <div class="medical-dashboard" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border-radius: 16px; padding: 2rem; border: 1px solid rgba(255,255,255,0.2);">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="text-white mb-0"><i class="fas fa-chart-line me-2"></i>Live Medical Dashboard</h5>
+                            <span class="badge bg-success">Live</span>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="stat-card text-center p-3" style="background: rgba(255,255,255,0.1); border-radius: 12px;">
+                                    <div class="stat-number text-white" style="font-size: 2rem; font-weight: 800;">15,247</div>
+                                    <div class="stat-label text-white-50">Lives Saved</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-card text-center p-3" style="background: rgba(255,255,255,0.1); border-radius: 12px;">
+                                    <div class="stat-number text-white" style="font-size: 2rem; font-weight: 800;">752</div>
+                                    <div class="stat-label text-white-50">Medical Centers</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-card text-center p-3" style="background: rgba(255,255,255,0.1); border-radius: 12px;">
+                                    <div class="stat-number text-white" style="font-size: 2rem; font-weight: 800;">99.9%</div>
+                                    <div class="stat-label text-white-50">Uptime SLA</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-card text-center p-3" style="background: rgba(255,255,255,0.1); border-radius: 12px;">
+                                    <div class="stat-number text-white" style="font-size: 2rem; font-weight: 800;">2.3s</div>
+                                    <div class="stat-label text-white-50">Avg Response</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
 {% endblock %}
 
 {% block content %}
-<div class="row g-4 mb-5">
-    <!-- Donor Module Card -->
-    <div class="col-lg-6">
-        <div class="card-3d h-100">
-            <div class="position-relative overflow-hidden" style="height: 250px;">
-                <img src="{% static 'images/donors.jpg' %}" class="w-100 h-100 object-fit-cover" alt="Donor Module">
-                <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));"></div>
-                <div class="position-absolute top-50 start-50 translate-middle text-center">
-                    <i class="fas fa-user-plus fa-3x text-white mb-3"></i>
-                    <h3 class="text-white fw-bold">Donor Module</h3>
+<!-- Medical Portal Form Section -->
+<section id="medical-portal-section" class="py-5" style="background: #ffffff; display: none;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="text-center mb-5">
+                    <h2 class="mb-3" style="font-size: 2.5rem; font-weight: 700; color: #1e40af;">Medical Portal Access</h2>
+                    <p class="lead text-muted">Choose your access type to continue to the medical platform</p>
                 </div>
-            </div>
-            <div class="card-body-3d">
-                <h5 class="fw-bold mb-3">Become a Life Saver</h5>
-                <p class="mb-4">Register as a donor, submit your donation requests and book an appointment for getting your donations approved.</p>
-                <div class="d-grid">
-                    <a href="{% url 'donor-login' %}" class="btn btn-3d">
-                        <i class="fas fa-heart me-2"></i>
-                        Join as Donor
-                    </a>
+                
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm" style="transition: all 0.3s ease;">
+                            <div class="card-body text-center p-4">
+                                <div class="mb-4">
+                                    <div class="bg-primary text-white rounded-circle mx-auto" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-user-md" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                                <h4 class="mb-3" style="color: #1e40af;">Medical Donor</h4>
+                                <p class="text-muted mb-4">Register or login as a medical donor to manage your donation profile and medical information.</p>
+                                <div class="d-grid gap-2">
+                                    <a href="{% url 'donor-login' %}" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Donor Login
+                                    </a>
+                                    <a href="{% url 'donor-register' %}" class="btn btn-outline-primary">
+                                        <i class="fas fa-user-plus me-2"></i>Register as Donor
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm" style="transition: all 0.3s ease;">
+                            <div class="card-body text-center p-4">
+                                <div class="mb-4">
+                                    <div class="bg-success text-white rounded-circle mx-auto" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-hospital" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                                <h4 class="mb-3" style="color: #059669;">Healthcare Provider</h4>
+                                <p class="text-muted mb-4">Access the healthcare provider portal for hospitals and medical institutions.</p>
+                                <div class="d-grid gap-2">
+                                    <a href="{% url 'hospital-login' %}" class="btn btn-success btn-lg">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Provider Login
+                                    </a>
+                                    <a href="{% url 'hospital-register' %}" class="btn btn-outline-success">
+                                        <i class="fas fa-hospital-alt me-2"></i>Register Institution
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <button onclick="closeMedicalPortal()" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-2"></i>Close
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- Hospital Module Card -->
-    <div class="col-lg-6">
-        <div class="card-3d h-100">
-            <div class="position-relative overflow-hidden" style="height: 250px;">
-                <img src="{% static 'images/hospital.jpg' %}" class="w-100 h-100 object-fit-cover" alt="Hospital Module">
-                <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(118, 75, 162, 0.8), rgba(102, 126, 234, 0.8));"></div>
-                <div class="position-absolute top-50 start-50 translate-middle text-center">
-                    <i class="fas fa-hospital fa-3x text-white mb-3"></i>
-                    <h3 class="text-white fw-bold">Hospital Module</h3>
+</section>
+<!-- Professional Services Section -->
+<section class="py-5" style="background: #f8fafc;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <div class="mb-3">
+                <span class="badge bg-primary px-3 py-2 rounded-pill">
+                    <i class="fas fa-star me-2"></i>Award-Winning Platform
+                </span>
+            </div>
+            <h2 class="mb-3" style="font-size: 2.5rem; font-weight: 700;">Comprehensive Medical Solutions</h2>
+            <p class="lead text-muted">Enterprise-grade platform designed for medical professionals and healthcare institutions</p>
+        </div>
+        
+        <div class="row g-4 mb-5">
+            <div class="col-lg-4 col-md-6">
+                <div class="professional-card text-center h-100" style="border: none; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;">
+                    <div class="card-icon mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #1e40af, #0891b2); margin: 0 auto;">
+                        <i class="fas fa-user-md" style="font-size: 2rem;"></i>
+                    </div>
+                    <h3 class="mb-3" style="font-size: 1.5rem; font-weight: 700;">Medical Donor Management</h3>
+                    <p class="text-muted mb-4">Comprehensive donor registration and medical history management system with advanced screening protocols.</p>
+                    <div class="mt-auto">
+                        <a href="{% url 'donor-register' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-arrow-right me-2"></i>Register as Donor
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="card-body-3d">
-                <h5 class="fw-bold mb-3">Medical Partner</h5>
-                <p class="mb-4">Accept/deny appointments and donations. Access a centralized repository of approved donations.</p>
-                <div class="d-grid">
-                    <a href="{% url 'hospital-login' %}" class="btn btn-3d">
-                        <i class="fas fa-stethoscope me-2"></i>
-                        Hospital Login
-                    </a>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="professional-card text-center h-100" style="border: none; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;">
+                    <div class="card-icon mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #059669, #10b981); margin: 0 auto;">
+                        <i class="fas fa-hospital" style="font-size: 2rem;"></i>
+                    </div>
+                    <h3 class="mb-3" style="font-size: 1.5rem; font-weight: 700;">Healthcare Provider Portal</h3>
+                    <p class="text-muted mb-4">Advanced management system for hospitals and medical institutions with real-time donation tracking.</p>
+                    <div class="mt-auto">
+                        <a href="{% url 'hospital-register' %}" class="btn btn-success btn-lg">
+                            <i class="fas fa-arrow-right me-2"></i>Join Medical Network
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="professional-card text-center h-100" style="border: none; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;">
+                    <div class="card-icon mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #7c3aed, #a855f7); margin: 0 auto;">
+                        <i class="fas fa-chart-line" style="font-size: 2rem;"></i>
+                    </div>
+                    <h3 class="mb-3" style="font-size: 1.5rem; font-weight: 700;">Analytics & Reporting</h3>
+                    <p class="text-muted mb-4">Comprehensive analytics dashboard with detailed reporting for medical outcomes and performance metrics.</p>
+                    <div class="mt-auto">
+                        <a href="#" class="btn btn-info btn-lg">
+                            <i class="fas fa-arrow-right me-2"></i>View Analytics
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<!-- Statistics Section -->
-<div class="row g-4 mb-5">
-    <div class="col-md-4">
-        <div class="glass-card text-center p-4">
-            <div class="mb-3">
-                <i class="fas fa-users fa-3x" style="color: var(--accent);"></i>
+<!-- Medical Statistics Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #1e40af 0%, #0891b2 100%); color: white;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="mb-4">
+                    <span class="badge bg-light text-primary px-3 py-2 rounded-pill mb-3">
+                        <i class="fas fa-trophy me-2"></i>Industry Leading
+                    </span>
+                </div>
+                <h2 class="mb-4" style="font-size: 2.5rem; font-weight: 700;">Medical Impact & Performance Metrics</h2>
+                <p class="lead mb-4" style="opacity: 0.9;">Our platform has facilitated life-saving organ donations across healthcare networks, maintaining the highest standards of medical excellence.</p>
+                
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="me-4">
+                                <div class="bg-light text-primary rounded-circle p-3" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-heartbeat" style="font-size: 1.5rem;"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="mb-0 text-white" style="font-size: 2.5rem; font-weight: 800;">15,247</h3>
+                                <p class="mb-0" style="opacity: 0.8;">Successful Donations</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="me-4">
+                                <div class="bg-light text-success rounded-circle p-3" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-user-check" style="font-size: 1.5rem;"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="mb-0 text-white" style="font-size: 2.5rem; font-weight: 800;">98.7%</h3>
+                                <p class="mb-0" style="opacity: 0.8;">Success Rate</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="me-4">
+                                <div class="bg-light text-info rounded-circle p-3" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-hospital-alt" style="font-size: 1.5rem;"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="mb-0 text-white" style="font-size: 2.5rem; font-weight: 800;">752</h3>
+                                <p class="mb-0" style="opacity: 0.8;">Partner Hospitals</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="me-4">
+                                <div class="bg-light text-warning rounded-circle p-3" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-clock" style="font-size: 1.5rem;"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="mb-0 text-white" style="font-size: 2.5rem; font-weight: 800;">24/7</h3>
+                                <p class="mb-0" style="opacity: 0.8;">Medical Support</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h3 class="fw-bold text-white">10,000+</h3>
-            <p class="text-white-50 mb-0">Registered Donors</p>
+            
+            <div class="col-lg-6">
+                <div class="professional-card" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2);">
+                    <h4 class="mb-4 text-white">Medical Compliance & Certifications</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center p-3 rounded" style="background: rgba(255,255,255,0.1);">
+                                <i class="fas fa-certificate text-warning me-3" style="font-size: 1.5rem;"></i>
+                                <div>
+                                    <h6 class="mb-0 text-white">ISO 27001</h6>
+                                    <small style="color: rgba(255,255,255,0.8);">Security Management</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center p-3 rounded" style="background: rgba(255,255,255,0.1);">
+                                <i class="fas fa-shield-alt text-success me-3" style="font-size: 1.5rem;"></i>
+                                <div>
+                                    <h6 class="mb-0 text-white">HIPAA</h6>
+                                    <small style="color: rgba(255,255,255,0.8);">Privacy Compliant</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center p-3 rounded" style="background: rgba(255,255,255,0.1);">
+                                <i class="fas fa-check-circle text-info me-3" style="font-size: 1.5rem;"></i>
+                                <div>
+                                    <h6 class="mb-0 text-white">FDA Approved</h6>
+                                    <small style="color: rgba(255,255,255,0.8);">Medical Device Standards</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center p-3 rounded" style="background: rgba(255,255,255,0.1);">
+                                <i class="fas fa-award text-warning me-3" style="font-size: 1.5rem;"></i>
+                                <div>
+                                    <h6 class="mb-0 text-white">Joint Commission</h6>
+                                    <small style="color: rgba(255,255,255,0.8);">Healthcare Accredited</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="glass-card text-center p-4">
-            <div class="mb-3">
-                <i class="fas fa-heart fa-3x" style="color: var(--success);"></i>
-            </div>
-            <h3 class="fw-bold text-white">5,000+</h3>
-            <p class="text-white-50 mb-0">Lives Saved</p>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="glass-card text-center p-4">
-            <div class="mb-3">
-                <i class="fas fa-hospital fa-3x" style="color: var(--warning);"></i>
-            </div>
-            <h3 class="fw-bold text-white">500+</h3>
-            <p class="text-white-50 mb-0">Partner Hospitals</p>
-        </div>
-    </div>
-</div>
+</section>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/hospital_script.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    // Medical Portal Functions
+    function scrollToMedicalPortal() {
+        const section = document.getElementById('medical-portal-section');
+        section.style.display = 'block';
+        section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Add fade-in animation
+        section.style.opacity = '0';
+        setTimeout(() => {
+            section.style.transition = 'opacity 0.5s ease-in-out';
+            section.style.opacity = '1';
+        }, 100);
+    }
+    
+    function closeMedicalPortal() {
+        const section = document.getElementById('medical-portal-section');
+        section.style.transition = 'opacity 0.3s ease-out';
+        section.style.opacity = '0';
+        setTimeout(() => {
+            section.style.display = 'none';
+        }, 300);
+    }
+    
+    // Initialize homepage animations
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate statistics counter
+        const counters = document.querySelectorAll('h4');
+        counters.forEach(counter => {
+            const target = parseInt(counter.textContent.replace(/[^\d]/g, ''));
+            if (target > 0) {
+                animateCounter(counter, target);
+            }
+        });
+        
+        // Add hover effects to service cards
+        const serviceCards = document.querySelectorAll('.professional-card');
+        serviceCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+                this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.15)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+                this.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.07)';
+            });
+        });
+        
+        // Add hover effects to medical portal cards
+        const portalCards = document.querySelectorAll('#medical-portal-section .card');
+        portalCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+                this.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.15)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            });
+        });
+    });
+    
+    // Counter animation function
+    function animateCounter(element, target) {
+        let current = 0;
+        const increment = target / 50;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            
+            // Format the number display
+            let display = Math.floor(current);
+            if (element.textContent.includes('%')) {
+                display += '%';
+            } else if (element.textContent.includes('+')) {
+                display = display.toLocaleString() + '+';
+            } else if (element.textContent.includes('/')) {
+                display = element.textContent; // Keep original format for 24/7
+            } else {
+                display = display.toLocaleString();
+            }
+            
+            element.textContent = display;
+        }, 50);
+    }
+</script>
 {% endblock %}

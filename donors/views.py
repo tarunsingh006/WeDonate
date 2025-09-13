@@ -168,7 +168,6 @@ def new_donation_request(request):
     
     if request.POST:
         donation_request = DonationRequests()
-        donation_request.donation_request = request.POST.get("newdonationreq", "")
         donation_request.organ_type = request.POST.get("organ_type", "")
         donation_request.blood_type = request.POST.get("blood_type", "")
         donation_request.family_relation = request.POST.get("family_relation", "")

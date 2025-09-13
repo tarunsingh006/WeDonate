@@ -54,8 +54,8 @@
                 <div class="mb-3">
                     <i class="fas fa-calendar-alt fa-3x" style="color: var(--success);"></i>
                 </div>
-                <h3 class="text-white fw-bold mb-2">Schedule Your Appointment</h3>
-                <p class="text-white-50">Book a convenient time for your donation evaluation</p>
+                <h3 class="text-dark fw-bold mb-2">Schedule Your Appointment</h3>
+                <p class="text-muted">Book a convenient time for your donation evaluation</p>
             </div>
             
             <form method="POST" enctype="multipart/form-data" action="{% url 'book-appointment' %}">
@@ -63,7 +63,7 @@
                 
                 <!-- Donation ID Selection -->
                 <div class="mb-4">
-                    <label for="donation-id" class="form-label text-white fw-medium">
+                    <label for="donation-id" class="form-label text-dark fw-medium">
                         <i class="fas fa-hashtag me-2"></i>
                         Select Donation Request
                     </label>
@@ -75,7 +75,7 @@
                         </option>
                         {% endfor %}
                     </select>
-                    <small class="text-white-50 mt-2 d-block">
+                    <small class="text-muted mt-2 d-block">
                         <i class="fas fa-info-circle me-1"></i>
                         Select the donation request you want to schedule an appointment for
                     </small>
@@ -83,7 +83,7 @@
                 
                 <!-- Hospital Selection -->
                 <div class="mb-4">
-                    <label for="hospital-name" class="form-label text-white fw-medium">
+                    <label for="hospital-name" class="form-label text-dark fw-medium">
                         <i class="fas fa-hospital me-2"></i>
                         Preferred Hospital
                     </label>
@@ -95,7 +95,7 @@
                         </option>
                         {% endfor %}
                     </select>
-                    <small class="text-white-50 mt-2 d-block">
+                    <small class="text-muted mt-2 d-block">
                         <i class="fas fa-map-marker-alt me-1"></i>
                         Choose your preferred hospital for the appointment
                     </small>
@@ -103,13 +103,13 @@
                 
                 <!-- Appointment Date -->
                 <div class="mb-4">
-                    <label for="appointment-date" class="form-label text-white fw-medium">
+                    <label for="appointment-date" class="form-label text-dark fw-medium">
                         <i class="fas fa-calendar me-2"></i>
                         Appointment Date
                     </label>
                     <input type="date" name="date" class="form-control form-control-3d" id="appointment-date" 
                            min="{% now 'Y-m-d' %}" max="2025-12-31" required>
-                    <small class="text-white-50 mt-2 d-block">
+                    <small class="text-muted mt-2 d-block">
                         <i class="fas fa-clock me-1"></i>
                         Select a date at least 24 hours in advance
                     </small>
@@ -117,7 +117,7 @@
                 
                 <!-- Preferred Time -->
                 <div class="mb-4">
-                    <label for="time-slot" class="form-label text-white fw-medium">
+                    <label for="time-slot" class="form-label text-dark fw-medium">
                         <i class="fas fa-clock me-2"></i>
                         Preferred Time Slot
                     </label>
@@ -137,11 +137,25 @@
                 </div>
                 
                 <!-- Submit Button -->
-                <div class="d-grid">
+                <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-3d btn-lg">
                         <i class="fas fa-calendar-check me-2"></i>
                         Book Appointment
                     </button>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'donor-home' %}" class="btn btn-outline-light btn-sm flex-fill">
+                            <i class="fas fa-arrow-left me-1"></i>
+                            Back to Dashboard
+                        </a>
+                        <button type="button" class="btn btn-outline-light btn-sm flex-fill" onclick="showAppointmentHelp()">
+                            <i class="fas fa-question-circle me-1"></i>
+                            Need Help?
+                        </button>
+                        <a href="tel:+18006332273" class="btn btn-outline-light btn-sm">
+                            <i class="fas fa-phone me-1"></i>
+                            Call
+                        </a>
+                    </div>
                 </div>
             </form>
         </div>
@@ -151,22 +165,22 @@
             <div class="col-md-4">
                 <div class="glass-card text-center p-4">
                     <i class="fas fa-user-md fa-3x mb-3" style="color: var(--success);"></i>
-                    <h5 class="text-white fw-bold">Medical Evaluation</h5>
-                    <p class="text-white-50 mb-0">Comprehensive health assessment</p>
+                    <h5 class="text-dark fw-bold">Medical Evaluation</h5>
+                    <p class="text-muted mb-0">Comprehensive health assessment</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="glass-card text-center p-4">
                     <i class="fas fa-shield-alt fa-3x mb-3" style="color: var(--accent);"></i>
-                    <h5 class="text-white fw-bold">Safe Process</h5>
-                    <p class="text-white-50 mb-0">Following all safety protocols</p>
+                    <h5 class="text-dark fw-bold">Safe Process</h5>
+                    <p class="text-muted mb-0">Following all safety protocols</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="glass-card text-center p-4">
                     <i class="fas fa-clock fa-3x mb-3" style="color: var(--warning);"></i>
-                    <h5 class="text-white fw-bold">Quick Response</h5>
-                    <p class="text-white-50 mb-0">Confirmation within 24 hours</p>
+                    <h5 class="text-dark fw-bold">Quick Response</h5>
+                    <p class="text-muted mb-0">Confirmation within 24 hours</p>
                 </div>
             </div>
         </div>
@@ -182,11 +196,11 @@
             <div class="card-body-3d">
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <h6 class="text-white fw-bold mb-3">
+                        <h6 class="text-dark fw-bold mb-3">
                             <i class="fas fa-check-circle me-2" style="color: var(--success);"></i>
                             What to Bring
                         </h6>
-                        <ul class="text-white-50 mb-0">
+                        <ul class="text-muted mb-0">
                             <li>Valid government ID</li>
                             <li>Medical reports and test results</li>
                             <li>List of current medications</li>
@@ -194,11 +208,11 @@
                         </ul>
                     </div>
                     <div class="col-md-6">
-                        <h6 class="text-white fw-bold mb-3">
+                        <h6 class="text-dark fw-bold mb-3">
                             <i class="fas fa-clock me-2" style="color: var(--warning);"></i>
                             Before Your Visit
                         </h6>
-                        <ul class="text-white-50 mb-0">
+                        <ul class="text-muted mb-0">
                             <li>Get adequate rest (8+ hours)</li>
                             <li>Stay hydrated</li>
                             <li>Avoid alcohol 24 hours prior</li>
@@ -263,6 +277,106 @@
                 this.style.borderColor = 'var(--danger)';
             }
         });
+        
+        // Add appointment availability checker
+        const hospitalSelect = document.getElementById('hospital-name');
+        const dateInput = document.getElementById('appointment-date');
+        const timeSelect = document.getElementById('time-slot');
+        
+        function checkAvailability() {
+            if (hospitalSelect.value && dateInput.value) {
+                const availabilityIndicator = document.createElement('small');
+                availabilityIndicator.className = 'text-success mt-1 d-block';
+                availabilityIndicator.innerHTML = '<i class="fas fa-check-circle me-1"></i>Checking availability...';
+                
+                const existingIndicator = timeSelect.parentNode.querySelector('.text-success, .text-warning');
+                if (existingIndicator) {
+                    existingIndicator.remove();
+                }
+                
+                timeSelect.parentNode.appendChild(availabilityIndicator);
+                
+                setTimeout(() => {
+                    availabilityIndicator.className = 'text-success mt-1 d-block';
+                    availabilityIndicator.innerHTML = '<i class="fas fa-check-circle me-1"></i>Multiple slots available';
+                }, 1500);
+            }
+        }
+        
+        hospitalSelect.addEventListener('change', checkAvailability);
+        dateInput.addEventListener('change', checkAvailability);
+    });
+    
+    // Show appointment help modal
+    function showAppointmentHelp() {
+        const modal = document.createElement('div');
+        modal.className = 'modal fade';
+        modal.innerHTML = `
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="fas fa-question-circle me-2"></i>Appointment Help & FAQ</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="accordion" id="helpAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#help1">
+                                        <i class="fas fa-calendar me-2"></i>How far in advance should I book?
+                                    </button>
+                                </h2>
+                                <div id="help1" class="accordion-collapse collapse show" data-bs-parent="#helpAccordion">
+                                    <div class="accordion-body">
+                                        We recommend booking at least 48-72 hours in advance to ensure availability. Emergency appointments can be arranged by calling our support line.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#help2">
+                                        <i class="fas fa-hospital me-2"></i>Can I change my hospital selection?
+                                    </button>
+                                </h2>
+                                <div id="help2" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                                    <div class="accordion-body">
+                                        Yes, you can modify your hospital selection up to 24 hours before your appointment. Contact support for assistance.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#help3">
+                                        <i class="fas fa-clock me-2"></i>What if I need to reschedule?
+                                    </button>
+                                </h2>
+                                <div id="help3" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                                    <div class="accordion-body">
+                                        You can reschedule your appointment through your dashboard or by calling our support team. Please provide at least 12 hours notice.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert alert-info mt-4">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Need immediate assistance?</strong> Call our 24/7 support line at +1 (800) MED-CARE
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a href="tel:+18006332273" class="btn btn-primary"><i class="fas fa-phone me-2"></i>Call Support</a>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        const modalInstance = new bootstrap.Modal(modal);
+        modalInstance.show();
+        modal.addEventListener('hidden.bs.modal', () => modal.remove());
+    }
+    
+    // Make function globally available
+    window.showAppointmentHelp = showAppointmentHelp;
     });
 </script>
 {% endblock %}

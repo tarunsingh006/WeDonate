@@ -89,14 +89,14 @@
                     </div>
                 </div>
                 <h3>
-                    {% regroup donationrequests by donation_status as status_groups %}
-                    {% for group in status_groups %}
-                        {% if group.grouper == 'Approved' %}
-                            {{ group.list|length }}
-                        {% endif %}
-                    {% empty %}
-                        0
-                    {% endfor %}
+                    {% with approved_count=0 %}
+                        {% for dreq in donationrequests %}
+                            {% if dreq.donation_status == 'Approved' %}
+                                {% with approved_count=approved_count|add:1 %}{% endwith %}
+                            {% endif %}
+                        {% endfor %}
+                        {{ approved_count }}
+                    {% endwith %}
                 </h3>
                 <p class="text-muted mb-0">Approved Donations</p>
             </div>
@@ -111,14 +111,14 @@
                     </div>
                 </div>
                 <h3>
-                    {% regroup donationrequests by donation_status as status_groups %}
-                    {% for group in status_groups %}
-                        {% if group.grouper == 'Pending' %}
-                            {{ group.list|length }}
-                        {% endif %}
-                    {% empty %}
-                        0
-                    {% endfor %}
+                    {% with pending_count=0 %}
+                        {% for dreq in donationrequests %}
+                            {% if dreq.donation_status == 'Pending' %}
+                                {% with pending_count=pending_count|add:1 %}{% endwith %}
+                            {% endif %}
+                        {% endfor %}
+                        {{ pending_count }}
+                    {% endwith %}
                 </h3>
                 <p class="text-muted mb-0">Pending Reviews</p>
             </div>
@@ -167,7 +167,6 @@
                                 <th><i class="fas fa-heart-pulse me-2"></i>Donation Status</th>
                                 <th><i class="fas fa-calendar-check me-2"></i>Appointment Status</th>
                                 <th><i class="fas fa-clock me-2"></i>Request Date</th>
-                                <th><i class="fas fa-cogs me-2"></i>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -175,7 +174,7 @@
                             <tr>
                                 <td class="fw-bold">#{{dreq.id}}</td>
                                 <td>
-                                    <span class="status-badge" style="background: var(--primary-blue); color: white;">
+                                    <span class="status-badge" style="background: var(--primary); color: white;">
                                         {{dreq.organ_type}}
                                     </span>
                                 </td>
@@ -215,37 +214,17 @@
                                     {% endif %}
                                 </td>
                                 <td>{{dreq.datetime|date:"M d, Y"}}</td>
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="viewDetails({{dreq.id}})" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        {% if dreq.donation_status == 'Approved' and dreq.appointment_status != 'Approved' %}
-                                        <a href="{% url 'book-appointment' %}" class="btn btn-sm btn-success" title="Book Appointment">
-                                            <i class="fas fa-calendar-plus"></i>
-                                        </a>
-                                        {% endif %}
-                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="downloadReport({{dreq.id}})" title="Download Report">
-                                            <i class="fas fa-download"></i>
-                                        </button>
-                                    </div>
-                                </td>
                             </tr>
                             {% empty %}
                             <tr>
-                                <td colspan="7" class="text-center py-5">
+                                <td colspan="6" class="text-center py-5">
                                     <div class="text-center">
                                         <i class="fas fa-heart fa-4x text-muted mb-3" style="opacity: 0.3;"></i>
                                         <h5 class="text-muted">No Donation Records Found</h5>
                                         <p class="text-muted mb-4">Start your life-saving journey by making your first donation request.</p>
-                                        <div class="d-flex gap-2 justify-content-center flex-wrap">
-                                            <a href="{% url 'new-donation-request' %}" class="btn btn-primary">
-                                                <i class="fas fa-plus-circle me-2"></i>Make Your First Donation
-                                            </a>
-                                            <a href="{% url 'book-appointment' %}" class="btn btn-outline-primary">
-                                                <i class="fas fa-calendar-plus me-2"></i>Schedule Consultation
-                                            </a>
-                                        </div>
+                                        <a href="{% url 'new-donation-request' %}" class="btn btn-primary">
+                                            <i class="fas fa-plus-circle me-2"></i>Make Your First Donation
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -296,9 +275,8 @@
         const tableRows = document.querySelectorAll('tbody tr');
         tableRows.forEach(row => {
             row.addEventListener('mouseenter', function() {
-                this.style.backgroundColor = 'rgba(26, 54, 93, 0.05)';
+                this.style.backgroundColor = 'rgba(44, 90, 160, 0.05)';
                 this.style.transform = 'scale(1.01)';
-                this.style.transition = 'all 0.2s ease';
             });
             
             row.addEventListener('mouseleave', function() {
@@ -309,9 +287,6 @@
         
         // Professional notification system
         showWelcomeMessage();
-        
-        // Add refresh data button
-        addRefreshButton();
     });
     
     // Counter animation for statistics
@@ -330,28 +305,39 @@
     
     // Welcome message for professional dashboard
     function showWelcomeMessage() {
+        // Check if it's first visit today
         const today = new Date().toDateString();
         const lastVisit = localStorage.getItem('lastDashboardVisit');
         
         if (lastVisit !== today) {
             setTimeout(() => {
-                console.log('Welcome to your Medical Donor Dashboard. All systems operational and your data is secure.');
+                if (window.ProfessionalPlatform && window.ProfessionalPlatform.showAlert) {
+                    window.ProfessionalPlatform.showAlert(
+                        'Welcome to your Medical Donor Dashboard. All systems are operational and your medical data is secure.',
+                        'success',
+                        4000
+                    );
+                }
                 localStorage.setItem('lastDashboardVisit', today);
             }, 1000);
         }
     }
     
-    // Add refresh data functionality
-    function addRefreshButton() {
+    // Professional data refresh functionality
+    function refreshMedicalData() {
         const refreshBtn = document.createElement('button');
         refreshBtn.className = 'btn btn-outline-primary btn-sm';
         refreshBtn.innerHTML = '<i class="fas fa-sync-alt me-1"></i>Refresh Data';
-        refreshBtn.style.cssText = 'position: fixed; bottom: 20px; left: 20px; z-index: 1000;';
+        refreshBtn.style.position = 'fixed';
+        refreshBtn.style.bottom = '20px';
+        refreshBtn.style.left = '20px';
+        refreshBtn.style.zIndex = '1000';
         
         refreshBtn.addEventListener('click', function() {
             this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Refreshing...';
             this.disabled = true;
             
+            // Simulate data refresh
             setTimeout(() => {
                 location.reload();
             }, 1500);
@@ -360,83 +346,7 @@
         document.body.appendChild(refreshBtn);
     }
     
-    // Professional medical chatbot simulation
-    function addMedicalAssistant() {
-        const assistantBtn = document.createElement('button');
-        assistantBtn.className = 'btn btn-primary';
-        assistantBtn.innerHTML = '<i class="fas fa-user-md me-2"></i>Medical Assistant';
-        assistantBtn.style.cssText = 'position: fixed; bottom: 80px; left: 20px; z-index: 1000;';
-        
-        assistantBtn.addEventListener('click', function() {
-            alert('Medical Assistant: How can I help you with your organ donation journey today?');
-        });
-        
-        document.body.appendChild(assistantBtn);
-    }
-    
-    // Initialize medical assistant
-    setTimeout(addMedicalAssistant, 2000);
-    
-    // View donation details function
-    function viewDetails(donationId) {
-        const modal = document.createElement('div');
-        modal.className = 'modal fade';
-        modal.innerHTML = `
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"><i class="fas fa-info-circle me-2"></i>Donation Details #${donationId}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-title"><i class="fas fa-user me-2"></i>Donor Information</h6>
-                                        <p class="card-text">Medical ID: #${donationId}<br>Status: Processing</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6 class="card-title"><i class="fas fa-hospital me-2"></i>Medical Details</h6>
-                                        <p class="card-text">Under medical review<br>Updates will be provided</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <a href="{% url 'book-appointment' %}" class="btn btn-primary"><i class="fas fa-calendar-plus me-2"></i>Book Appointment</a>
-                    </div>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        const modalInstance = new bootstrap.Modal(modal);
-        modalInstance.show();
-        modal.addEventListener('hidden.bs.modal', () => modal.remove());
-    }
-    
-    // Download report function
-    function downloadReport(donationId) {
-        const btn = event.target.closest('button');
-        const originalContent = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-        btn.disabled = true;
-        
-        setTimeout(() => {
-            btn.innerHTML = originalContent;
-            btn.disabled = false;
-            alert('Report download initiated. Check your downloads folder.');
-        }, 2000);
-    }
-    
-    // Make functions globally available
-    window.viewDetails = viewDetails;
-    window.downloadReport = downloadReport;
+    // Initialize refresh functionality
+    refreshMedicalData();
 </script>
 {% endblock %}

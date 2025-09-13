@@ -14,9 +14,9 @@
         Settings
     </button>
     <ul class="dropdown-menu" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2);">
-        <li><a class="dropdown-item text-white" href="#" onclick="showTab('update_profile')">Update Profile</a></li>
-        <li><hr class="dropdown-divider" style="border-color: rgba(255, 255, 255, 0.2);"></li>
-        <li><a class="dropdown-item text-white" href="{% url 'hospital-logout' %}">Log Out</a></li>
+        <li><a class="dropdown-item text-dark" href="#" onclick="showTab('update_profile')">Update Profile</a></li>
+        <li><hr class="dropdown-divider" style="border-color: rgba(0, 0, 0, 0.2);"></li>
+        <li><a class="dropdown-item text-dark" href="{% url 'hospital-logout' %}">Log Out</a></li>
     </ul>
 </div>
 {% endblock %}
@@ -37,32 +37,32 @@
 <!-- Tab Navigation -->
 <ul class="nav nav-tabs mb-4" role="tablist" style="background: rgba(255, 255, 255, 0.1); border-radius: 20px; border: none;">
     <li class="nav-item" id="actionItemTab">
-        <a class="nav-link active text-white fw-medium" data-toggle="tab" href="#home" style="border: none; background: transparent;">
+        <a class="nav-link active text-dark fw-medium" data-toggle="tab" href="#home" style="border: none; background: transparent;">
             <i class="fas fa-tachometer-alt me-2"></i>Action Items
         </a>
     </li>
     <li class="nav-item" id="appointmentTab">
-        <a class="nav-link text-white fw-medium" data-toggle="tab" href="#appointment_approvals" style="border: none; background: transparent;">
+        <a class="nav-link text-dark fw-medium" data-toggle="tab" href="#appointment_approvals" style="border: none; background: transparent;">
             <i class="fas fa-calendar-check me-2"></i>Appointments
         </a>
     </li>
     <li class="nav-item" id="donationTab">
-        <a class="nav-link text-white fw-medium" data-toggle="tab" href="#donation_approvals" style="border: none; background: transparent;">
+        <a class="nav-link text-dark fw-medium" data-toggle="tab" href="#donation_approvals" style="border: none; background: transparent;">
             <i class="fas fa-hand-holding-heart me-2"></i>Donations
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-white fw-medium" data-toggle="tab" href="#search_donation" style="border: none; background: transparent;">
+        <a class="nav-link text-dark fw-medium" data-toggle="tab" href="#search_donation" style="border: none; background: transparent;">
             <i class="fas fa-search me-2"></i>Search
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-white fw-medium" data-toggle="tab" href="#requirements_tab" style="border: none; background: transparent;">
+        <a class="nav-link text-dark fw-medium" data-toggle="tab" href="#requirements_tab" style="border: none; background: transparent;">
             <i class="fas fa-clipboard-list me-2"></i>Requirements
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-white fw-medium" data-toggle="tab" href="#ml_matching_tab" style="border: none; background: transparent;">
+        <a class="nav-link text-dark fw-medium" data-toggle="tab" href="#ml_matching_tab" style="border: none; background: transparent;">
             <i class="fas fa-brain me-2"></i>ML Matching
         </a>
     </li>
@@ -78,9 +78,9 @@
                     <div class="mb-3">
                         <i class="fas fa-calendar-check fa-4x" style="color: var(--warning);"></i>
                     </div>
-                    <h4 class="text-white fw-bold mb-2">Pending Appointments</h4>
-                    <h2 class="text-white fw-bold mb-3" id="appointmentCount">Loading...</h2>
-                    <p class="text-white-50 mb-0">Click to review and approve appointments</p>
+                    <h4 class="text-dark fw-bold mb-2">Pending Appointments</h4>
+                    <h2 class="text-dark fw-bold mb-3" id="appointmentCount">Loading...</h2>
+                    <p class="text-muted mb-0">Click to review and approve appointments</p>
                 </div>
             </div>
         </div>
@@ -90,9 +90,9 @@
                     <div class="mb-3">
                         <i class="fas fa-hand-holding-heart fa-4x" style="color: var(--success);"></i>
                     </div>
-                    <h4 class="text-white fw-bold mb-2">Pending Donations</h4>
-                    <h2 class="text-white fw-bold mb-3" id="donationCount">Loading...</h2>
-                    <p class="text-white-50 mb-0">Click to review and approve donations</p>
+                    <h4 class="text-dark fw-bold mb-2">Pending Donations</h4>
+                    <h2 class="text-dark fw-bold mb-3" id="donationCount">Loading...</h2>
+                    <p class="text-muted mb-0">Click to review and approve donations</p>
                 </div>
             </div>
         </div>
@@ -103,29 +103,29 @@
         <div class="col-md-3">
             <div class="glass-card text-center p-4">
                 <i class="fas fa-check-circle fa-3x mb-3" style="color: var(--success);"></i>
-                <h4 class="text-white fw-bold">Approved</h4>
-                <p class="text-white-50 mb-0">This Month</p>
+                <h4 class="text-dark fw-bold">Approved</h4>
+                <p class="text-muted mb-0">This Month</p>
             </div>
         </div>
         <div class="col-md-3">
             <div class="glass-card text-center p-4">
                 <i class="fas fa-clock fa-3x mb-3" style="color: var(--warning);"></i>
-                <h4 class="text-white fw-bold">Pending</h4>
-                <p class="text-white-50 mb-0">Review Required</p>
+                <h4 class="text-dark fw-bold">Pending</h4>
+                <p class="text-muted mb-0">Review Required</p>
             </div>
         </div>
         <div class="col-md-3">
             <div class="glass-card text-center p-4">
                 <i class="fas fa-heart fa-3x mb-3" style="color: var(--danger);"></i>
-                <h4 class="text-white fw-bold">Lives Saved</h4>
-                <p class="text-white-50 mb-0">Total Impact</p>
+                <h4 class="text-dark fw-bold">Lives Saved</h4>
+                <p class="text-muted mb-0">Total Impact</p>
             </div>
         </div>
         <div class="col-md-3">
             <div class="glass-card text-center p-4">
                 <i class="fas fa-users fa-3x mb-3" style="color: var(--accent);"></i>
-                <h4 class="text-white fw-bold">Active Donors</h4>
-                <p class="text-white-50 mb-0">In Network</p>
+                <h4 class="text-dark fw-bold">Active Donors</h4>
+                <p class="text-muted mb-0">In Network</p>
             </div>
         </div>
     </div>
@@ -292,7 +292,7 @@
                     <form id="requirementForm">
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label class="form-label text-white fw-medium">Organ Type</label>
+                                <label class="form-label text-dark fw-medium">Organ Type</label>
                                 <select name="organ_type" class="form-control form-control-3d" required>
                                     <option value="">Select Organ</option>
                                     <option value="Heart">Heart</option>
@@ -304,7 +304,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label text-white fw-medium">Blood Type</label>
+                                <label class="form-label text-dark fw-medium">Blood Type</label>
                                 <select name="blood_type" class="form-control form-control-3d" required>
                                     <option value="">Select Blood Type</option>
                                     <option value="A+">A+</option>
@@ -320,15 +320,15 @@
                         </div>
                         <div class="row g-3 mb-3">
                             <div class="col-md-4">
-                                <label class="form-label text-white fw-medium">Patient Age</label>
+                                <label class="form-label text-dark fw-medium">Patient Age</label>
                                 <input type="number" name="patient_age" class="form-control form-control-3d" min="1" max="100" required>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label text-white fw-medium">Patient Weight (kg)</label>
+                                <label class="form-label text-dark fw-medium">Patient Weight (kg)</label>
                                 <input type="number" name="patient_weight" class="form-control form-control-3d" min="10" max="200" step="0.1" required>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label text-white fw-medium">Urgency Level</label>
+                                <label class="form-label text-dark fw-medium">Urgency Level</label>
                                 <select name="urgency_level" class="form-control form-control-3d" required>
                                     <option value="">Select Urgency</option>
                                     <option value="Critical">Critical</option>
@@ -340,7 +340,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-white fw-medium">Additional Notes</label>
+                            <label class="form-label text-dark fw-medium">Additional Notes</label>
                             <textarea name="additional_notes" class="form-control form-control-3d" rows="3" placeholder="Any specific requirements or notes..."></textarea>
                         </div>
                         <button type="submit" class="btn btn-3d w-100">
@@ -359,7 +359,7 @@
                 </div>
                 <div class="card-body-3d p-0">
                     <div id="requirementsList" style="max-height: 400px; overflow-y: auto;">
-                        <p class="text-center py-4 text-white-50">Loading requirements...</p>
+                        <p class="text-center py-4 text-muted">Loading requirements...</p>
                     </div>
                 </div>
             </div>
@@ -379,13 +379,13 @@
         <div class="card-body-3d">
             <div class="row g-3 mb-4">
                 <div class="col-md-4">
-                    <label class="form-label text-white fw-medium">Select Requirement</label>
+                    <label class="form-label text-dark fw-medium">Select Requirement</label>
                     <select id="matchingRequirement" class="form-control form-control-3d">
                         <option value="">Choose a requirement to find matches</option>
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label text-white fw-medium">Organ Type</label>
+                    <label class="form-label text-dark fw-medium">Organ Type</label>
                     <select id="filterOrgan" class="form-control form-control-3d">
                         <option value="">Any Organ</option>
                         <option value="Heart">Heart</option>
@@ -397,7 +397,7 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label text-white fw-medium">Blood Type</label>
+                    <label class="form-label text-dark fw-medium">Blood Type</label>
                     <select id="filterBlood" class="form-control form-control-3d">
                         <option value="">Any Blood</option>
                         <option value="A+">A+</option>
@@ -411,7 +411,7 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label text-white fw-medium">Min Score</label>
+                    <label class="form-label text-dark fw-medium">Min Score</label>
                     <select id="minScore" class="form-control form-control-3d">
                         <option value="0">Any Score</option>
                         <option value="50">50%+</option>
@@ -429,8 +429,8 @@
             <div id="matchingResults">
                 <div class="text-center py-5">
                     <i class="fas fa-robot fa-4x mb-3" style="color: var(--accent); opacity: 0.5;"></i>
-                    <h5 class="text-white mb-2">AI Matching Ready</h5>
-                    <p class="text-white-50">Select a requirement above to find the best donor matches using our advanced ML algorithm</p>
+                    <h5 class="text-dark mb-2">AI Matching Ready</h5>
+                    <p class="text-muted">Select a requirement above to find the best donor matches using our advanced ML algorithm</p>
                 </div>
             </div>
         </div>
@@ -453,7 +453,7 @@
                         <i class="fas fa-refresh me-2"></i>Load All Appointments
                     </button>
                     <div id="debugAppointments" style="max-height: 400px; overflow-y: auto;">
-                        <p class="text-white-50">Click "Load All Appointments" to see debug info</p>
+                        <p class="text-muted">Click "Load All Appointments" to see debug info</p>
                     </div>
                 </div>
             </div>
@@ -471,7 +471,7 @@
                         <i class="fas fa-refresh me-2"></i>Load All Donations
                     </button>
                     <div id="debugDonations" style="max-height: 400px; overflow-y: auto;">
-                        <p class="text-white-50">Click "Load All Donations" to see debug info</p>
+                        <p class="text-muted">Click "Load All Donations" to see debug info</p>
                     </div>
                 </div>
             </div>
@@ -495,26 +495,26 @@
                 <div class="card-body-3d">
                     <form id="updateDetailsForm">
                         <div class="mb-3">
-                            <label class="form-label text-white fw-medium">
+                            <label class="form-label text-dark fw-medium">
                                 <i class="fas fa-hospital me-2"></i>Hospital Name
                             </label>
                             <input type="text" name="hospital_name" id="hospitalName" class="form-control form-control-3d" disabled>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-white fw-medium">
+                            <label class="form-label text-dark fw-medium">
                                 <i class="fas fa-envelope me-2"></i>Email Address
                             </label>
                             <input type="email" name="email" id="emailHospital" class="form-control form-control-3d" disabled>
                         </div>
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label class="form-label text-white fw-medium">
+                                <label class="form-label text-dark fw-medium">
                                     <i class="fas fa-city me-2"></i>City
                                 </label>
                                 <input type="text" name="city" id="city" class="form-control form-control-3d" disabled>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label text-white fw-medium">
+                                <label class="form-label text-dark fw-medium">
                                     <i class="fas fa-map-marker-alt me-2"></i>State
                                 </label>
                                 <select name="province" id="input-province" class="form-control form-control-3d" disabled>
@@ -552,13 +552,13 @@
                         </div>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
-                                <label class="form-label text-white fw-medium">
+                                <label class="form-label text-dark fw-medium">
                                     <i class="fas fa-phone me-2"></i>Contact (+91)
                                 </label>
                                 <input type="text" name="contact" id="hospitalContact" class="form-control form-control-3d" maxlength="10" minlength="10" disabled>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label text-white fw-medium">
+                                <label class="form-label text-dark fw-medium">
                                     <i class="fas fa-flag me-2"></i>Country
                                 </label>
                                 <select name="country" id="input-country" class="form-control form-control-3d" disabled>
@@ -587,19 +587,19 @@
                 <div class="card-body-3d">
                     <form>
                         <div class="mb-3">
-                            <label class="form-label text-white fw-medium">
+                            <label class="form-label text-dark fw-medium">
                                 <i class="fas fa-lock me-2"></i>Old Password
                             </label>
                             <input type="password" id="password1" name="old_password" class="form-control form-control-3d" disabled>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label text-white fw-medium">
+                            <label class="form-label text-dark fw-medium">
                                 <i class="fas fa-key me-2"></i>New Password
                             </label>
                             <input type="password" id="password2" name="new_password" class="form-control form-control-3d" minlength="6" pattern="(?=.*[a-z])(?=.*\d).{6,}" disabled>
                         </div>
                         <div class="mb-4">
-                            <label class="form-label text-white fw-medium">
+                            <label class="form-label text-dark fw-medium">
                                 <i class="fas fa-check-circle me-2"></i>Confirm Password
                             </label>
                             <input type="password" id="password3" class="form-control form-control-3d" oninput="checkpassword();" disabled>
@@ -873,12 +873,12 @@
     function loadAllAppointments() {
         $.get('/hospitals/fetch-all-appointments/', function(data) {
             const appointments = JSON.parse(data);
-            let html = '<h6 class="text-white mb-3">All Appointments for This Hospital:</h6>';
+            let html = '<h6 class="text-dark mb-3">All Appointments for This Hospital:</h6>';
             
             if (appointments.length === 0) {
                 html += '<p class="text-warning">No appointments found for this hospital.</p>';
             } else {
-                html += '<div class="table-responsive"><table class="table table-sm text-white">';
+                html += '<div class="table-responsive"><table class="table table-sm text-dark">';
                 html += '<thead><tr><th>ID</th><th>Donor</th><th>Organ</th><th>Date</th><th>Status</th></tr></thead><tbody>';
                 
                 appointments.forEach(function(apt) {
@@ -903,12 +903,12 @@
     function loadAllDonations() {
         $.get('/hospitals/fetch-all-pending-donations/', function(data) {
             const donations = JSON.parse(data);
-            let html = '<h6 class="text-white mb-3">All Pending Donations:</h6>';
+            let html = '<h6 class="text-dark mb-3">All Pending Donations:</h6>';
             
             if (donations.length === 0) {
                 html += '<p class="text-warning">No pending donations found.</p>';
             } else {
-                html += '<div class="table-responsive"><table class="table table-sm text-white">';
+                html += '<div class="table-responsive"><table class="table table-sm text-dark">';
                 html += '<thead><tr><th>ID</th><th>Donor</th><th>Organ</th><th>Blood</th><th>Appointment</th></tr></thead><tbody>';
                 
                 donations.forEach(function(donation) {
@@ -969,7 +969,7 @@
             let html = '';
             
             if (requirements.length === 0) {
-                html = '<p class="text-center py-4 text-white-50">No requirements added yet</p>';
+                html = '<p class="text-center py-4 text-muted">No requirements added yet</p>';
             } else {
                 requirements.forEach(function(req) {
                     const urgencyColor = req.urgency_level === 'Critical' ? 'danger' : 
@@ -978,15 +978,15 @@
                     html += `<div class="border-bottom border-secondary p-3">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <h6 class="text-white mb-1">${req.organ_type} - ${req.blood_type}</h6>
-                                <p class="text-white-50 mb-1">Age: ${req.patient_age}, Weight: ${req.patient_weight}kg</p>
+                                <h6 class="text-dark mb-1">${req.organ_type} - ${req.blood_type}</h6>
+                                <p class="text-muted mb-1">Age: ${req.patient_age}, Weight: ${req.patient_weight}kg</p>
                                 <span class="badge bg-${urgencyColor}">${req.urgency_level}</span>
                             </div>
                             <button class="btn btn-sm btn-outline-danger" onclick="deleteRequirement(${req.id})">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
-                        ${req.additional_notes ? `<p class="text-white-50 mt-2 mb-0 small">${req.additional_notes}</p>` : ''}
+                        ${req.additional_notes ? `<p class="text-muted mt-2 mb-0 small">${req.additional_notes}</p>` : ''}
                     </div>`;
                 });
             }
@@ -1053,9 +1053,9 @@
             let html = '';
             
             if (matches.length === 0) {
-                html = '<div class="text-center py-4"><i class="fas fa-exclamation-triangle fa-2x text-warning"></i><p class="text-white mt-2">No matches found with current criteria</p><p class="text-white-50">Try adjusting the filters or minimum score</p></div>';
+                html = '<div class="text-center py-4"><i class="fas fa-exclamation-triangle fa-2x text-warning"></i><p class="text-dark mt-2">No matches found with current criteria</p><p class="text-muted">Try adjusting the filters or minimum score</p></div>';
             } else {
-                html = `<h6 class="text-white mb-3">Best Matches (${matches.length} found, sorted by compatibility)</h6>`;
+                html = `<h6 class="text-dark mb-3">Best Matches (${matches.length} found, sorted by compatibility)</h6>`;
                 html += '<div class="table-responsive"><table class="table table-3d"><thead><tr><th>Rank</th><th>Donor</th><th>City</th><th>Organ</th><th>Blood</th><th>Compatibility</th><th>ML Score</th><th>Action</th></tr></thead><tbody>';
                 
                 matches.forEach(function(match, index) {
@@ -1081,7 +1081,7 @@
         })
         .fail(function(xhr, status, error) {
             console.error('AJAX request failed:', status, error);
-            $('#matchingResults').html('<div class="text-center py-4"><i class="fas fa-exclamation-triangle fa-2x text-danger"></i><p class="text-white mt-2">Error occurred while finding matches</p><p class="text-white-50">Error: ' + error + '</p></div>');
+            $('#matchingResults').html('<div class="text-center py-4"><i class="fas fa-exclamation-triangle fa-2x text-danger"></i><p class="text-dark mt-2">Error occurred while finding matches</p><p class="text-muted">Error: ' + error + '</p></div>');
         });
     }
     

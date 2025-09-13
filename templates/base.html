@@ -4,18 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional organ donation platform connecting donors with hospitals to save lives">
     <title>{% block title %}We Donate - Save Lives Through Organ Donation{% endblock %}</title>
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/modern-professional.css' %}">
     <style>
         :root {
             --bg-primary: #f4f8fb;
@@ -50,7 +52,7 @@
         }
         
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             line-height: 1.6;
             color: var(--text-primary);
             background-color: var(--bg-primary);
@@ -60,7 +62,7 @@
         .navbar-custom {
             background: var(--navbar-bg) !important;
             box-shadow: 0 2px 16px var(--shadow);
-            border-radius: 0 0 24px 24px;
+            border-radius: 0;
             padding: 1.2rem 0;
         }
         
@@ -103,8 +105,14 @@
         }
         
         .theme-toggle:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+            outline: 3px solid #4A90E2;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+        }
+        
+        .theme-toggle:focus-visible {
+            outline: 3px solid #4A90E2;
+            outline-offset: 2px;
         }
         
         .theme-toggle::before {
@@ -153,7 +161,7 @@
         
         .btn-custom {
             background: linear-gradient(135deg, var(--accent), var(--accent2));
-            border-radius: 30px;
+            border-radius: 8px;
             box-shadow: 0 4px 16px var(--shadow);
             border: none;
             padding: 12px 30px;
@@ -169,6 +177,48 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
             color: white;
+        }
+        
+        .btn-custom:focus {
+            outline: 3px solid #4A90E2;
+            outline-offset: 2px;
+        }
+        
+        /* Skip to main content link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--accent2);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 9999;
+            transition: top 0.3s;
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+        
+        /* Reduced motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --text-primary: #000000;
+                --text-secondary: #333333;
+                --accent: #0066CC;
+                --accent2: #004499;
+            }
         }
         
         .footer-custom {
@@ -206,7 +256,7 @@
         .hero-section {
             background: linear-gradient(120deg, var(--accent) 0%, var(--accent2) 100%);
             color: #fff;
-            border-radius: 32px;
+            border-radius: 12px;
             box-shadow: 0 8px 32px var(--shadow);
             padding: 3rem 2rem 2.5rem 2rem;
             margin-bottom: 2.5rem;
@@ -268,20 +318,21 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="page-wrapper">
         <!-- Navigation -->
         {% block navbar %}
-        <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+        <nav class="navbar navbar-expand-lg navbar-light navbar-custom" role="navigation" aria-label="Main navigation">
             <div class="container">
-                <a class="navbar-brand" href="{% url 'wedonate' %}">
-                    <i class="fas fa-heart text-danger"></i> We Donate
+                <a class="navbar-brand" href="{% url 'wedonate' %}" aria-label="We Donate - Home">
+                    <i class="fas fa-heart text-danger" aria-hidden="true"></i> We Donate
                 </a>
                 <div class="navbar-nav ml-auto">
                     <div class="d-flex align-items-center">
                         {% block nav_links %}{% endblock %}
-                        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
-                            <i class="fas fa-sun theme-icon sun"></i>
-                            <i class="fas fa-moon theme-icon moon"></i>
+                        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle between dark and light mode" aria-pressed="false">
+                            <i class="fas fa-sun theme-icon sun" aria-hidden="true"></i>
+                            <i class="fas fa-moon theme-icon moon" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
@@ -290,39 +341,41 @@
         {% endblock %}
         
         <!-- Main Content -->
-        <div class="content-wrapper">
+        <main class="content-wrapper" id="main-content" role="main">
             <div class="container">
-                <div class="hero-section">
-                    <h1>Save Lives. Give Hope.</h1>
+                <section class="hero-section" aria-labelledby="hero-heading">
+                    <h1 id="hero-heading">Save Lives. Give Hope.</h1>
                     <p>Join us in making a difference through organ donation. Every donor is a hero.</p>
-                    <a href="#" class="btn btn-custom btn-lg shadow">Become a Donor</a>
-                </div>
+                    <a href="#" class="btn btn-custom btn-lg shadow" role="button">Become a Donor</a>
+                </section>
             </div>
             {% block content %}{% endblock %}
-        </div>
+        </main>
         
         <!-- Floating Action Button -->
-        <div class="floating-action" onclick="scrollToTop()" title="Back to Top">
-            <i class="fas fa-arrow-up"></i>
-        </div>
+        <button class="floating-action" onclick="scrollToTop()" aria-label="Back to top" type="button">
+            <i class="fas fa-arrow-up" aria-hidden="true"></i>
+        </button>
         
         <!-- Footer -->
         {% block footer %}
-        <footer class="footer-custom">
+        <footer class="footer-custom" role="contentinfo">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h5 class="mb-3">
-                            <i class="fas fa-heart text-danger" style="animation: pulse 1.5s infinite;"></i> We Donate
-                        </h5>
+                        <h2 class="mb-3">
+                            <i class="fas fa-heart text-danger" aria-hidden="true" style="animation: pulse 1.5s infinite;"></i> We Donate
+                        </h2>
                         <p class="mb-3">Connecting hearts, saving lives through organ donation.</p>
                         <hr class="my-3">
-                        <p class="mb-0">
-                            &copy; 2024 We Donate Inc. All rights reserved. | 
-                            <a href="#">Privacy Policy</a> | 
-                            <a href="#">Terms of Service</a> | 
-                            <a href="#">Contact Us</a>
-                        </p>
+                        <nav aria-label="Footer navigation">
+                            <p class="mb-0">
+                                &copy; 2025 We Donate Inc. All rights reserved. | 
+                                <a href="#" aria-label="Privacy Policy">Privacy Policy</a> | 
+                                <a href="#" aria-label="Terms of Service">Terms of Service</a> | 
+                                <a href="#" aria-label="Contact Us">Contact Us</a>
+                            </p>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -333,14 +386,28 @@
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/accessibility.js' %}"></script>
     
     <script>
         function toggleTheme() {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            const button = document.querySelector('.theme-toggle');
             
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
+            
+            // Update aria-pressed state
+            button.setAttribute('aria-pressed', newTheme === 'dark');
+            
+            // Announce theme change to screen readers
+            const announcement = document.createElement('div');
+            announcement.setAttribute('aria-live', 'polite');
+            announcement.setAttribute('aria-atomic', 'true');
+            announcement.className = 'sr-only';
+            announcement.textContent = `Theme changed to ${newTheme} mode`;
+            document.body.appendChild(announcement);
+            setTimeout(() => document.body.removeChild(announcement), 1000);
         }
         
         function scrollToTop() {

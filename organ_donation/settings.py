@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 from os import getenv
-import dj_database_url
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -21,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = getenv('SECRET_KEY', '2l*2=tgo4jwc=o+oivtm#wsrr(py^&fvzyn)k+x4j5r_q@3&0d')
+SECRET_KEY = '2l*2=tgo4jwc=o+oivtm#wsrr(py^&fvzyn)k+x4j5r_q@3&0d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = getenv('DEBUG', 'True') == 'True'
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 WKHTMLTOPDF = os.path.join(BASE_DIR, "wkhtmltopdf", "wkhtmltopdf.exe")
@@ -47,7 +46,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -92,26 +90,19 @@ WSGI_APPLICATION = 'organ_donation.wsgi.application'
 # }
 
 
-# Database configuration
-DATABASE_URL = getenv('DATABASE_URL')
-if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': getenv('PGDATABASE', 'neondb'),
+        'USER': getenv('PGUSER', 'neondb_owner'),
+        'PASSWORD': getenv('PGPASSWORD', 'npg_oqQvd4JDZpS9'),
+        'HOST': getenv('PGHOST', 'ep-jolly-band-ad8fdhqy.c-2.us-east-1.aws.neon.tech'),
+        'PORT': getenv('PGPORT', '5432'),
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'neondb',
-            'USER': 'neondb_owner',
-            'PASSWORD': 'npg_oqQvd4JDZpS9',
-            'HOST': 'ep-jolly-band-ad8fdhqy.c-2.us-east-1.aws.neon.tech',
-            'PORT': '5432',
-            'OPTIONS': {
-                'sslmode': 'require',
-            },
-        }
-    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
